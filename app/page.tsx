@@ -41,7 +41,7 @@ export default function Home() {
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 bg-clip-text text-transparent">
-                AI Engineer
+                Ashish Nagmoti
               </span>
               <br />
               <motion.span
@@ -50,14 +50,13 @@ export default function Home() {
                 transition={{ delay: 0.5, duration: 0.8 }}
                 className="text-2xl md:text-4xl text-muted-foreground"
               >
-                Backend Developer | Cloud Native
+                AI & DS Student | Backend & Cloud Developer
               </motion.span>
             </motion.h1>
           </motion.div>
 
           <motion.p variants={itemVariants} className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Specializing in Python, Django, FastAPI, and cloud platforms. Building scalable AI systems and backend
-            architectures.
+            An adaptable and passionate AI and Data Science student at K.K. Wagh Institute of Engineering Education and Research. I love building impactful full-stack applications, with a strong focus on backend development, AI integration, and cloud infrastructure.
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center mb-12">

@@ -23,41 +23,33 @@ const contactMethods = [
   {
     icon: Mail,
     label: "Email",
-    value: "your.email@example.com",
-    href: "mailto:your.email@example.com",
+    value: "ashishnagmoti2310@gmail.com",
+    href: "mailto:ashishnagmoti2310@gmail.com",
     description: "Best for project inquiries and detailed discussions",
     primary: true,
   },
   {
     icon: Linkedin,
     label: "LinkedIn",
-    value: "linkedin.com/in/your-profile",
-    href: "https://linkedin.com/in/your-profile",
+    value: "linkedin.com/in/ashish-nagmoti",
+    href: "https://www.linkedin.com/in/ashish-nagmoti-54269b249",
     description: "Professional networking and career opportunities",
     primary: true,
   },
   {
     icon: Github,
     label: "GitHub",
-    value: "github.com/your-username",
-    href: "https://github.com/your-username",
+    value: "github.com/ashish-nagmoti",
+    href: "https://github.com/ashish-nagmoti",
     description: "Check out my code and open source contributions",
     primary: false,
   },
   {
-    icon: Twitter,
-    label: "Twitter",
-    value: "@your_twitter_handle",
-    href: "https://twitter.com/your_twitter_handle",
-    description: "Tech discussions and industry insights",
-    primary: false,
-  },
-  {
     icon: Globe,
-    label: "Portfolio",
-    value: "your-portfolio.com",
-    href: "https://your-portfolio.com",
-    description: "This website - showcase of my work",
+    label: "Medium Blog",
+    value: "https://medium.com/@ashishnagmoti7",
+    href: "https://medium.com/@ashishnagmoti7",
+    description: "My technical blog on Medium",
     primary: false,
   },
 ]
@@ -66,9 +58,9 @@ const services = [
   "Python/Django/FastAPI Development",
   "AWS Cloud Solutions & Migration",
   "API Design & Development",
-  "System Architecture Consulting",
-  "Code Reviews & Technical Mentoring",
-  "AI/ML Integration & Consulting",
+  // "System Architecture Consulting",
+  // "Code Reviews & Technical Mentoring",
+  // "AI/ML Integration & Consulting",
 ]
 
 const containerVariants = {
@@ -91,7 +83,7 @@ export function ContactSection() {
 
   const copyEmail = async () => {
     try {
-      await navigator.clipboard.writeText("your.email@example.com")
+      await navigator.clipboard.writeText("ashishnagmoti2310@gmail.com")
       setCopiedEmail(true)
       setTimeout(() => setCopiedEmail(false), 2000)
     } catch (err) {
@@ -113,7 +105,7 @@ export function ContactSection() {
           <motion.div variants={itemVariants} className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Let's Work Together</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Ready to build something amazing? I'm available for freelance projects, consulting, and full-time
+              Ready to build something amazing? I'm available for freelance projects, and full-time
               opportunities.
             </p>
           </motion.div>
@@ -187,8 +179,8 @@ export function ContactSection() {
                   <div className="flex items-center gap-3">
                     <MapPin className="h-4 w-4 text-muted-foreground" />
                     <div>
-                      <p className="font-medium">Your City, Country</p>
-                      <p className="text-sm text-muted-foreground">Open to remote work</p>
+                      <p className="font-medium">Maharashtra, India</p>
+                      <p className="text-sm text-muted-foreground">Open to work(remote/onsite)</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -230,13 +222,13 @@ export function ContactSection() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" asChild>
-                  <a href="mailto:your.email@example.com">
+                  <a href="mailto:ashishnagmoti2310@gmail.com">
                     <Mail className="mr-2 h-4 w-4" />
                     Send Email
                   </a>
                 </Button>
                 <Button variant="outline" size="lg" asChild>
-                  <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer">
+                  <a href="https://www.linkedin.com/in/ashish-nagmoti-54269b249" target="_blank" rel="noopener noreferrer">
                     <Linkedin className="mr-2 h-4 w-4" />
                     Connect on LinkedIn
                   </a>
