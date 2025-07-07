@@ -19,8 +19,8 @@ const projects = [
 		category: "AI",
 		icon: Brain,
 		github: "https://github.com/ashish-nagmoti/storymail", // Update with actual repo if available
-		demo: "#",
-		image: "/placeholder.svg?height=200&width=400",
+		demo: "http://story-mail-olive.vercel.app/",
+		image: "https://story-mail-olive.vercel.app/og.png",
 		date: "Mar 2024 – Oct 2024",
 	},
 	{
@@ -32,8 +32,8 @@ const projects = [
 		tech: ["Django", "AWS", "Postgres SQL"],
 		category: "Web",
 		icon: Globe,
-		github: "https://github.com/ashish-nagmoti/kalashala", // Update with actual repo if available
-		demo: "#",
+		github: "https://github.com/ashish-nagmoti/kalashala-backend", // Update with actual repo if available
+		demo: "https://kalashala-frontend1-zxra.vercel.app/",
 		image: "/placeholder.svg?height=200&width=400",
 		date: "Feb 2024 – Mar 2024",
 	},
@@ -46,14 +46,12 @@ const projects = [
 		tech: ["Django", "Tailwind CSS", "Jinja", "SQLite3", "Python"],
 		category: "AI",
 		icon: Code,
-		github: "https://github.com/ashish-nagmoti/aceup", // Update with actual repo if available
-		demo: "#",
+		github: "https://github.com/riaan-attar/AceUp", // Update with actual repo if available
+		demo: "https://inevitable-lucky-predeator-b19e8de5.koyeb.app/",
 		image: "/placeholder.svg?height=200&width=400",
 		date: "2024",
 	},
 ]
-
-const categories = ["All", "AI", "Cloud", "Frontend", "Mobile"]
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -73,8 +71,7 @@ const itemVariants = {
 export default function Projects() {
 	const [selectedCategory, setSelectedCategory] = useState("All")
 
-	const filteredProjects =
-		selectedCategory === "All" ? projects : projects.filter((project) => project.category === selectedCategory)
+	const filteredProjects = projects
 
 	return (
 		<div className="min-h-screen pt-16">
@@ -93,22 +90,6 @@ export default function Projects() {
 						</p>
 					</motion.div>
 
-					{/* Category Filter */}
-					<motion.div variants={itemVariants} className="flex justify-center mb-12">
-						<div className="flex flex-wrap gap-2">
-							{categories.map((category) => (
-								<Button
-									key={category}
-									variant={selectedCategory === category ? "default" : "outline"}
-									onClick={() => setSelectedCategory(category)}
-									className="mb-2"
-								>
-									{category}
-								</Button>
-							))}
-						</div>
-					</motion.div>
-
 					{/* Projects Grid */}
 					<motion.div
 						variants={containerVariants}
@@ -118,86 +99,56 @@ export default function Projects() {
 							<motion.div
 								key={project.id}
 								variants={itemVariants}
-								whileHover={{ y: -5 }}
+								whileHover={{ y: -8, scale: 1.04 }}
 								transition={{ type: "spring", stiffness: 300 }}
 							>
-								<Card className="h-full group cursor-pointer overflow-hidden">
-									<div className="relative overflow-hidden">
-										<img
-											src={project.image || "/placeholder.svg"}
-											alt={project.title}
-											className="w-full h-48 object-cover transition-transform group-hover:scale-105"
-										/>
-										<div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-											<project.icon className="h-12 w-12 text-white" />
-										</div>
+								<Card className="h-full group cursor-pointer overflow-hidden bg-gradient-to-br from-blue-950 via-gray-900 to-gray-800 border border-blue-700/40 shadow-2xl relative rounded-2xl hover:shadow-blue-700/30 transition-all duration-300">
+									<div className="absolute top-4 right-4 z-10">
+										<Badge variant="secondary" className="bg-blue-700/80 text-white text-xs px-3 py-1 rounded-full shadow">{project.category}</Badge>
 									</div>
-
-									<CardHeader>
-										<CardTitle className="flex items-center justify-between">
-											<span>{project.title}</span>
-											<Badge variant="secondary">{project.category}</Badge>
-										</CardTitle>
-									</CardHeader>
-
-									<CardContent className="flex-1 flex flex-col">
-										<p className="text-muted-foreground mb-4 flex-1">{project.description}</p>
-
-										<div className="flex flex-wrap gap-1 mb-4">
-											{project.tech.slice(0, 3).map((tech) => (
-												<Badge key={tech} variant="outline" className="text-xs">
+									<div className="flex flex-col items-center justify-center py-10 gap-4 px-4">
+										<div className="rounded-full bg-gradient-to-tr from-blue-600 via-blue-400 to-blue-300 p-5 mb-2 shadow-lg border-4 border-blue-900/30">
+											<project.icon className="h-12 w-12 text-white drop-shadow" />
+										</div>
+										<h2 className="text-lg font-extrabold text-white text-center mb-1 leading-tight drop-shadow-lg">{project.title}</h2>
+										<p className="text-xs text-blue-300 font-semibold mb-1 tracking-wide">{project.date}</p>
+										<p className="text-sm text-blue-100 text-center mb-2 leading-relaxed">{project.description}</p>
+										<div className="flex flex-wrap justify-center gap-2 mb-2">
+											{project.tech.map((tech) => (
+												<Badge key={tech} variant="outline" className="text-xs border-blue-400/60 text-blue-200 bg-blue-900/30 px-2 py-1">
 													{tech}
 												</Badge>
 											))}
-											{project.tech.length > 3 && (
-												<Badge variant="outline" className="text-xs">
-													+{project.tech.length - 3}
-												</Badge>
-											)}
 										</div>
-
-										<div className="flex gap-2">
+										<div className="flex gap-2 justify-center mt-2">
 											<Dialog>
 												<DialogTrigger asChild>
-													<Button
-														variant="outline"
-														size="sm"
-														className="flex-1 bg-transparent"
-													>
+													<Button variant="outline" size="sm" className="bg-blue-800/60 border-blue-400/40 text-blue-100 hover:bg-blue-700/80">
 														<Code className="h-4 w-4 mr-2" />
 														Details
 													</Button>
 												</DialogTrigger>
-												<DialogContent className="max-w-2xl">
+												<DialogContent className="max-w-2xl bg-gray-900 border-blue-700/40">
 													<DialogHeader>
-														<DialogTitle className="flex items-center gap-2">
+														<DialogTitle className="flex items-center gap-2 text-blue-200">
 															<project.icon className="h-5 w-5" />
 															{project.title}
 														</DialogTitle>
 													</DialogHeader>
 													<div className="space-y-4">
-														<img
-															src={project.image || "/placeholder.svg"}
-															alt={project.title}
-															className="w-full h-48 object-cover rounded-lg"
-														/>
-														<p className="text-muted-foreground">
-															{project.longDescription}
-														</p>
+														<p className="text-blue-100">{project.longDescription}</p>
 														<div>
-															<h4 className="font-semibold mb-2">
-																Technologies Used:
-															</h4>
+															<h4 className="font-semibold mb-2 text-blue-300">Technologies Used:</h4>
 															<div className="flex flex-wrap gap-2">
 																{project.tech.map((tech) => (
-																	<Badge key={tech} variant="secondary">
+																	<Badge key={tech} variant="secondary" className="bg-blue-700/80 text-white">
 																		{tech}
 																	</Badge>
 																))}
 															</div>
 														</div>
 														<div className="flex gap-2">
-															<Button asChild>
+															<Button asChild className="bg-blue-700/80 text-white">
 																<a
 																	href={project.github}
 																	target="_blank"
@@ -207,32 +158,33 @@ export default function Projects() {
 																	GitHub
 																</a>
 															</Button>
-															<Button variant="outline" asChild>
-																<a
-																	href={project.demo}
-																	target="_blank"
-																	rel="noopener noreferrer"
-																>
-																	<ExternalLink className="h-4 w-4 mr-2" />
-																	Live Demo
-																</a>
-															</Button>
+															{project.demo && project.demo !== "#" && (
+																<Button variant="outline" asChild className="border-blue-400/40 text-blue-100 hover:bg-blue-700/80">
+																	<a
+																		href={project.demo}
+																		target="_blank"
+																		rel="noopener noreferrer"
+																	>
+																		<ExternalLink className="h-4 w-4 mr-2" />
+																		Live Demo
+																	</a>
+																</Button>
+															)}
 														</div>
 													</div>
 												</DialogContent>
 											</Dialog>
-
-											<Button variant="ghost" size="sm" asChild>
+											<Button variant="ghost" size="sm" asChild className="hover:bg-blue-800/40">
 												<a
 													href={project.github}
 													target="_blank"
 													rel="noopener noreferrer"
 												>
-													<Github className="h-4 w-4" />
+													<Github className="h-4 w-4 text-blue-300" />
 												</a>
 											</Button>
 										</div>
-									</CardContent>
+									</div>
 								</Card>
 							</motion.div>
 						))}
