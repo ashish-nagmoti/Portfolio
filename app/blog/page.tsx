@@ -14,7 +14,7 @@ const blogPosts = [
 			"Here I showcase my journey from Windows to Arch Linux and the problems I had in journey.",
 		date: "2024-01-30",
 		readTime: "5 min read",
-		url: "https://medium.com/@ashishnagmoti7/i-switched-to-arch-linux-5feede3d9c1c",
+		url: "https://medium.com/@ashishnagmoti7/i-switched-to-arch-linux-cca16df9c2a7",
 		tags: ["Linux", "Journey", "Arch"],
 	},
 	{
@@ -23,7 +23,7 @@ const blogPosts = [
 		excerpt: "My experience and learnings from the CS50 course.",
 		date: "2024-06-21",
 		readTime: "6 min read",
-		url: "https://medium.com/@ashishnagmoti7/my-cs50-experience-abc123", // Replace with actual slug if available
+		url: "https://medium.com/long-sweet-valuable/my-cs50-experience-44b5b8826c4d", // Replace with actual slug if available
 		tags: ["CS50", "Learning", "Programming"],
 	},
 	{
@@ -33,7 +33,7 @@ const blogPosts = [
 			"My Hacktoberfest Journey: Navigating Challenges and Embracing Growth.",
 		date: "2023-11-08",
 		readTime: "4 min read",
-		url: "https://medium.com/@ashishnagmoti7/my-hacktoberfest-journey-navigating-challenges-and-embracing-growth-xyz456", // Replace with actual slug if available
+		url: "https://medium.com/@ashishnagmoti7/my-hacktoberfest-journey-navigating-challenges-and-embracing-growth-14d6faf8649b", // Replace with actual slug if available
 		tags: ["Hacktoberfest", "Open Source", "Growth"],
 	},
 ]
