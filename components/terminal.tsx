@@ -23,35 +23,36 @@ const commands = {
   clear       - Clear terminal
   whoami      - Display current user`,
 
-  neofetch: `                   -\`                    user@ai-engineer
+  neofetch: `                   -\`                    user@ashish-nagmoti
                   .o+\`                   -----------------
-                 \`ooo/                   OS: Backend Engineer
-                \`+oooo:                  Host: Cloud Native
-               \`+oooooo:                 Kernel: Python 3.11
-               -+oooooo+:                Uptime: 4 years
-             \`/:-:++oooo+:               Packages: Django, FastAPI
-            \`/++++/+++++++:              Shell: zsh
-           \`/++++++++++++++:             Resolution: Full Stack
-          \`/+++ooooooooooooo/\`           DE: VS Code
-         ./ooosssso++osssssso+\`          WM: Tmux
-        .oossssso-\`\`\`\`/ossssss+\`         Theme: Dark Mode
-       -osssssso.      :ssssssso.        Icons: Lucide
-      :osssssss/        osssso+++.       Terminal: Interactive
-     /ossssssss/        +ssssooo/-       CPU: Problem Solving
+                 \`ooo/                   OS: Arch Linux
+                \`+oooo:                  Host: Backend Developer
+               \`+oooooo:                 Packages: Django, FastAPI, AWS
+               -+oooooo+:                 Resolution: Full Stack
+             \`/:-:++oooo+:               DE: Hyprland
+            \`/++++/+++++++:              IDE: VSCODE and Nvchad
+           \`/++++++++++++++:             WM: wayland
+          \`/+++ooooooooooooo/\`          Theme: Dark Mode
+         ./ooosssso++osssssso+\`          CPU: Problem Solving
+        .oossssso-\`\`\`\`/ossssss+\`     Storage: Cloud First
+       -osssssso.      :ssssssso.         Icons: Lucide
+      :osssssss/        osssso+++.        Terminal: Interactive
+     /ossssssss/        +ssssooo/-        Memory: Always Learning
    \`/ossssso+/:-        -:/+osssso+-     GPU: Machine Learning
-  \`+sso+:-\`                 \`.-/+oso:    Memory: Always Learning
- \`++:.                           \`-/+/   Storage: Cloud First
+  \`+sso+:-\`                 \`.-/+oso:    
+ \`++:.                           \`-/+/   
  .\`                                 \`/`,
 
-  about: `👨‍💻 AI Engineering Student & Backend Developer
+  about: `👨‍💻 Ashish Nagmoti
+AI Engineering Student & Backend Developer
 
-🎓 Education: AI Engineering Student
-🏢 Experience: Backend-focused with 4+ years
+🎓 Education: K.K. Wagh Institute of Engineering Education and Research (9.1 CGPA, Expected 2026)
+🏢 Experience: Backend-focused, 4+ years
 🌟 Specialties: API Development, Cloud Architecture, AI Systems
 
 🏆 Leadership:
   • Phoenix Club - Vice President
-  • Young Indians - Innovation Head
+  • Young Indians Nashik Chapter - Innovation Coordinator
 
 💼 Professional:
   • AWS Client Projects
@@ -59,72 +60,69 @@ const commands = {
   • Cloud Solutions Architecture
 
 💻 Coding Profiles:
-  • LeetCode: 500+ Problems Solved
-  • GitHub: 50+ Repositories`,
+  • LeetCode: https://leetcode.com/u/ashish_nagmoti/ (100+ Problems Solved)
+  • GitHub: https://github.com/ashish-nagmoti (50+ Repositories`,
 
   skills: `🛠️ Technical Stack:
 
 Backend Development:
-  ├── Python (Expert)
-  ├── Django (Advanced)
-  ├── FastAPI (Advanced)
-  └── REST APIs (Expert)
+  • Python
+  • Django
+  • FastAPI
+  • REST APIs
 
 Cloud Platforms:
-  ├── AWS (Advanced)
-  ├── GCP (Intermediate)
-  └── Cloud Architecture (Advanced)
+  • AWS
+  • GCP
+  • Cloud Architecture
 
 Databases:
-  ├── PostgreSQL
-  ├── MongoDB
-  └── Redis
+  • PostgreSQL
+  • MongoDB
+  • S3
 
 DevOps & Tools:
-  ├── Docker
-  ├── CI/CD
-  ├── Git
-  └── Linux
+  • Docker
+  • CI/CD
+  • Git
+  • Linux
 
 AI/ML:
-  ├── LLM Integration
-  ├── API Automation
-  └── Data Processing`,
+  • LLM Integration
+  • Gemini API
+  • Langchain
+  • Vector Databases`,
 
   projects: `🚀 Recent Projects:
 
-1. API Testing Automation Tool
-   ├── AI-powered Swagger analysis
-   ├── Automated test generation
-   └── Tech: Python, FastAPI, OpenAI
+1. StoryMail – AI-Powered Smart Email Platform
+   • Mar 2024 – Oct 2024
+   • Tech: Django, Auth0, Postgres SQL, GeminiAPI
+   • AI platform for email classification, weekly digests, and querying.
+   • Demo: http://story-mail-olive.vercel.app/
+   • GitHub: https://github.com/ashish-nagmoti/storymail
 
-2. EC2 Spot Instance Orchestrator
-   ├── Cost optimization system
-   ├── Auto-scaling management
-   └── Tech: AWS, Python, Boto3
+2. KalaShala – Platform Empowering Local Artists
+   • Feb 2024 – Mar 2024
+   • Tech: Django, AWS, Postgres SQL
+   • Role: Backend Development and Deployment
+   • Platform for local artists to showcase, publish content, and grow.
+   • Demo: https://kalashala-frontend1-zxra.vercel.app/
+   • GitHub: https://github.com/ashish-nagmoti/kalashala-backend
 
-3. Email-to-JSON LLM Query Bot
-   ├── Email processing automation
-   ├── Structured data extraction
-   └── Tech: Python, LLM APIs
-
-4. Mental Health Static Site
-   ├── Interactive animations
-   ├── Performance optimized
-   └── Tech: HTML, CSS, GSAP
-
-5. Radius Flutter App
-   ├── Social networking features
-   ├── Real-time events
-   └── Tech: Flutter, Firebase`,
+3. AceUp – Student Resource Hub with AI Chatbot
+   • 2024
+   • Tech: Django, Tailwind CSS, Jinja, SQLite3, Python
+   • Student hub with notes, roadmaps, events, and chatbot.
+   • Demo: https://inevitable-lucky-predeator-b19e8de5.koyeb.app/
+   • GitHub: https://github.com/riaan-attar/AceUp`,
 
   contact: `📫 Get In Touch:
 
-📧 Email: your.email@example.com
-🔗 LinkedIn: linkedin.com/in/your-profile
-🐙 GitHub: github.com/your-username
-🌐 Portfolio: your-portfolio.com
-📱 Twitter: @your_twitter_handle
+📧 Email: ashishnagmoti2310@gmail.com
+🔗 LinkedIn: linkedin.com/in/ashish-nagmoti-54269b249
+🐙 GitHub: github.com/ashish-nagmoti
+🌐 Medium: medium.com/@ashishnagmoti7
 
 💼 Available for:
   • Backend Development Projects
@@ -133,41 +131,39 @@ AI/ML:
   • Technical Leadership
   • Freelance & Contract Work
 
-📍 Location: Your City, Country
+📍 Location: Nashik, India
 🕒 Timezone: UTC+5:30 (IST)
 💬 Preferred Contact: Email or LinkedIn
 
 📋 Services Offered:
   • Python/Django/FastAPI Development
   • AWS Cloud Solutions & Migration
-  • API Design & Development
-  • System Architecture Consulting
-  • Code Reviews & Technical Mentoring`,
+  • API Design & Development`,
 
-  whoami: "ai-engineer",
+  whoami: "ashish-nagmoti",
 
   clear: "CLEAR_TERMINAL",
 
   interests: `📚 Recent Interests & Bookmarks:
 
 🔗 Latest Additions:
-  ├── Building Microservices with Python and Docker
-  ├── AWS re:Invent 2023 - Serverless at Scale  
-  ├── The State of AI in 2024: LLMs and Beyond
-  └── System Design Interview: Design a Chat System
+  • Building Microservices with Python and Docker
+  • AWS re:Invent 2023 - Serverless at Scale
+  • The State of AI in 2024: LLMs and Beyond
+  • System Design Interview: Design a Chat System
 
 📊 Content Types:
-  ├── Blog Posts (Technical Articles)
-  ├── YouTube Videos (Tutorials & Talks)
-  ├── Articles (Industry Analysis)
-  └── Resources (Tools & References)
+  • Blog Posts (Technical Articles)
+  • YouTube Videos (Tutorials & Talks)
+  • Articles (Industry Analysis)
+  • Resources (Tools & References)
 
 💡 Categories I Follow:
-  ├── Python & Backend Development
-  ├── Cloud Architecture & AWS
-  ├── AI/ML & LLM Integration
-  ├── System Design & Scalability
-  └── DevOps & Best Practices
+  • Python & Backend Development
+  • Cloud Architecture & AWS
+  • AI/ML & LLM Integration
+  • System Design & Scalability
+  • DevOps & Best Practices
 
 Type 'interests' in terminal or visit /interests page to see the full curated list!`,
 }
