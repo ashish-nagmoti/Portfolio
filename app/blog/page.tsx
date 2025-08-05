@@ -9,6 +9,16 @@ import { Calendar, Clock, ArrowRight } from "lucide-react"
 const blogPosts = [
 	{
 		id: 1,
+		title: "Common Pitfalls While Setting Up an AWS Account",
+		excerpt:
+			"Common Pitfalls While Setting Up an AWS Account",
+		date: "2025-07-28",
+		readTime: "4 min read",
+		url: "https://medium.com/@ashishnagmoti7/common-pitfalls-while-setting-up-an-aws-account-b2767d9dde5b", // Replace with actual slug if available
+		tags: ["AWS", "CLoud", "Mistakes"],
+	},
+	{
+		id: 2,
 		title: "I switched to Arch Linux",
 		excerpt:
 			"Here I showcase my journey from Windows to Arch Linux and the problems I had in journey.",
@@ -18,7 +28,7 @@ const blogPosts = [
 		tags: ["Linux", "Journey", "Arch"],
 	},
 	{
-		id: 2,
+		id: 3,
 		title: "My CS50 experience",
 		excerpt: "My experience and learnings from the CS50 course.",
 		date: "2024-06-21",
@@ -27,7 +37,7 @@ const blogPosts = [
 		tags: ["CS50", "Learning", "Programming"],
 	},
 	{
-		id: 3,
+		id: 4,
 		title: "My Hacktoberfest Journey: Navigating Challenges and Embracing Growth",
 		excerpt:
 			"My Hacktoberfest Journey: Navigating Challenges and Embracing Growth.",
@@ -35,7 +45,8 @@ const blogPosts = [
 		readTime: "4 min read",
 		url: "https://medium.com/@ashishnagmoti7/my-hacktoberfest-journey-navigating-challenges-and-embracing-growth-14d6faf8649b", // Replace with actual slug if available
 		tags: ["Hacktoberfest", "Open Source", "Growth"],
-	},
+	}
+	
 ]
 
 const containerVariants = {
