@@ -40,7 +40,7 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 bg-clip-text text-transparent">
+              <span className="text-gray-200 relative z-10 font-extrabold [text-shadow:_0_1px_3px_rgba(0,0,0,0.8)]">
                 Ashish Nagmoti
               </span>
               <br />
@@ -48,7 +48,7 @@ export default function Home() {
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
-                className="text-2xl md:text-4xl text-muted-foreground"
+                className="text-2xl md:text-4xl text-gray-400"
               >
                 AI & DS Student | Backend & Cloud Developer
               </motion.span>
@@ -56,7 +56,7 @@ export default function Home() {
           </motion.div>
 
           <motion.p variants={itemVariants} className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            An adaptable and passionate AI and Data Science student at K.K. Wagh Institute of Engineering Education and Research. I love building impactful full-stack applications, with a strong focus on backend development, AI integration, and cloud infrastructure.
+            I love building impactful full-stack applications, with a strong focus on backend development, AI integration, and cloud infrastructure.
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -85,10 +85,10 @@ export default function Home() {
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <div className="p-3 rounded-full bg-primary/10 border">
-                  <item.icon className="h-6 w-6 text-primary" />
+                <div className="p-3 rounded-full bg-gray-900 border border-gray-700">
+                  <item.icon className="h-6 w-6 text-gray-300" />
                 </div>
-                <span className="text-sm text-muted-foreground">{item.label}</span>
+                <span className="text-sm text-gray-400">{item.label}</span>
               </motion.div>
             ))}
           </motion.div>

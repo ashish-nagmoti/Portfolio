@@ -102,20 +102,20 @@ export default function Projects() {
 								whileHover={{ y: -8, scale: 1.04 }}
 								transition={{ type: "spring", stiffness: 300 }}
 							>
-								<Card className="h-full group cursor-pointer overflow-hidden bg-gradient-to-br from-blue-950 via-gray-900 to-gray-800 border border-blue-700/40 shadow-2xl relative rounded-2xl hover:shadow-blue-700/30 transition-all duration-300">
+								<Card className="h-full group cursor-pointer overflow-hidden bg-neutral-900 border border-neutral-700 shadow-xl relative rounded-2xl hover:shadow-neutral-800 transition-all duration-300">
 									<div className="absolute top-4 right-4 z-10">
-										<Badge variant="secondary" className="bg-blue-700/80 text-white text-xs px-3 py-1 rounded-full shadow">{project.category}</Badge>
+										<Badge variant="secondary" className="bg-neutral-800 text-white text-xs px-3 py-1 rounded-full shadow">{project.category}</Badge>
 									</div>
 									<div className="flex flex-col items-center justify-center py-10 gap-4 px-4">
-										<div className="rounded-full bg-gradient-to-tr from-blue-600 via-blue-400 to-blue-300 p-5 mb-2 shadow-lg border-4 border-blue-900/30">
-											<project.icon className="h-12 w-12 text-white drop-shadow" />
+										<div className="rounded-full bg-neutral-800 p-5 mb-2 shadow-lg border-4 border-neutral-900">
+											<project.icon className="h-12 w-12 text-gray-300 drop-shadow" />
 										</div>
-										<h2 className="text-lg font-extrabold text-white text-center mb-1 leading-tight drop-shadow-lg">{project.title}</h2>
-										<p className="text-xs text-blue-300 font-semibold mb-1 tracking-wide">{project.date}</p>
-										<p className="text-sm text-blue-100 text-center mb-2 leading-relaxed">{project.description}</p>
+										<h2 className="text-lg font-extrabold text-white text-center mb-1 leading-tight">{project.title}</h2>
+										<p className="text-xs text-gray-400 font-semibold mb-1 tracking-wide">{project.date}</p>
+										<p className="text-sm text-gray-300 text-center mb-2 leading-relaxed">{project.description}</p>
 										<div className="flex flex-wrap justify-center gap-2 mb-2">
 											{project.tech.map((tech) => (
-												<Badge key={tech} variant="outline" className="text-xs border-blue-400/60 text-blue-200 bg-blue-900/30 px-2 py-1">
+												<Badge key={tech} variant="outline" className="text-xs border-gray-600 text-gray-300 bg-neutral-800 px-2 py-1">
 													{tech}
 												</Badge>
 											))}
@@ -123,32 +123,32 @@ export default function Projects() {
 										<div className="flex gap-2 justify-center mt-2">
 											<Dialog>
 												<DialogTrigger asChild>
-													<Button variant="outline" size="sm" className="bg-blue-800/60 border-blue-400/40 text-blue-100 hover:bg-blue-700/80">
+													<Button variant="outline" size="sm" className="bg-neutral-800 border-neutral-600 text-gray-300 hover:bg-neutral-700">
 														<Code className="h-4 w-4 mr-2" />
 														Details
 													</Button>
 												</DialogTrigger>
-												<DialogContent className="max-w-2xl bg-gray-900 border-blue-700/40">
+												<DialogContent className="max-w-2xl bg-neutral-900 border-neutral-700">
 													<DialogHeader>
-														<DialogTitle className="flex items-center gap-2 text-blue-200">
+														<DialogTitle className="flex items-center gap-2 text-gray-300">
 															<project.icon className="h-5 w-5" />
 															{project.title}
 														</DialogTitle>
 													</DialogHeader>
 													<div className="space-y-4">
-														<p className="text-blue-100">{project.longDescription}</p>
+														<p className="text-gray-300">{project.longDescription}</p>
 														<div>
-															<h4 className="font-semibold mb-2 text-blue-300">Technologies Used:</h4>
+															<h4 className="font-semibold mb-2 text-gray-400">Technologies Used:</h4>
 															<div className="flex flex-wrap gap-2">
 																{project.tech.map((tech) => (
-																	<Badge key={tech} variant="secondary" className="bg-blue-700/80 text-white">
+																	<Badge key={tech} variant="secondary" className="bg-neutral-800 text-white">
 																		{tech}
 																	</Badge>
 																))}
 															</div>
 														</div>
 														<div className="flex gap-2">
-															<Button asChild className="bg-blue-700/80 text-white">
+															<Button asChild className="bg-neutral-800 text-white">
 																<a
 																	href={project.github}
 																	target="_blank"
@@ -159,7 +159,7 @@ export default function Projects() {
 																</a>
 															</Button>
 															{project.demo && project.demo !== "#" && (
-																<Button variant="outline" asChild className="border-blue-400/40 text-blue-100 hover:bg-blue-700/80">
+																<Button variant="outline" asChild className="border-neutral-600 text-gray-300 hover:bg-neutral-700">
 																	<a
 																		href={project.demo}
 																		target="_blank"
@@ -174,13 +174,13 @@ export default function Projects() {
 													</div>
 												</DialogContent>
 											</Dialog>
-											<Button variant="ghost" size="sm" asChild className="hover:bg-blue-800/40">
+											<Button variant="ghost" size="sm" asChild className="hover:bg-neutral-800">
 												<a
 													href={project.github}
 													target="_blank"
 													rel="noopener noreferrer"
 												>
-													<Github className="h-4 w-4 text-blue-300" />
+													<Github className="h-4 w-4 text-gray-400" />
 												</a>
 											</Button>
 										</div>
