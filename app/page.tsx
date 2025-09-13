@@ -68,9 +68,11 @@ export default function Home() {
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" className="group bg-transparent">
-              <Download className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-              Download Resume
+            <Button variant="outline" size="lg" className="group bg-transparent" asChild>
+              <a href="/clg_resume_v3.pdf" download>
+                <Download className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
+                Download Resume
+              </a>
             </Button>
           </motion.div>
 

@@ -1,0 +1,11 @@
+// This is a placeholder - you would need to convert the SVG to PNG
+// For now, we'll create a text file with instructions
+
+// To create proper OpenGraph images:
+// 1. Use the SVG file (og-image.svg) we created
+// 2. Convert it to PNG format at 1200x630 dimensions
+// 3. You can use tools like Inkscape, GIMP, or online converters
+// 4. Replace this file with the actual PNG file
+
+// Required OpenGraph image files:
+// - og-image.png (1200x630)

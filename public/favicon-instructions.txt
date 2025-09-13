@@ -1,0 +1,16 @@
+// This is a placeholder - you would need to convert the SVG to PNG
+// For now, we'll create a text file with instructions
+
+// To create proper favicon PNG files:
+// 1. Use the SVG file (favicon.svg) we created
+// 2. Convert it to PNG files in various sizes (16x16, 32x32, 192x192, 512x512)
+// 3. Use a tool like https://realfavicongenerator.net/ or https://favicon.io/
+// 4. Replace this file with the actual PNG files
+
+// Required favicon PNG files:
+// - favicon.ico (multi-size icon file)
+// - favicon-16x16.png
+// - favicon-32x32.png
+// - apple-touch-icon.png (180x180)
+// - android-chrome-192x192.png
+// - android-chrome-512x512.png

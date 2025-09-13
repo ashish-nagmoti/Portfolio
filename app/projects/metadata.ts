@@ -9,5 +9,13 @@ export const metadata: Metadata = {
     description: 'Explore Ashish Nagmoti\'s portfolio of projects in AI, Backend Development, and Cloud Computing.',
     url: '/projects',
     type: 'website',
+    images: [
+      {
+        url: '/og-image.svg', // Replace with actual PNG when converted
+        width: 1200,
+        height: 630,
+        alt: 'Ashish Nagmoti - Projects Portfolio',
+      }
+    ],
   },
 };

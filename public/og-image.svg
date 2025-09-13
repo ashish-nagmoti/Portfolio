@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#111111"/>
+  
+  <!-- Subtle grid pattern -->
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <rect width="20" height="20" fill="#111111"/>
+    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#222222" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  
+  <!-- Decorative element -->
+  <circle cx="300" cy="315" r="200" fill="none" stroke="#333333" stroke-width="2"/>
+  <circle cx="300" cy="315" r="150" fill="none" stroke="#444444" stroke-width="2"/>
+  <circle cx="300" cy="315" r="100" fill="none" stroke="#555555" stroke-width="2"/>
+  
+  <!-- Name -->
+  <text x="650" y="250" font-family="Arial, sans-serif" font-size="72" font-weight="bold" text-anchor="start" fill="#ffffff">Ashish Nagmoti</text>
+  
+  <!-- Subtitle -->
+  <text x="650" y="330" font-family="Arial, sans-serif" font-size="36" text-anchor="start" fill="#aaaaaa">AI & Data Science Student</text>
+  <text x="650" y="380" font-family="Arial, sans-serif" font-size="36" text-anchor="start" fill="#aaaaaa">Backend & Cloud Developer</text>
+</svg>

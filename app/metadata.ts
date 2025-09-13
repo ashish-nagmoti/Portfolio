@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/profile-image.jpg', // Update with your actual profile image
+        url: '/og-image.svg', // Replace with actual PNG when converted
         width: 1200,
         height: 630,
         alt: 'Ashish Nagmoti - AI & Data Science Student',
