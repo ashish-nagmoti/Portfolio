@@ -6,6 +6,7 @@ import { Terminal } from "@/components/terminal"
 import { ArrowRight, Download, Code, Cloud, Brain } from "lucide-react"
 import Link from "next/link"
 import { ContactSection } from "@/components/contact-section"
+import JsonLd from "@/components/json-ld"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -25,6 +26,7 @@ const itemVariants = {
 export default function Home() {
   return (
     <div className="min-h-screen pt-16">
+      <JsonLd />
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-20">
         <motion.div

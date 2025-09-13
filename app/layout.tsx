@@ -9,16 +9,29 @@ import { Footer } from "@/components/footer"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "AI Engineer | Backend Developer | Cloud Native",
-  description: "Portfolio of an AI Engineering student specializing in Python, Django, FastAPI, and cloud platforms.",
-  keywords: ["AI Engineer", "Backend Developer", "Python", "Django", "FastAPI", "AWS", "GCP"],
-  authors: [{ name: "Your Name" }],
+  title: "Ashish Nagmoti | AI Engineer | Backend Developer",
+  description: "Portfolio of Ashish Nagmoti, an AI Engineering student specializing in Python, Django, FastAPI, and cloud platforms.",
+  keywords: ["Ashish Nagmoti", "AI Engineer", "Backend Developer", "Python", "Django", "FastAPI", "AWS", "GCP", "Cloud Native", "Data Science"],
+  authors: [{ name: "Ashish Nagmoti" }],
+  creator: "Ashish Nagmoti",
+  publisher: "Ashish Nagmoti",
   openGraph: {
-    title: "AI Engineer Portfolio",
-    description: "Showcasing projects in API automation, cloud orchestration, and AI systems",
+    title: "Ashish Nagmoti - AI Engineer Portfolio",
+    description: "Showcasing Ashish Nagmoti's projects in AI, backend development, and cloud systems",
     type: "website",
+    locale: "en_US",
+    siteName: "Ashish Nagmoti Portfolio",
   },
-    generator: 'v0.dev'
+  twitter: {
+    card: "summary_large_image",
+    title: "Ashish Nagmoti - AI Engineer Portfolio",
+    description: "Showcasing Ashish Nagmoti's projects in AI, backend development, and cloud systems",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  generator: 'Next.js'
 }
 
 export default function RootLayout({
