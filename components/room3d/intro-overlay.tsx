@@ -1,8 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { MousePointer2, RotateCw } from "lucide-react"
-import { Button } from "@/components/ui/button"
 
 interface IntroOverlayProps {
   onEnter: () => void
@@ -12,30 +10,31 @@ export function IntroOverlay({ onEnter }: IntroOverlayProps) {
   return (
     <motion.div
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-clay-indigo/20 via-background to-clay-sky/20 px-4"
+      transition={{ duration: 0.4 }}
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black px-4 font-mono"
     >
       <motion.div
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="text-center max-w-md"
+        transition={{ duration: 0.5 }}
+        className="text-center max-w-md text-[#3dff8f]"
       >
-        <h1 className="text-3xl md:text-4xl font-bold mb-3">Ashish Nagmoti</h1>
-        <p className="text-muted-foreground mb-8">
-          Step into my little room. Look around and click on things — the desk, the bookshelf, the plant — to see
-          what's inside.
+        <p className="text-sm mb-1 opacity-70">guest@ashish-nagmoti:~$</p>
+        <h1 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight">./enter_room.sh</h1>
+        <p className="text-sm opacity-80 mb-8 leading-relaxed">
+          A small room, rendered in wireframe. Drag to look around, click the glowing objects to explore, and try
+          the window when you're in.
         </p>
-        <Button size="lg" onClick={onEnter} className="group">
-          Enter the Room
-        </Button>
-        <div className="flex items-center justify-center gap-6 mt-8 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <RotateCw className="h-3.5 w-3.5" /> Drag to look around
-          </span>
-          <span className="flex items-center gap-1.5">
-            <MousePointer2 className="h-3.5 w-3.5" /> Click objects to explore
-          </span>
+        <button
+          onClick={onEnter}
+          className="border px-6 py-2.5 text-sm font-semibold tracking-wide hover:bg-[#3dff8f] hover:text-black transition-colors"
+          style={{ borderColor: "#3dff8f" }}
+        >
+          [ ENTER ]
+        </button>
+        <div className="flex items-center justify-center gap-6 mt-8 text-xs opacity-50">
+          <span>drag = look around</span>
+          <span>click = interact</span>
         </div>
       </motion.div>
     </motion.div>

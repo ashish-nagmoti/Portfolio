@@ -2,38 +2,22 @@
 
 import { Suspense } from "react"
 import { Canvas } from "@react-three/fiber"
-import { OrbitControls, Environment } from "@react-three/drei"
+import { OrbitControls } from "@react-three/drei"
 import { Scene } from "./scene"
 import type { PanelId } from "./types"
 
 interface RoomCanvasProps {
   onSelect: (id: PanelId) => void
   onDownloadResume: () => void
-  isDark: boolean
-  onToggleTheme: () => void
 }
 
-export function RoomCanvas({ onSelect, onDownloadResume, isDark, onToggleTheme }: RoomCanvasProps) {
-  const bg = isDark ? "#1a1830" : "#eef0f8"
-
+export function RoomCanvas({ onSelect, onDownloadResume }: RoomCanvasProps) {
   return (
-    <Canvas shadows dpr={[1, 1.5]} camera={{ position: [6, 4.6, 6.6], fov: 42 }} className="!touch-none">
-      <color attach="background" args={[bg]} />
-      <fog attach="fog" args={[bg, 11, 20]} />
-      <ambientLight intensity={isDark ? 0.35 : 0.7} />
-      <directionalLight
-        position={[5, 7, 3]}
-        intensity={isDark ? 0.5 : 1.4}
-        castShadow
-        shadow-mapSize={[1024, 1024]}
-        shadow-camera-left={-6}
-        shadow-camera-right={6}
-        shadow-camera-top={6}
-        shadow-camera-bottom={-6}
-      />
+    <Canvas dpr={[1, 1.5]} camera={{ position: [6, 4.6, 6.6], fov: 42 }} className="!touch-none">
+      <color attach="background" args={["#08090b"]} />
+      <fog attach="fog" args={["#08090b", 9, 16]} />
       <Suspense fallback={null}>
-        <Scene onSelect={onSelect} onDownloadResume={onDownloadResume} isDark={isDark} onToggleTheme={onToggleTheme} />
-        <Environment preset={isDark ? "night" : "apartment"} environmentIntensity={isDark ? 0.25 : 0.4} />
+        <Scene onSelect={onSelect} onDownloadResume={onDownloadResume} />
       </Suspense>
       <OrbitControls
         enablePan={false}

@@ -2,19 +2,16 @@
 
 import { useState } from "react"
 import dynamic from "next/dynamic"
-import { useTheme } from "next-themes"
 import { AnimatePresence } from "framer-motion"
-import { Loader2 } from "lucide-react"
 import { IntroOverlay } from "./intro-overlay"
 import { ContentPanel } from "./content-panel"
-import { ThemeToggle } from "@/components/theme-toggle"
 import type { PanelId } from "./types"
 
 const RoomCanvas = dynamic(() => import("./room-canvas").then((m) => m.RoomCanvas), {
   ssr: false,
   loading: () => (
-    <div className="fixed inset-0 flex items-center justify-center bg-background">
-      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+    <div className="fixed inset-0 flex items-center justify-center bg-black">
+      <span className="font-mono text-sm text-[#3dff8f] animate-pulse">loading room.exe ...</span>
     </div>
   ),
 })
@@ -26,7 +23,6 @@ interface RoomShellProps {
 export function RoomShell({ initialPanel }: RoomShellProps) {
   const [entered, setEntered] = useState(false)
   const [activePanel, setActivePanel] = useState<PanelId | null>(initialPanel ?? null)
-  const { setTheme, resolvedTheme } = useTheme()
 
   const downloadResume = () => {
     const a = document.createElement("a")
@@ -35,26 +31,23 @@ export function RoomShell({ initialPanel }: RoomShellProps) {
     a.click()
   }
 
-  const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark")
-
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="fixed inset-0 overflow-hidden bg-black">
+      {entered && <RoomCanvas onSelect={setActivePanel} onDownloadResume={downloadResume} />}
+
+      {/* CRT scanline + vignette overlay */}
       {entered && (
-        <RoomCanvas
-          onSelect={setActivePanel}
-          onDownloadResume={downloadResume}
-          isDark={resolvedTheme === "dark"}
-          onToggleTheme={toggleTheme}
+        <div
+          className="pointer-events-none fixed inset-0 z-[9400]"
+          style={{
+            background:
+              "repeating-linear-gradient(rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.12) 3px), radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%)",
+            mixBlendMode: "multiply",
+          }}
         />
       )}
 
       <AnimatePresence>{!entered && <IntroOverlay onEnter={() => setEntered(true)} />}</AnimatePresence>
-
-      {entered && (
-        <div className="fixed top-4 right-4 z-[9500]">
-          <ThemeToggle />
-        </div>
-      )}
 
       <ContentPanel panelId={activePanel} onClose={() => setActivePanel(null)} />
     </div>

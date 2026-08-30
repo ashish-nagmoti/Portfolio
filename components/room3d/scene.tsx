@@ -1,64 +1,101 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, type ReactNode } from "react"
 import { useFrame } from "@react-three/fiber"
-import { RoundedBox, ContactShadows, Sparkles, Html } from "@react-three/drei"
-import { DoubleSide, type Group, type Mesh } from "three"
+import { Edges, Grid, Sparkles, Html } from "@react-three/drei"
+import type { Group, Mesh } from "three"
 import { Hotspot } from "./hotspot"
 import type { PanelId } from "./types"
 
 const COLORS = {
-  floor: "#e8ddc9",
-  floorDark: "#2a2440",
-  rug: "#f4a896",
-  wallBack: "#f2eef9",
-  wallBackDark: "#221f38",
-  wallSide: "#eae6f5",
-  wallSideDark: "#1e1b32",
-  wood: "#c9a876",
-  woodDark: "#b08e63",
-  indigo: "#7c5cfc",
-  sky: "#5ec8f5",
-  mint: "#52cf9e",
-  peach: "#fbaa61",
-  pink: "#f28fc0",
-  cream: "#faf6ee",
-  screen: "#3b3560",
-  night: "#171335",
+  bg: "#08090b",
+  fill: "#111316",
+  fillRaised: "#16191d",
+  green: "#3dff8f",
+  amber: "#ffb02e",
+  screenOff: "#0b0d0c",
 }
 
-// Desk sits against the back-right corner of the (now smaller) room.
+// Desk sits against the back-right corner of the room.
 const DESK = { x: 1.55, y: 0, z: -1.95 }
 
-function Room({ isDark }: { isDark: boolean }) {
+function Retro({
+  children,
+  accent,
+  position,
+  rotation,
+  fill = COLORS.fill,
+  onClick,
+  onPointerOver,
+  onPointerOut,
+  scale,
+}: {
+  children: ReactNode
+  accent: string
+  position?: [number, number, number]
+  rotation?: [number, number, number]
+  fill?: string
+  onClick?: (e: any) => void
+  onPointerOver?: (e: any) => void
+  onPointerOut?: (e: any) => void
+  scale?: number
+}) {
+  return (
+    <mesh
+      position={position}
+      rotation={rotation}
+      scale={scale}
+      onClick={onClick}
+      onPointerOver={onPointerOver}
+      onPointerOut={onPointerOut}
+    >
+      {children}
+      <meshBasicMaterial color={fill} />
+      <Edges color={accent} />
+    </mesh>
+  )
+}
+
+function Room({ accent }: { accent: string }) {
   return (
     <group>
-      <RoundedBox args={[7, 0.2, 5.4]} radius={0.08} position={[0, -0.1, 0]} receiveShadow>
-        <meshStandardMaterial color={isDark ? COLORS.floorDark : COLORS.floor} />
-      </RoundedBox>
-      <mesh position={[0.2, 0.011, 0.4]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <circleGeometry args={[1.4, 32]} />
-        <meshStandardMaterial color={COLORS.rug} />
+      <mesh position={[0, -0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[7, 5.4]} />
+        <meshBasicMaterial color={COLORS.bg} />
       </mesh>
-      <RoundedBox args={[7, 4.2, 0.2]} radius={0.06} position={[0, 2, -2.8]} receiveShadow>
-        <meshStandardMaterial color={isDark ? COLORS.wallBackDark : COLORS.wallBack} />
-      </RoundedBox>
-      <RoundedBox args={[0.2, 4.2, 5.4]} radius={0.06} position={[-3.6, 2, 0]} receiveShadow>
-        <meshStandardMaterial color={isDark ? COLORS.wallSideDark : COLORS.wallSide} />
-      </RoundedBox>
+      <Grid
+        position={[0, 0.001, 0]}
+        args={[7, 5.4]}
+        cellSize={0.5}
+        cellThickness={0.5}
+        cellColor={accent}
+        sectionSize={2}
+        sectionThickness={1}
+        sectionColor={accent}
+        fadeDistance={9}
+        fadeStrength={1.5}
+        followCamera={false}
+        infiniteGrid={false}
+        side={2}
+      />
+      <Retro accent={accent} position={[0, 2, -2.8]}>
+        <boxGeometry args={[7, 4.2, 0.15]} />
+      </Retro>
+      <Retro accent={accent} position={[-3.6, 2, 0]}>
+        <boxGeometry args={[0.15, 4.2, 5.4]} />
+      </Retro>
     </group>
   )
 }
 
-function Window({ isDark, onToggleTheme }: { isDark: boolean; onToggleTheme: () => void }) {
+function TerminalWindow({ accent, onCycle }: { accent: string; onCycle: () => void }) {
   const [hovered, setHovered] = useState(false)
-  const paneColor = isDark ? COLORS.night : COLORS.sky
   return (
     <group
       position={[1.2, 2.25, -2.68]}
       onClick={(e) => {
         e.stopPropagation()
-        onToggleTheme()
+        onCycle()
       }}
       onPointerOver={(e) => {
         e.stopPropagation()
@@ -69,99 +106,98 @@ function Window({ isDark, onToggleTheme }: { isDark: boolean; onToggleTheme: () 
         setHovered(false)
         document.body.style.cursor = "auto"
       }}
-      scale={hovered ? 1.04 : 1}
+      scale={hovered ? 1.05 : 1}
     >
-      <mesh>
+      <Retro accent={accent} fill={COLORS.screenOff}>
         <planeGeometry args={[1.4, 1.2]} />
-        <meshStandardMaterial color={paneColor} emissive={paneColor} emissiveIntensity={isDark ? 0.5 : 0.4} />
+      </Retro>
+      <mesh position={[0, 0, 0.005]}>
+        <boxGeometry args={[0.03, 1.2, 0.01]} />
+        <meshBasicMaterial color={accent} />
       </mesh>
-      {isDark && <Sparkles count={12} scale={[1.2, 1, 0.1]} size={2.5} speed={0.3} color="#ffffff" />}
-      <mesh position={[0, 0, 0.02]}>
-        <boxGeometry args={[1.48, 0.06, 0.04]} />
-        <meshStandardMaterial color={COLORS.cream} />
+      <mesh position={[0, 0, 0.005]}>
+        <boxGeometry args={[1.4, 0.03, 0.01]} />
+        <meshBasicMaterial color={accent} />
       </mesh>
-      <mesh position={[0, 0, 0.02]}>
-        <boxGeometry args={[0.06, 1.28, 0.04]} />
-        <meshStandardMaterial color={COLORS.cream} />
-      </mesh>
+      <Sparkles count={16} scale={[1.2, 1, 0.1]} size={2} speed={0.2} color={accent} />
       {hovered && (
         <Html center position={[0, 0.85, 0]} style={{ pointerEvents: "none" }}>
-          <div className="whitespace-nowrap rounded-full bg-black/80 text-white text-xs font-medium px-3 py-1.5 shadow-lg">
-            Toggle day / night
+          <div
+            className="whitespace-nowrap font-mono text-xs px-3 py-1.5 bg-black border"
+            style={{ color: accent, borderColor: accent }}
+          >
+            [ cycle phosphor: {accent === COLORS.green ? "amber" : "green"} ]
           </div>
         </Html>
       )}
-      {/* dust motes drifting through the light */}
-      <Sparkles count={18} scale={[2.5, 2, 1.5]} position={[0, -0.8, 1.2]} size={1.5} speed={0.15} opacity={0.5} color={isDark ? "#cfd0ff" : "#ffffff"} />
     </group>
   )
 }
 
-function WallClock() {
+function WallClock({ accent }: { accent: string }) {
   const secondHand = useRef<Mesh>(null)
   useFrame(({ clock }) => {
     if (secondHand.current) secondHand.current.rotation.z = -clock.elapsedTime * 0.9
   })
   return (
     <group position={[2.3, 2.85, -2.68]}>
-      <mesh rotation={[Math.PI / 2, 0, 0]} castShadow>
-        <cylinderGeometry args={[0.32, 0.32, 0.05, 24]} />
-        <meshStandardMaterial color={COLORS.cream} />
-      </mesh>
-      <mesh ref={secondHand} position={[0, 0, 0.03]}>
-        <boxGeometry args={[0.02, 0.24, 0.01]} />
-        <meshStandardMaterial color={COLORS.pink} />
+      <Retro accent={accent}>
+        <cylinderGeometry args={[0.3, 0.3, 0.04, 24]} />
+      </Retro>
+      <mesh ref={secondHand} position={[0, 0, 0.03]} rotation={[Math.PI / 2, 0, 0]}>
+        <boxGeometry args={[0.015, 0.22, 0.01]} />
+        <meshBasicMaterial color={accent} />
       </mesh>
     </group>
   )
 }
 
-function Desk() {
+function Desk({ accent }: { accent: string }) {
   return (
     <group position={[DESK.x, DESK.y, DESK.z]}>
-      <RoundedBox args={[2, 0.12, 0.9]} radius={0.05} position={[0, 1, 0]} castShadow receiveShadow>
-        <meshStandardMaterial color={COLORS.wood} />
-      </RoundedBox>
+      <Retro accent={accent} position={[0, 1, 0]}>
+        <boxGeometry args={[2, 0.08, 0.9]} />
+      </Retro>
       {[
         [-0.9, -0.35],
         [0.9, -0.35],
         [-0.9, 0.35],
         [0.9, 0.35],
       ].map(([sx, sz], i) => (
-        <RoundedBox key={i} args={[0.1, 0.95, 0.1]} radius={0.03} position={[sx, 0.5, sz]} castShadow>
-          <meshStandardMaterial color={COLORS.woodDark} />
-        </RoundedBox>
+        <Retro key={i} accent={accent} position={[sx, 0.5, sz]}>
+          <boxGeometry args={[0.06, 0.95, 0.06]} />
+        </Retro>
       ))}
-      <RoundedBox args={[0.5, 0.04, 0.18]} radius={0.02} position={[0, 1.08, 0.22]} castShadow>
-        <meshStandardMaterial color={COLORS.cream} />
-      </RoundedBox>
+      <Retro accent={accent} position={[0, 1.06, 0.22]}>
+        <boxGeometry args={[0.5, 0.02, 0.18]} />
+      </Retro>
     </group>
   )
 }
 
-function Monitor({ isDark }: { isDark: boolean }) {
+function Monitor({ accent }: { accent: string }) {
   const screenRef = useRef<Mesh>(null)
   useFrame(({ clock }) => {
     const mat = screenRef.current?.material as any
-    if (mat) mat.emissiveIntensity = 0.55 + Math.sin(clock.elapsedTime * 2.4) * 0.12
+    if (mat) mat.opacity = 0.75 + Math.sin(clock.elapsedTime * 2.4) * 0.2
   })
   return (
     <group position={[0, 1.06, -0.15]}>
-      <RoundedBox args={[0.1, 0.32, 0.1]} radius={0.02} position={[0, 0.16, 0]} castShadow>
-        <meshStandardMaterial color="#2b2b30" />
-      </RoundedBox>
-      <RoundedBox args={[0.85, 0.56, 0.06]} radius={0.03} position={[0, 0.58, 0]} castShadow>
-        <meshStandardMaterial color="#2b2b30" />
-      </RoundedBox>
-      <mesh ref={screenRef} position={[0, 0.58, 0.035]}>
-        <planeGeometry args={[0.73, 0.45]} />
-        <meshStandardMaterial color={COLORS.screen} emissive={isDark ? COLORS.sky : COLORS.indigo} emissiveIntensity={0.55} />
+      <Retro accent={accent} position={[0, 0.16, 0]}>
+        <boxGeometry args={[0.08, 0.32, 0.08]} />
+      </Retro>
+      <Retro accent={accent} position={[0, 0.58, 0]} fill={COLORS.screenOff}>
+        <boxGeometry args={[0.85, 0.56, 0.05]} />
+      </Retro>
+      <mesh ref={screenRef} position={[0, 0.58, 0.03]}>
+        <planeGeometry args={[0.7, 0.42]} />
+        <meshBasicMaterial color={accent} transparent opacity={0.8} />
       </mesh>
     </group>
   )
 }
 
-function Chair() {
+function Chair({ accent }: { accent: string }) {
   const groupRef = useRef<Group>(null)
   const velocity = useRef(0)
 
@@ -185,52 +221,38 @@ function Chair() {
         }}
         onPointerOut={() => (document.body.style.cursor = "auto")}
       >
-        <RoundedBox args={[0.5, 0.08, 0.5]} radius={0.04} position={[0, 0.55, 0]} castShadow>
-          <meshStandardMaterial color={COLORS.indigo} />
-        </RoundedBox>
-        <RoundedBox args={[0.5, 0.55, 0.08]} radius={0.04} position={[0, 0.88, -0.22]} castShadow>
-          <meshStandardMaterial color={COLORS.indigo} />
-        </RoundedBox>
-        <mesh position={[0, 0.27, 0]} castShadow>
-          <cylinderGeometry args={[0.04, 0.04, 0.55, 12]} />
-          <meshStandardMaterial color="#2b2b30" />
-        </mesh>
-        <mesh position={[0, 0.02, 0]} castShadow>
-          <cylinderGeometry args={[0.3, 0.3, 0.03, 24]} />
-          <meshStandardMaterial color="#2b2b30" />
-        </mesh>
+        <Retro accent={accent} position={[0, 0.55, 0]}>
+          <boxGeometry args={[0.5, 0.06, 0.5]} />
+        </Retro>
+        <Retro accent={accent} position={[0, 0.88, -0.22]}>
+          <boxGeometry args={[0.5, 0.55, 0.06]} />
+        </Retro>
+        <Retro accent={accent} position={[0, 0.27, 0]}>
+          <cylinderGeometry args={[0.035, 0.035, 0.55, 10]} />
+        </Retro>
+        <Retro accent={accent} position={[0, 0.02, 0]}>
+          <cylinderGeometry args={[0.28, 0.28, 0.03, 20]} />
+        </Retro>
       </group>
     </group>
   )
 }
 
-function Bookshelf() {
-  const books = [
-    { color: COLORS.indigo, h: 0.42 },
-    { color: COLORS.sky, h: 0.38 },
-    { color: COLORS.mint, h: 0.46 },
-    { color: COLORS.peach, h: 0.34 },
-  ]
+function Bookshelf({ accent }: { accent: string }) {
   return (
     <group position={[-3.15, 0, -1.0]}>
-      <RoundedBox args={[0.6, 2.3, 0.85]} radius={0.04} position={[0, 1.15, 0]} castShadow receiveShadow>
-        <meshStandardMaterial color={COLORS.wood} />
-      </RoundedBox>
+      <Retro accent={accent} position={[0, 1.15, 0]}>
+        <boxGeometry args={[0.55, 2.3, 0.8]} />
+      </Retro>
       {[0.45, 1.1, 1.75].map((shelfY, si) => (
-        <group key={si} position={[0.13, shelfY, 0]}>
-          <RoundedBox args={[0.65, 0.05, 0.9]} radius={0.02} castShadow>
-            <meshStandardMaterial color={COLORS.woodDark} />
-          </RoundedBox>
-          {books.map((book, bi) => (
-            <RoundedBox
-              key={bi}
-              args={[0.055, book.h, 0.34]}
-              radius={0.01}
-              position={[0.04, book.h / 2 + 0.03, -0.28 + bi * 0.19]}
-              castShadow
-            >
-              <meshStandardMaterial color={book.color} />
-            </RoundedBox>
+        <group key={si} position={[0.12, shelfY, 0]}>
+          <Retro accent={accent}>
+            <boxGeometry args={[0.6, 0.03, 0.85]} />
+          </Retro>
+          {[0.32, 0.26, 0.38, 0.22].map((h, bi) => (
+            <Retro key={bi} accent={accent} position={[0.03, h / 2 + 0.03, -0.26 + bi * 0.18]}>
+              <boxGeometry args={[0.04, h, 0.32]} />
+            </Retro>
           ))}
         </group>
       ))}
@@ -238,129 +260,115 @@ function Bookshelf() {
   )
 }
 
-function Diploma() {
+function Diploma({ accent }: { accent: string }) {
   return (
     <group position={[-0.85, 2.15, -2.67]}>
-      <RoundedBox args={[0.85, 1.05, 0.07]} radius={0.03} castShadow>
-        <meshStandardMaterial color={COLORS.peach} />
-      </RoundedBox>
-      <mesh position={[0, 0, 0.045]}>
-        <planeGeometry args={[0.68, 0.86]} />
-        <meshStandardMaterial color={COLORS.cream} />
+      <Retro accent={accent} fill={COLORS.screenOff}>
+        <boxGeometry args={[0.8, 1.0, 0.04]} />
+      </Retro>
+      <mesh position={[0, 0.28, 0.025]}>
+        <planeGeometry args={[0.5, 0.06]} />
+        <meshBasicMaterial color={accent} />
       </mesh>
-      <mesh position={[0, 0.02, 0.05]}>
-        <planeGeometry args={[0.4, 0.05]} />
-        <meshStandardMaterial color={COLORS.indigo} />
-      </mesh>
-      <mesh position={[0, -0.12, 0.05]}>
-        <planeGeometry args={[0.5, 0.03]} />
-        <meshStandardMaterial color={COLORS.woodDark} />
-      </mesh>
-    </group>
-  )
-}
-
-function SideTable({ position }: { position: [number, number, number] }) {
-  return (
-    <group position={position}>
-      <RoundedBox args={[0.75, 0.07, 0.55]} radius={0.03} position={[0, 0.7, 0]} castShadow receiveShadow>
-        <meshStandardMaterial color={COLORS.wood} />
-      </RoundedBox>
-      {[
-        [-0.3, -0.2],
-        [0.3, -0.2],
-        [-0.3, 0.2],
-        [0.3, 0.2],
-      ].map(([sx, sz], i) => (
-        <RoundedBox key={i} args={[0.06, 0.65, 0.06]} radius={0.02} position={[sx, 0.34, sz]} castShadow>
-          <meshStandardMaterial color={COLORS.woodDark} />
-        </RoundedBox>
+      {[0.1, -0.02, -0.14, -0.26].map((y, i) => (
+        <mesh key={i} position={[0, y, 0.025]}>
+          <planeGeometry args={[0.55, 0.025]} />
+          <meshBasicMaterial color={accent} transparent opacity={0.5} />
+        </mesh>
       ))}
     </group>
   )
 }
 
-function RetroTerminal() {
+function SideTable({ accent, position }: { accent: string; position: [number, number, number] }) {
+  return (
+    <group position={position}>
+      <Retro accent={accent} position={[0, 0.7, 0]}>
+        <boxGeometry args={[0.7, 0.05, 0.5]} />
+      </Retro>
+      {[
+        [-0.28, -0.18],
+        [0.28, -0.18],
+        [-0.28, 0.18],
+        [0.28, 0.18],
+      ].map(([sx, sz], i) => (
+        <Retro key={i} accent={accent} position={[sx, 0.34, sz]}>
+          <boxGeometry args={[0.05, 0.65, 0.05]} />
+        </Retro>
+      ))}
+    </group>
+  )
+}
+
+function RetroTerminalProp({ accent }: { accent: string }) {
   const screenRef = useRef<Mesh>(null)
   useFrame(({ clock }) => {
     const mat = screenRef.current?.material as any
-    if (mat) mat.emissiveIntensity = clock.elapsedTime % 1 > 0.85 ? 0.15 : 0.85
+    if (mat) mat.opacity = clock.elapsedTime % 1 > 0.85 ? 0.2 : 0.9
   })
   return (
     <group position={[0, 0.74, 0]}>
-      <RoundedBox args={[0.5, 0.46, 0.46]} radius={0.06} castShadow>
-        <meshStandardMaterial color={COLORS.cream} />
-      </RoundedBox>
-      <mesh ref={screenRef} position={[0, 0.02, 0.24]}>
-        <planeGeometry args={[0.32, 0.25]} />
-        <meshStandardMaterial color="#0d1a12" emissive={COLORS.mint} emissiveIntensity={0.85} />
+      <Retro accent={accent} fill={COLORS.fillRaised}>
+        <boxGeometry args={[0.46, 0.42, 0.42]} />
+      </Retro>
+      <mesh ref={screenRef} position={[0, 0.02, 0.22]}>
+        <planeGeometry args={[0.3, 0.24]} />
+        <meshBasicMaterial color={accent} transparent opacity={0.9} />
       </mesh>
     </group>
   )
 }
 
-function Phone() {
+function Phone({ accent }: { accent: string }) {
   return (
-    <group position={[0.75, 1.06, -0.1]} rotation={[0, 0.3, 0]}>
-      <RoundedBox args={[0.34, 0.08, 0.3]} radius={0.03} castShadow>
-        <meshStandardMaterial color={COLORS.pink} />
-      </RoundedBox>
-      <mesh position={[0, 0.06, 0]} rotation={[-Math.PI / 2, 0, 0]} castShadow>
-        <cylinderGeometry args={[0.1, 0.1, 0.02, 20]} />
-        <meshStandardMaterial color={COLORS.cream} />
-      </mesh>
-      <group position={[0.02, 0.14, 0.02]} rotation={[0, 0, 0.5]}>
-        <mesh castShadow>
-          <capsuleGeometry args={[0.035, 0.22, 4, 8]} />
-          <meshStandardMaterial color={COLORS.pink} />
-        </mesh>
-      </group>
+    <group position={[0.75, 1.05, -0.1]} rotation={[0, 0.3, 0]}>
+      <Retro accent={accent}>
+        <boxGeometry args={[0.32, 0.06, 0.28]} />
+      </Retro>
+      <Retro accent={accent} position={[0, 0.05, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.09, 0.09, 0.02, 16]} />
+      </Retro>
     </group>
   )
 }
 
-function ResumePapers() {
+function ResumePapers({ accent }: { accent: string }) {
   return (
-    <group position={[-0.6, 1.03, 0.2]}>
-      <RoundedBox args={[0.3, 0.03, 0.22]} radius={0.01} castShadow>
-        <meshStandardMaterial color="#ffffff" />
-      </RoundedBox>
-      <RoundedBox args={[0.28, 0.03, 0.2]} radius={0.01} position={[0, 0.03, 0]} castShadow>
-        <meshStandardMaterial color="#ffffff" />
-      </RoundedBox>
+    <group position={[-0.6, 1.02, 0.2]}>
+      <Retro accent={accent} fill={COLORS.screenOff}>
+        <boxGeometry args={[0.3, 0.02, 0.22]} />
+      </Retro>
+      <Retro accent={accent} fill={COLORS.screenOff} position={[0, 0.025, 0]}>
+        <boxGeometry args={[0.28, 0.02, 0.2]} />
+      </Retro>
     </group>
   )
 }
 
-function RecordPlayer() {
+function RecordPlayer({ accent }: { accent: string }) {
   const discRef = useRef<Group>(null)
   useFrame((_, delta) => {
     if (discRef.current) discRef.current.rotation.y += delta * 2.2
   })
   return (
     <group position={[0, 0.71, 0]}>
-      <RoundedBox args={[0.6, 0.08, 0.5]} radius={0.03} castShadow>
-        <meshStandardMaterial color={COLORS.wood} />
-      </RoundedBox>
-      <group ref={discRef} position={[-0.06, 0.065, 0]}>
-        <mesh castShadow>
-          <cylinderGeometry args={[0.2, 0.2, 0.015, 32]} />
-          <meshStandardMaterial color="#232028" />
-        </mesh>
-        <mesh position={[0, 0.01, 0]}>
-          <cylinderGeometry args={[0.04, 0.04, 0.01, 16]} />
-          <meshStandardMaterial color={COLORS.pink} />
+      <Retro accent={accent}>
+        <boxGeometry args={[0.55, 0.06, 0.45]} />
+      </Retro>
+      <group ref={discRef} position={[-0.05, 0.06, 0]}>
+        <Retro accent={accent} fill={COLORS.screenOff}>
+          <cylinderGeometry args={[0.18, 0.18, 0.012, 28]} />
+        </Retro>
+        <mesh position={[0, 0.008, 0]}>
+          <cylinderGeometry args={[0.035, 0.035, 0.01, 12]} />
+          <meshBasicMaterial color={accent} />
         </mesh>
       </group>
-      <mesh position={[0.22, 0.09, -0.12]} rotation={[0, 0.4, 0]} castShadow>
-        <boxGeometry args={[0.16, 0.015, 0.02]} />
-        <meshStandardMaterial color="#2b2b30" />
-      </mesh>
     </group>
   )
 }
 
-function FloorLamp() {
+function FloorLamp({ accent }: { accent: string }) {
   const [on, setOn] = useState(true)
   const [hovered, setHovered] = useState(false)
   return (
@@ -380,28 +388,19 @@ function FloorLamp() {
         document.body.style.cursor = "auto"
       }}
     >
-      <mesh position={[0, 0.02, 0]} castShadow>
-        <cylinderGeometry args={[0.16, 0.18, 0.04, 20]} />
-        <meshStandardMaterial color="#2b2b30" />
-      </mesh>
-      <mesh position={[0, 1, 0]} castShadow>
-        <cylinderGeometry args={[0.022, 0.022, 1.9, 10]} />
-        <meshStandardMaterial color="#2b2b30" />
-      </mesh>
-      <mesh position={[0, 2, 0]} castShadow scale={hovered ? 1.08 : 1}>
-        <coneGeometry args={[0.25, 0.35, 20, 1, true]} />
-        <meshStandardMaterial
-          color={COLORS.peach}
-          emissive={COLORS.peach}
-          emissiveIntensity={on ? 0.6 : 0}
-          side={DoubleSide}
-        />
-      </mesh>
-      {on && <pointLight position={[0, 1.9, 0]} intensity={7} distance={3.6} color={COLORS.peach} />}
+      <Retro accent={accent} position={[0, 0.02, 0]}>
+        <cylinderGeometry args={[0.14, 0.16, 0.04, 16]} />
+      </Retro>
+      <Retro accent={accent} position={[0, 1, 0]}>
+        <cylinderGeometry args={[0.018, 0.018, 1.9, 8]} />
+      </Retro>
+      <Retro accent={on ? accent : COLORS.fill} fill={on ? COLORS.fillRaised : COLORS.fill} position={[0, 2, 0]} scale={hovered ? 1.08 : 1}>
+        <coneGeometry args={[0.22, 0.32, 16, 1, true]} />
+      </Retro>
       {hovered && (
-        <Html center position={[0, 2.4, 0]} style={{ pointerEvents: "none" }}>
-          <div className="whitespace-nowrap rounded-full bg-black/80 text-white text-xs font-medium px-3 py-1.5 shadow-lg">
-            {on ? "Turn off lamp" : "Turn on lamp"}
+        <Html center position={[0, 2.35, 0]} style={{ pointerEvents: "none" }}>
+          <div className="whitespace-nowrap font-mono text-xs px-3 py-1.5 bg-black border" style={{ color: accent, borderColor: accent }}>
+            [ {on ? "power off" : "power on"} ]
           </div>
         </Html>
       )}
@@ -409,16 +408,16 @@ function FloorLamp() {
   )
 }
 
-function Mascot() {
+function Mascot({ accent }: { accent: string }) {
   const groupRef = useRef<Group>(null)
   const [greeting, setGreeting] = useState(false)
-  const greetings = ["Hi, I'm Chip! 👋", "Welcome in!", "Try the record player 🎵", "Beep boop 🤖"]
-  const [line, setLine] = useState(greetings[0])
+  const lines = ["> hello_world()", "> chip.exe running", "> try the terminal", "> beep boop"]
+  const [line, setLine] = useState(lines[0])
 
   useFrame(({ clock }) => {
     if (!groupRef.current) return
-    groupRef.current.position.y = Math.sin(clock.elapsedTime * 2) * 0.04
-    groupRef.current.rotation.y = Math.sin(clock.elapsedTime * 0.6) * 0.25
+    groupRef.current.position.y = Math.sin(clock.elapsedTime * 2) * 0.03
+    groupRef.current.rotation.y = Math.sin(clock.elapsedTime * 0.6) * 0.2
   })
 
   return (
@@ -427,7 +426,7 @@ function Mascot() {
         ref={groupRef}
         onClick={(e) => {
           e.stopPropagation()
-          setLine(greetings[Math.floor(Math.random() * greetings.length)])
+          setLine(lines[Math.floor(Math.random() * lines.length)])
           setGreeting(true)
           setTimeout(() => setGreeting(false), 1800)
         }}
@@ -437,34 +436,27 @@ function Mascot() {
         }}
         onPointerOut={() => (document.body.style.cursor = "auto")}
       >
-        <mesh position={[0, 0.14, 0]} castShadow>
-          <sphereGeometry args={[0.14, 20, 20]} />
-          <meshStandardMaterial color={COLORS.mint} />
+        <Retro accent={accent} position={[0, 0.13, 0]}>
+          <boxGeometry args={[0.22, 0.2, 0.18]} />
+        </Retro>
+        <Retro accent={accent} position={[0, 0.32, 0]}>
+          <boxGeometry args={[0.16, 0.14, 0.14]} />
+        </Retro>
+        <mesh position={[0, 0.33, 0.075]}>
+          <planeGeometry args={[0.1, 0.04]} />
+          <meshBasicMaterial color={accent} />
         </mesh>
-        <mesh position={[0, 0.34, 0]} castShadow>
-          <sphereGeometry args={[0.1, 20, 20]} />
-          <meshStandardMaterial color={COLORS.mint} />
-        </mesh>
-        <mesh position={[-0.04, 0.35, 0.08]}>
-          <sphereGeometry args={[0.02, 8, 8]} />
-          <meshStandardMaterial color="#1a1a1a" />
-        </mesh>
-        <mesh position={[0.04, 0.35, 0.08]}>
-          <sphereGeometry args={[0.02, 8, 8]} />
-          <meshStandardMaterial color="#1a1a1a" />
-        </mesh>
-        <mesh position={[0, 0.45, 0]} castShadow>
-          <cylinderGeometry args={[0.008, 0.008, 0.08, 6]} />
-          <meshStandardMaterial color="#2b2b30" />
-        </mesh>
-        <mesh position={[0, 0.49, 0]}>
-          <sphereGeometry args={[0.02, 8, 8]} />
-          <meshStandardMaterial color={COLORS.pink} emissive={COLORS.pink} emissiveIntensity={0.6} />
+        <Retro accent={accent} position={[0, 0.43, 0]}>
+          <cylinderGeometry args={[0.006, 0.006, 0.07, 6]} />
+        </Retro>
+        <mesh position={[0, 0.47, 0]}>
+          <sphereGeometry args={[0.018, 8, 8]} />
+          <meshBasicMaterial color={accent} />
         </mesh>
       </group>
       {greeting && (
         <Html center position={[0, 0.55, 0]} style={{ pointerEvents: "none" }}>
-          <div className="whitespace-nowrap rounded-2xl bg-white text-foreground text-xs font-semibold px-3 py-1.5 shadow-lg">
+          <div className="whitespace-nowrap font-mono text-xs px-3 py-1.5 bg-black border" style={{ color: accent, borderColor: accent }}>
             {line}
           </div>
         </Html>
@@ -476,22 +468,23 @@ function Mascot() {
 interface SceneProps {
   onSelect: (id: PanelId) => void
   onDownloadResume: () => void
-  isDark: boolean
-  onToggleTheme: () => void
 }
 
-export function Scene({ onSelect, onDownloadResume, isDark, onToggleTheme }: SceneProps) {
+export function Scene({ onSelect, onDownloadResume }: SceneProps) {
+  const [phosphor, setPhosphor] = useState<"green" | "amber">("green")
+  const accent = phosphor === "green" ? COLORS.green : COLORS.amber
+
   return (
     <group>
-      <Room isDark={isDark} />
-      <Desk />
+      <Room accent={accent} />
+      <Desk accent={accent} />
 
       <Hotspot id="projects" label="Projects" position={[DESK.x, 0, DESK.z + 0.02]} onSelect={onSelect}>
-        <Monitor isDark={isDark} />
+        <Monitor accent={accent} />
       </Hotspot>
 
       <Hotspot id="contact" label="Contact" position={[DESK.x, 0, DESK.z]} onSelect={onSelect}>
-        <Phone />
+        <Phone accent={accent} />
       </Hotspot>
 
       <group
@@ -506,35 +499,33 @@ export function Scene({ onSelect, onDownloadResume, isDark, onToggleTheme }: Sce
         }}
         onPointerOut={() => (document.body.style.cursor = "auto")}
       >
-        <ResumePapers />
+        <ResumePapers accent={accent} />
       </group>
 
-      <Chair />
-      <Mascot />
+      <Chair accent={accent} />
+      <Mascot accent={accent} />
 
       <Hotspot id="blog" label="Blog" position={[0, 0, 0]} onSelect={onSelect}>
-        <Bookshelf />
+        <Bookshelf accent={accent} />
       </Hotspot>
 
       <Hotspot id="about" label="About" position={[0, 0, 0]} onSelect={onSelect}>
-        <Diploma />
+        <Diploma accent={accent} />
       </Hotspot>
 
       <Hotspot id="terminal" label="Terminal" position={[-3.0, 0, 0.75]} onSelect={onSelect}>
-        <SideTable position={[0, 0, 0]} />
-        <RetroTerminal />
+        <SideTable accent={accent} position={[0, 0, 0]} />
+        <RetroTerminalProp accent={accent} />
       </Hotspot>
 
       <Hotspot id="interests" label="Interests" position={[-2.9, 0, 1.85]} onSelect={onSelect}>
-        <SideTable position={[0, 0, 0]} />
-        <RecordPlayer />
+        <SideTable accent={accent} position={[0, 0, 0]} />
+        <RecordPlayer accent={accent} />
       </Hotspot>
 
-      <FloorLamp />
-      <Window isDark={isDark} onToggleTheme={onToggleTheme} />
-      <WallClock />
-
-      <ContactShadows position={[0, 0, 0]} opacity={isDark ? 0.5 : 0.35} scale={8} blur={2} far={4} />
+      <FloorLamp accent={accent} />
+      <TerminalWindow accent={accent} onCycle={() => setPhosphor((p) => (p === "green" ? "amber" : "green"))} />
+      <WallClock accent={accent} />
     </group>
   )
 }
