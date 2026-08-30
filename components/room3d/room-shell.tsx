@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import dynamic from "next/dynamic"
+import { useTheme } from "next-themes"
 import { AnimatePresence } from "framer-motion"
 import { Loader2 } from "lucide-react"
 import { IntroOverlay } from "./intro-overlay"
@@ -25,6 +26,7 @@ interface RoomShellProps {
 export function RoomShell({ initialPanel }: RoomShellProps) {
   const [entered, setEntered] = useState(false)
   const [activePanel, setActivePanel] = useState<PanelId | null>(initialPanel ?? null)
+  const { setTheme, resolvedTheme } = useTheme()
 
   const downloadResume = () => {
     const a = document.createElement("a")
@@ -33,9 +35,18 @@ export function RoomShell({ initialPanel }: RoomShellProps) {
     a.click()
   }
 
+  const toggleTheme = () => setTheme(resolvedTheme === "dark" ? "light" : "dark")
+
   return (
     <div className="fixed inset-0 overflow-hidden">
-      {entered && <RoomCanvas onSelect={setActivePanel} onDownloadResume={downloadResume} />}
+      {entered && (
+        <RoomCanvas
+          onSelect={setActivePanel}
+          onDownloadResume={downloadResume}
+          isDark={resolvedTheme === "dark"}
+          onToggleTheme={toggleTheme}
+        />
+      )}
 
       <AnimatePresence>{!entered && <IntroOverlay onEnter={() => setEntered(true)} />}</AnimatePresence>
 
