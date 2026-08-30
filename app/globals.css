@@ -4,58 +4,73 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Soft lavender-white base — surfaces sit a touch lighter than the page
+       so depth reads from shadow, not from a color jump. */
+    --background: 240 40% 96%;
+    --foreground: 240 25% 16%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 25% 16%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.75rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --popover-foreground: 240 25% 16%;
+    --primary: 252 83% 66%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 35% 91%;
+    --secondary-foreground: 240 25% 20%;
+    --muted: 240 35% 92%;
+    --muted-foreground: 240 12% 46%;
+    --accent: 199 89% 68%;
+    --accent-foreground: 240 30% 15%;
+    --destructive: 356 78% 65%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 25% 88%;
+    --input: 240 25% 89%;
+    --ring: 252 83% 66%;
+    --radius: 1.25rem;
+    --chart-1: 252 83% 66%;
+    --chart-2: 199 89% 68%;
+    --chart-3: 158 60% 58%;
+    --chart-4: 27 96% 70%;
+    --chart-5: 330 81% 74%;
+
+    /* Claymorphism shadow pair: a cool "dark" side and a bright "light" side.
+       Kept as raw rgb triplets + separate alpha so both layers can shift
+       independently between themes. */
+    --clay-light: 255 255 255;
+    --clay-dark: 163 163 199;
+    --clay-light-a: 0.75;
+    --clay-dark-a: 0.4;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    --background: 240 28% 10%;
+    --foreground: 240 20% 92%;
+    --card: 240 24% 14%;
+    --card-foreground: 240 20% 92%;
+    --popover: 240 24% 14%;
+    --popover-foreground: 240 20% 92%;
+    --primary: 252 90% 74%;
+    --primary-foreground: 240 30% 10%;
+    --secondary: 240 20% 19%;
+    --secondary-foreground: 240 20% 92%;
+    --muted: 240 20% 18%;
+    --muted-foreground: 240 12% 65%;
+    --accent: 199 85% 66%;
+    --accent-foreground: 240 30% 10%;
+    --destructive: 356 70% 62%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 18% 22%;
+    --input: 240 18% 22%;
+    --ring: 252 90% 74%;
+    --chart-1: 252 90% 74%;
+    --chart-2: 199 85% 66%;
+    --chart-3: 158 55% 56%;
+    --chart-4: 27 90% 68%;
+    --chart-5: 330 75% 72%;
+
+    --clay-light: 255 255 255;
+    --clay-dark: 0 0 0;
+    --clay-light-a: 0.05;
+    --clay-dark-a: 0.6;
   }
 }
 
@@ -101,9 +116,24 @@
   animation: blink 1s infinite;
 }
 
+/* Soft ambient blobs used behind hero/panel sections for a claymorphic backdrop */
+@keyframes float-blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(3%, -4%) scale(1.05);
+  }
+}
+
+.clay-blob {
+  animation: float-blob 14s ease-in-out infinite;
+}
+
 /* Smooth transitions */
 * {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }

@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
 
 interface TerminalLine {
   type: "command" | "output" | "error"
@@ -226,17 +225,8 @@ export function Terminal() {
   }
 
   return (
-    <Card className="w-full max-w-4xl mx-auto bg-black/90 text-green-400 font-mono text-sm">
-      <div className="flex items-center justify-between p-3 border-b border-gray-700">
-        <div className="flex space-x-2">
-          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-          <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-        </div>
-        <span className="text-gray-400">terminal</span>
-      </div>
-
-      <div ref={terminalRef} className="p-4 h-96 overflow-y-auto" onClick={() => inputRef.current?.focus()}>
+      <div className="h-full bg-[#14121f] text-green-400 font-mono text-sm overflow-hidden flex flex-col">
+        <div ref={terminalRef} className="p-4 flex-1 overflow-y-auto" onClick={() => inputRef.current?.focus()}>
         {lines.map((line, index) => (
           <motion.div
             key={index}
@@ -270,7 +260,7 @@ export function Terminal() {
             autoFocus
           />
         </form>
+        </div>
       </div>
-    </Card>
   )
 }
