@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X } from "lucide-react"
+import { X, Search } from "lucide-react"
 import { useIsMobile } from "@/components/ui/use-mobile"
 import { APPS, APP_ORDER, RESUME_ICON } from "./app-registry"
 import { Window } from "./window"
@@ -16,6 +16,13 @@ import { cn } from "@/lib/utils"
 interface DesktopProps {
   initialApp?: AppId
 }
+
+const WALLPAPERS = [
+  "from-clay-indigo/25 via-background to-clay-sky/25",
+  "from-clay-mint/25 via-background to-clay-peach/25",
+  "from-clay-pink/25 via-background to-clay-indigo/25",
+  "from-clay-sky/25 via-background to-clay-pink/25",
+]
 
 function spawnRect(id: AppId, openCount: number) {
   const app = APPS[id]
@@ -61,6 +68,9 @@ export function Desktop({ initialApp }: DesktopProps) {
   const [showHint, setShowHint] = useState(false)
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null)
   const [spotlightOpen, setSpotlightOpen] = useState(false)
+  const [wallpaperIdx, setWallpaperIdx] = useState(0)
+  const [bounceId, setBounceId] = useState<AppId | null>(null)
+  const [bounceToken, setBounceToken] = useState(0)
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -70,25 +80,46 @@ export function Desktop({ initialApp }: DesktopProps) {
     }
   }, [])
 
+  useEffect(() => {
+    const saved = typeof window !== "undefined" ? localStorage.getItem("os-wallpaper") : null
+    if (saved) setWallpaperIdx(Number(saved) % WALLPAPERS.length)
+  }, [])
+
   const dismissHint = () => {
     setShowHint(false)
     localStorage.setItem("os-welcome-seen", "1")
   }
 
+  const cycleWallpaper = () => {
+    setWallpaperIdx((i) => {
+      const next = (i + 1) % WALLPAPERS.length
+      localStorage.setItem("os-wallpaper", String(next))
+      return next
+    })
+  }
+
+  const downloadResume = () => {
+    const a = document.createElement("a")
+    a.href = RESUME_ICON.href
+    a.download = ""
+    a.click()
+  }
+
   const openApp = (id: AppId) => {
+    const existing = openWindows.find((w) => w.id === id)
     zRef.current += 1
     const z = zRef.current
-    setOpenWindows((prev) => {
-      const existing = prev.find((w) => w.id === id)
-      if (existing) {
-        return prev.map((w) => (w.id === id ? { ...w, zIndex: z, minimized: false } : w))
-      }
-      const app = APPS[id]
-      return [
-        ...prev,
-        { id, zIndex: z, minimized: false, maximized: false, pos: spawnRect(id, prev.length), size: { ...app.defaultSize } },
-      ]
-    })
+    if (existing) {
+      setOpenWindows((prev) => prev.map((w) => (w.id === id ? { ...w, zIndex: z, minimized: false } : w)))
+      return
+    }
+    setBounceId(id)
+    setBounceToken((t) => t + 1)
+    const app = APPS[id]
+    setOpenWindows((prev) => [
+      ...prev,
+      { id, zIndex: z, minimized: false, maximized: false, pos: spawnRect(id, prev.length), size: { ...app.defaultSize } },
+    ])
   }
 
   const mobileAppOpen = isMobile && openWindows.some((w) => !w.minimized)
@@ -109,6 +140,30 @@ export function Desktop({ initialApp }: DesktopProps) {
   const resizeApp = (id: AppId, size: { width: number; height: number }) =>
     setOpenWindows((prev) => prev.map((w) => (w.id === id ? { ...w, size } : w)))
 
+  const closeFocused = () => {
+    setOpenWindows((prev) => {
+      const visible = prev.filter((w) => !w.minimized)
+      if (visible.length === 0) return prev
+      const top = visible.reduce((a, b) => (b.zIndex > a.zIndex ? b : a))
+      return prev.filter((w) => w.id !== top.id)
+    })
+  }
+
+  const showDesktop = () => setOpenWindows((prev) => prev.map((w) => ({ ...w, minimized: true })))
+
+  const cycleFocus = () => {
+    setOpenWindows((prev) => {
+      const visible = prev.filter((w) => !w.minimized)
+      if (visible.length < 2) return prev
+      const current = visible.reduce((a, b) => (b.zIndex > a.zIndex ? b : a))
+      const idx = visible.findIndex((w) => w.id === current.id)
+      const next = visible[(idx + 1) % visible.length]
+      zRef.current += 1
+      const z = zRef.current
+      return prev.map((w) => (w.id === next.id ? { ...w, zIndex: z } : w))
+    })
+  }
+
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -116,15 +171,15 @@ export function Desktop({ initialApp }: DesktopProps) {
         setSpotlightOpen((v) => !v)
         return
       }
+      if ((e.metaKey || e.ctrlKey) && e.key === "Tab") {
+        e.preventDefault()
+        cycleFocus()
+        return
+      }
       if (e.key !== "Escape") return
       const target = e.target as HTMLElement | null
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) return
-      setOpenWindows((prev) => {
-        const visible = prev.filter((w) => !w.minimized)
-        if (visible.length === 0) return prev
-        const top = visible.reduce((a, b) => (b.zIndex > a.zIndex ? b : a))
-        return prev.filter((w) => w.id !== top.id)
-      })
+      closeFocused()
     }
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
@@ -140,7 +195,7 @@ export function Desktop({ initialApp }: DesktopProps) {
       }}
     >
       {/* Wallpaper */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden bg-gradient-to-br from-clay-indigo/25 via-background to-clay-sky/25">
+      <div className={cn("pointer-events-none absolute inset-0 overflow-hidden bg-gradient-to-br", WALLPAPERS[wallpaperIdx])}>
         <div className="clay-blob absolute -top-32 -left-20 h-[32rem] w-[32rem] rounded-full bg-clay-indigo/30 blur-[100px]" />
         <div
           className="clay-blob absolute top-1/4 -right-24 h-[28rem] w-[28rem] rounded-full bg-clay-sky/30 blur-[100px]"
@@ -159,7 +214,20 @@ export function Desktop({ initialApp }: DesktopProps) {
           onOpenApp={openApp}
           onOpenSpotlight={() => setSpotlightOpen(true)}
           onRefresh={() => setOpenWindows([])}
+          onCloseFocused={closeFocused}
+          onDownloadResume={downloadResume}
+          onShowDesktop={showDesktop}
         />
+      )}
+
+      {isMobile && !mobileAppOpen && (
+        <button
+          onClick={() => setSpotlightOpen(true)}
+          className="fixed top-3 right-3 z-[9200] p-2.5 rounded-full bg-white/70 dark:bg-black/40 backdrop-blur-xl shadow-md"
+          aria-label="Search"
+        >
+          <Search className="h-4 w-4" />
+        </button>
       )}
 
       {/* Desktop icons */}
@@ -249,7 +317,7 @@ export function Desktop({ initialApp }: DesktopProps) {
             <p className="text-sm font-semibold mb-1">Welcome to ashish-os 🖥️</p>
             <p className="text-sm text-muted-foreground">
               Click a dock icon or desktop item to open it. Drag windows by the title bar, resize from the corner,
-              press ⌘K to search, or right-click the desktop.
+              press ⌘K to search, ⌘Tab to switch windows, or right-click the desktop.
             </p>
           </motion.div>
         )}
@@ -262,6 +330,7 @@ export function Desktop({ initialApp }: DesktopProps) {
             y={contextMenu.y}
             onOpenApp={openApp}
             onRefresh={() => setOpenWindows([])}
+            onChangeWallpaper={cycleWallpaper}
             onClose={() => setContextMenu(null)}
           />
         )}
@@ -269,7 +338,7 @@ export function Desktop({ initialApp }: DesktopProps) {
 
       <Spotlight open={spotlightOpen} onClose={() => setSpotlightOpen(false)} onOpenApp={openApp} />
 
-      {!mobileAppOpen && <Dock openWindows={openWindows} onOpen={openApp} />}
+      {!mobileAppOpen && <Dock openWindows={openWindows} onOpen={openApp} bounceId={bounceId} bounceToken={bounceToken} />}
     </div>
   )
 }

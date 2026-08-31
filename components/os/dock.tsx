@@ -1,7 +1,15 @@
 "use client"
 
-import { useRef, useState, type ReactNode } from "react"
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence, type MotionValue } from "framer-motion"
+import { useEffect, useRef, useState, type ReactNode } from "react"
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useAnimation,
+  AnimatePresence,
+  type MotionValue,
+} from "framer-motion"
 import { APPS, APP_ORDER, RESUME_ICON } from "./app-registry"
 import type { AppId, OpenWindow } from "./types"
 import { cn } from "@/lib/utils"
@@ -15,16 +23,19 @@ function DockIcon({
   onClick,
   label,
   isOpen,
+  bounceToken,
   children,
 }: {
   mouseX: MotionValue<number>
   onClick: () => void
   label: string
   isOpen: boolean
+  bounceToken?: number
   children: ReactNode
 }) {
   const ref = useRef<HTMLButtonElement>(null)
   const [hovered, setHovered] = useState(false)
+  const controls = useAnimation()
 
   const distance = useTransform(mouseX, (val) => {
     const rect = ref.current?.getBoundingClientRect()
@@ -34,6 +45,12 @@ function DockIcon({
   const widthSync = useTransform(distance, [-DISTANCE, 0, DISTANCE], [BASE, MAX, BASE])
   const width = useSpring(widthSync, { mass: 0.1, stiffness: 250, damping: 16 })
   const iconSize = useTransform(width, (w) => w * 0.52)
+
+  useEffect(() => {
+    if (bounceToken) {
+      controls.start({ y: [0, -20, 0, -8, 0], transition: { duration: 0.55, ease: "easeOut" } })
+    }
+  }, [bounceToken, controls])
 
   return (
     <div className="relative flex flex-col items-center">
@@ -53,6 +70,7 @@ function DockIcon({
       <motion.button
         ref={ref}
         style={{ width, height: width }}
+        animate={controls}
         onClick={onClick}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -75,9 +93,11 @@ function DockIcon({
 interface DockProps {
   openWindows: OpenWindow[]
   onOpen: (id: AppId) => void
+  bounceId?: AppId | null
+  bounceToken?: number
 }
 
-export function Dock({ openWindows, onOpen }: DockProps) {
+export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) {
   const mouseX = useMotionValue(Infinity)
 
   return (
@@ -99,6 +119,7 @@ export function Dock({ openWindows, onOpen }: DockProps) {
               onClick={() => onOpen(id)}
               label={app.title}
               isOpen={openWindows.some((w) => w.id === id)}
+              bounceToken={bounceId === id ? bounceToken : undefined}
             >
               <span className={cn("w-full h-full rounded-2xl flex items-center justify-center shadow-sm", app.accent)}>
                 <app.icon className="h-1/2 w-1/2" />

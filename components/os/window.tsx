@@ -47,8 +47,6 @@ export function Window({
   const sizeRef = useRef(size)
   sizeRef.current = size
 
-  if (minimized && !isMobile) return null
-
   if (isMobile) {
     return (
       <AnimatePresence>
@@ -112,18 +110,30 @@ export function Window({
     ? { top: 32, left: 8, right: 8, bottom: 88, zIndex }
     : { top: pos.y, left: pos.x, width: size.width, height: size.height, zIndex }
 
+  // "Genie" effect: shrink and slide toward the dock (bottom-center) when minimized,
+  // instead of instantly vanishing. The window stays mounted so it can pop back open.
+  const vw = typeof window !== "undefined" ? window.innerWidth : 1280
+  const vh = typeof window !== "undefined" ? window.innerHeight : 800
+  const dockOffsetX = vw / 2 - pos.x - size.width / 2
+  const dockOffsetY = vh - pos.y - 40
+
   return (
     <motion.div
-      drag={!maximized}
+      drag={!maximized && !minimized}
       dragListener={false}
       dragControls={dragControls}
       dragMomentum={false}
       onPointerDown={onFocus}
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, scale: 0.92, x: 0, y: 0 }}
+      animate={
+        minimized
+          ? { opacity: 0, scale: 0.05, x: dockOffsetX, y: dockOffsetY }
+          : { opacity: 1, scale: 1, x: 0, y: 0 }
+      }
       exit={{ opacity: 0, scale: 0.94, transition: { duration: 0.12 } }}
-      transition={{ type: "spring", stiffness: 380, damping: 28 }}
-      style={{ position: "absolute", ...style }}
+      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+      style={{ position: "absolute", pointerEvents: minimized ? "none" : "auto", ...style }}
+      aria-hidden={minimized}
       className={cn(
         "rounded-xl bg-card flex flex-col overflow-hidden border",
         isFocused ? "shadow-2xl border-black/10 dark:border-white/10" : "shadow-lg border-black/5 dark:border-white/5",

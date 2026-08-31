@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
-import { TerminalSquare, User, SunMoon, RotateCcw } from "lucide-react"
+import { TerminalSquare, User, SunMoon, RotateCcw, Image } from "lucide-react"
 import type { AppId } from "./types"
 
 interface OSContextMenuProps {
@@ -10,16 +10,18 @@ interface OSContextMenuProps {
   y: number
   onOpenApp: (id: AppId) => void
   onRefresh: () => void
+  onChangeWallpaper: () => void
   onClose: () => void
 }
 
-export function OSContextMenu({ x, y, onOpenApp, onRefresh, onClose }: OSContextMenuProps) {
+export function OSContextMenu({ x, y, onOpenApp, onRefresh, onChangeWallpaper, onClose }: OSContextMenuProps) {
   const { theme, setTheme } = useTheme()
 
   const items = [
     { icon: TerminalSquare, label: "Open Terminal", action: () => onOpenApp("terminal") },
     { icon: User, label: "About this OS", action: () => onOpenApp("about") },
     { icon: SunMoon, label: "Toggle Theme", action: () => setTheme(theme === "light" ? "dark" : "light") },
+    { icon: Image, label: "Change Wallpaper", action: onChangeWallpaper },
     { icon: RotateCcw, label: "Refresh Desktop", action: onRefresh },
   ]
 

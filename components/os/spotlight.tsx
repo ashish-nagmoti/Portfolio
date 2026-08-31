@@ -75,6 +75,9 @@ export function Spotlight({ open, onClose, onOpenApp }: SpotlightProps) {
             exit={{ opacity: 0, y: -16, scale: 0.97 }}
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
             className="fixed top-[18%] left-1/2 -translate-x-1/2 z-[9991] w-full max-w-lg px-4"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Spotlight search"
           >
             <div className="rounded-2xl bg-white/85 dark:bg-[#2a2a30]/95 backdrop-blur-2xl shadow-2xl border border-black/5 dark:border-white/10 overflow-hidden">
               <div className="flex items-center gap-3 px-4 py-3.5 border-b border-black/5 dark:border-white/10">

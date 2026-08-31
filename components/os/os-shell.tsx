@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { AnimatePresence } from "framer-motion"
+import { AnimatePresence, MotionConfig } from "framer-motion"
 import { BootScreen } from "./boot-screen"
 import { Desktop } from "./desktop"
 import type { AppId } from "./types"
@@ -25,9 +25,9 @@ export function OSShell({ initialApp }: OSShellProps) {
   if (booted === null) return null
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <AnimatePresence mode="wait">{!booted && <BootScreen key="boot" onDone={finishBoot} />}</AnimatePresence>
       {booted && <Desktop initialApp={initialApp} />}
-    </>
+    </MotionConfig>
   )
 }
