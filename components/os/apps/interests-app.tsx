@@ -170,9 +170,9 @@ export function InterestsApp() {
             <motion.div key={item.id} variants={itemVariants} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
               <Card className="group cursor-pointer hover:-translate-y-1 hover:shadow-clay-lg transition-all duration-300">
                 <CardHeader>
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex items-start gap-3 flex-1">
-                      <div className="p-2 rounded-full bg-secondary shadow-clay-sm group-hover:bg-primary/10 transition-colors">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <div className="p-2 rounded-full bg-secondary shadow-clay-sm group-hover:bg-primary/10 transition-colors shrink-0">
                         <Icon className="h-5 w-5 group-hover:text-primary transition-colors" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -182,7 +182,7 @@ export function InterestsApp() {
                         <p className="text-sm text-muted-foreground mt-1">by {item.author}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 flex-shrink-0">
+                    <div className="flex items-center gap-2 pl-[52px] sm:pl-0 sm:flex-shrink-0">
                       <Badge className={getTypeColor(item.type)}>{item.type}</Badge>
                       <div className="flex items-center">
                         {[...Array(5)].map((_, i) => (

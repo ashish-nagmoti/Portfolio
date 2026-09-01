@@ -72,21 +72,21 @@ export function ProjectsApp() {
               <div className="absolute top-4 right-4 z-10">
                 <Badge variant="secondary" className="text-xs">{project.category}</Badge>
               </div>
-              <div className="flex flex-col items-center justify-center py-8 gap-3 px-5">
-                <div className="rounded-full bg-primary/10 p-4 mb-1 shadow-clay-sm">
-                  <project.icon className="h-8 w-8 text-primary" />
+              <div className="flex flex-col items-start sm:items-center justify-center py-5 sm:py-8 gap-3 px-5 text-left sm:text-center">
+                <div className="rounded-full bg-primary/10 p-3 sm:p-4 mb-1 shadow-clay-sm">
+                  <project.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
                 </div>
-                <h2 className="text-base font-bold text-center leading-tight">{project.title}</h2>
+                <h2 className="text-base font-bold leading-tight">{project.title}</h2>
                 <p className="text-xs text-muted-foreground font-semibold tracking-wide">{project.date}</p>
-                <p className="text-sm text-muted-foreground text-center leading-relaxed">{project.description}</p>
-                <div className="flex flex-wrap justify-center gap-2">
+                <p className="text-sm text-muted-foreground leading-relaxed">{project.description}</p>
+                <div className="flex flex-wrap justify-start sm:justify-center gap-2">
                   {project.tech.map((tech) => (
                     <Badge key={tech} variant="outline" className="text-xs">
                       {tech}
                     </Badge>
                   ))}
                 </div>
-                <div className="flex gap-2 justify-center mt-1">
+                <div className="flex gap-2 justify-start sm:justify-center mt-1">
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button variant="outline" size="sm">
