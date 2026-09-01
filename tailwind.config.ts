@@ -79,11 +79,14 @@ const config: Config = {
   			'3xl': 'calc(var(--radius) + 1.25rem)'
   		},
   		boxShadow: {
-  			clay: '9px 9px 20px rgb(var(--clay-dark) / var(--clay-dark-a)), -9px -9px 20px rgb(var(--clay-light) / var(--clay-light-a))',
-  			'clay-sm': '5px 5px 12px rgb(var(--clay-dark) / var(--clay-dark-a)), -5px -5px 12px rgb(var(--clay-light) / var(--clay-light-a))',
-  			'clay-lg': '16px 16px 34px rgb(var(--clay-dark) / var(--clay-dark-a)), -12px -12px 30px rgb(var(--clay-light) / var(--clay-light-a))',
-  			'clay-inset': 'inset 4px 4px 10px rgb(var(--clay-dark) / var(--clay-dark-a)), inset -4px -4px 10px rgb(var(--clay-light) / var(--clay-light-a))',
-  			'clay-pressed': 'inset 3px 3px 7px rgb(var(--clay-dark) / var(--clay-dark-a)), inset -3px -3px 7px rgb(var(--clay-light) / var(--clay-light-a))'
+  			/* Crisp, single-direction shadows to match the macOS window chrome —
+  			   these used to be puffy dual-tone "clay" shadows, which read as a
+  			   mismatched, dated design language next to the glass OS shell. */
+  			clay: '0 1px 2px rgb(var(--clay-dark) / calc(var(--clay-dark-a) * 0.5)), 0 6px 16px rgb(var(--clay-dark) / calc(var(--clay-dark-a) * 0.4))',
+  			'clay-sm': '0 1px 2px rgb(var(--clay-dark) / calc(var(--clay-dark-a) * 0.5))',
+  			'clay-lg': '0 2px 6px rgb(var(--clay-dark) / calc(var(--clay-dark-a) * 0.35)), 0 16px 32px rgb(var(--clay-dark) / calc(var(--clay-dark-a) * 0.45))',
+  			'clay-inset': 'inset 0 1px 3px rgb(var(--clay-dark) / calc(var(--clay-dark-a) * 0.6))',
+  			'clay-pressed': 'inset 0 1px 2px rgb(var(--clay-dark) / var(--clay-dark-a))'
   		},
   		keyframes: {
   			'accordion-down': {

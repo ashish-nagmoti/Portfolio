@@ -98,7 +98,7 @@ export function Window({
               <X className="h-5 w-5" />
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto overscroll-contain">
+          <div className="flex-1 overflow-y-auto overscroll-contain bg-background">
             <Content />
           </div>
           <motion.button
@@ -217,7 +217,7 @@ export function Window({
           {app.title}
         </span>
       </div>
-      <div className="flex-1 overflow-y-auto overscroll-contain">
+      <div className="flex-1 overflow-y-auto overscroll-contain bg-background">
         <Content />
       </div>
       {!maximized && (
