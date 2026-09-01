@@ -25,15 +25,29 @@ const WALLPAPERS = [
   "from-clay-sky/25 via-background to-clay-pink/25",
 ]
 
-function spawnRect(id: AppId, openCount: number) {
+// Default window sizes are calibrated for a real laptop screen. A landscape
+// phone (~375-430px tall) is far shorter, so clamp to what's actually
+// available — otherwise windows render taller than the viewport itself.
+function openSize(id: AppId) {
+  const app = APPS[id]
+  if (typeof window === "undefined") return { ...app.defaultSize }
+  const maxW = window.innerWidth - 40
+  const maxH = window.innerHeight - 120
+  return {
+    width: Math.min(app.defaultSize.width, Math.max(280, maxW)),
+    height: Math.min(app.defaultSize.height, Math.max(220, maxH)),
+  }
+}
+
+function spawnRect(id: AppId, openCount: number, size: { width: number; height: number }) {
   const app = APPS[id]
   const vw = typeof window !== "undefined" ? window.innerWidth : 1280
   const vh = typeof window !== "undefined" ? window.innerHeight : 800
   const jitterX = Math.round(Math.random() * 70) - 35
   const jitterY = Math.round(Math.random() * 50) - 25
   const cascade = (openCount % 5) * 26
-  const maxX = Math.max(20, vw - app.defaultSize.width - 20)
-  const maxY = Math.max(40, vh - app.defaultSize.height - 110)
+  const maxX = Math.max(20, vw - size.width - 20)
+  const maxY = Math.max(40, vh - size.height - 110)
   const x = Math.min(Math.max(20, app.defaultPos.x + jitterX + cascade), maxX)
   const y = Math.min(Math.max(40, app.defaultPos.y + jitterY + cascade), maxY)
   return { x, y }
@@ -61,7 +75,7 @@ export function Desktop({ initialApp }: DesktopProps) {
             minimized: false,
             maximized: false,
             pos: APPS[initialApp].defaultPos,
-            size: APPS[initialApp].defaultSize,
+            size: openSize(initialApp),
           },
         ]
       : [],
@@ -118,10 +132,10 @@ export function Desktop({ initialApp }: DesktopProps) {
     }
     setBounceId(id)
     setBounceToken((t) => t + 1)
-    const app = APPS[id]
+    const size = openSize(id)
     setOpenWindows((prev) => [
       ...prev,
-      { id, zIndex: z, minimized: false, maximized: false, pos: spawnRect(id, prev.length), size: { ...app.defaultSize } },
+      { id, zIndex: z, minimized: false, maximized: false, pos: spawnRect(id, prev.length, size), size },
     ])
   }
 
