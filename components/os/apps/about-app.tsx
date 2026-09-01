@@ -51,7 +51,7 @@ export function AboutApp() {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="p-6 space-y-8">
       {/* Main Content Grid */}
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <motion.div variants={itemVariants} className="lg:col-span-2">
           <Card>
             <CardHeader>
@@ -102,7 +102,7 @@ export function AboutApp() {
       {/* Coding Profiles */}
       <motion.div variants={itemVariants}>
         <h2 className="text-xl font-bold mb-4">Coding Profiles</h2>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {codingProfiles.map((profile) => (
             <Card key={profile.platform} className="group hover:-translate-y-1 hover:shadow-clay-lg transition-all duration-300">
               <CardHeader>
@@ -140,7 +140,7 @@ export function AboutApp() {
       {/* Skills Grid */}
       <motion.div variants={itemVariants}>
         <h2 className="text-xl font-bold mb-4">Technical Skills</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {Object.entries(skills).map(([category, skillList]) => {
             const icons = {
               backend: Code,
@@ -174,7 +174,7 @@ export function AboutApp() {
       </motion.div>
 
       {/* Leadership & Experience */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div variants={itemVariants}>
           <Card>
             <CardHeader>
@@ -244,7 +244,7 @@ export function AboutApp() {
           </span>
           Achievements
         </h2>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-start gap-4 rounded-2xl bg-card shadow-clay p-5">
             <Award className="h-6 w-6 text-clay-peach mt-1 shrink-0" />
             <div>
@@ -280,7 +280,7 @@ export function AboutApp() {
           </span>
           Internships
         </h2>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex items-start gap-4 rounded-2xl bg-card shadow-clay p-5">
             <Briefcase className="h-6 w-6 text-clay-sky mt-1 shrink-0" />
             <div>

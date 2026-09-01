@@ -224,7 +224,7 @@ export function InterestsApp() {
 
       <motion.div variants={itemVariants} className="p-8 rounded-3xl bg-gradient-to-br from-clay-sky/15 via-primary/10 to-clay-pink/15 shadow-clay">
         <h3 className="text-xl font-bold mb-6 text-center">Fun Facts About Me</h3>
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {[
             { icon: Coffee, title: "Coffee Enthusiast", description: "Can't start coding without a perfect cup of coffee" },
             { icon: Headphones, title: "Music While Coding", description: "Electronic and lo-fi beats fuel my productivity" },

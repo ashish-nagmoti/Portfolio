@@ -65,7 +65,7 @@ const itemVariants = {
 export function ProjectsApp() {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="p-6">
-      <div className="grid sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {projects.map((project) => (
           <motion.div key={project.id} variants={itemVariants} whileHover={{ y: -6 }} transition={{ type: "spring", stiffness: 300 }}>
             <Card className="h-full group cursor-pointer relative hover:shadow-clay-lg transition-all duration-300">

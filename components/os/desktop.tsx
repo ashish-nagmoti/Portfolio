@@ -344,7 +344,7 @@ export function Desktop({ initialApp }: DesktopProps) {
 
       <Spotlight open={spotlightOpen} onClose={() => setSpotlightOpen(false)} onOpenApp={openApp} />
 
-      {!mobileAppOpen && <Dock openWindows={openWindows} onOpen={openApp} bounceId={bounceId} bounceToken={bounceToken} />}
+      {!isMobile && !mobileAppOpen && <Dock openWindows={openWindows} onOpen={openApp} bounceId={bounceId} bounceToken={bounceToken} />}
     </div>
   )
 }

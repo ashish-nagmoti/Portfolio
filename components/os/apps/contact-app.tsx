@@ -87,7 +87,7 @@ export function ContactApp() {
 
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="p-6 space-y-6">
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <motion.div variants={itemVariants} className="lg:col-span-2">
           <Card>
             <CardHeader>

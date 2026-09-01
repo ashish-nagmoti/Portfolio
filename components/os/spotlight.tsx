@@ -69,51 +69,53 @@ export function Spotlight({ open, onClose, onOpenApp }: SpotlightProps) {
             className="fixed inset-0 z-[9990] bg-black/20 backdrop-blur-sm"
             onClick={onClose}
           />
-          <motion.div
-            initial={{ opacity: 0, y: -16, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -16, scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-            className="fixed top-[18%] left-1/2 -translate-x-1/2 z-[9991] w-full max-w-lg px-4"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Spotlight search"
-          >
-            <div className="rounded-2xl bg-white/85 dark:bg-[#2a2a30]/95 backdrop-blur-2xl shadow-2xl border border-black/5 dark:border-white/10 overflow-hidden">
-              <div className="flex items-center gap-3 px-4 py-3.5 border-b border-black/5 dark:border-white/10">
-                <Search className="h-5 w-5 text-muted-foreground shrink-0" />
-                <input
-                  ref={inputRef}
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Spotlight Search"
-                  className="flex-1 bg-transparent outline-none text-lg"
-                />
-              </div>
-              {results.length > 0 && (
-                <div className="max-h-72 overflow-y-auto p-2">
-                  {results.map((app, i) => (
-                    <button
-                      key={app.id}
-                      onClick={() => openResult(app.id)}
-                      onMouseEnter={() => setActiveIndex(i)}
-                      className={cn(
-                        "flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors",
-                        i === activeIndex ? "bg-primary text-primary-foreground" : "hover:bg-black/5 dark:hover:bg-white/10",
-                      )}
-                    >
-                      <span className={cn("p-1.5 rounded-lg", app.accent)}>
-                        <app.icon className="h-4 w-4" />
-                      </span>
-                      <span className="text-sm font-medium">{app.title}</span>
-                    </button>
-                  ))}
+          <div className="fixed inset-0 z-[9991] flex justify-center pt-[18%] px-4 pointer-events-none">
+            <motion.div
+              initial={{ opacity: 0, y: -16, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -16, scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="w-full max-w-lg pointer-events-auto"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Spotlight search"
+            >
+              <div className="rounded-2xl bg-white/85 dark:bg-[#2a2a30]/95 backdrop-blur-2xl shadow-2xl border border-black/5 dark:border-white/10 overflow-hidden">
+                <div className="flex items-center gap-3 px-4 py-3.5 border-b border-black/5 dark:border-white/10">
+                  <Search className="h-5 w-5 text-muted-foreground shrink-0" />
+                  <input
+                    ref={inputRef}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Spotlight Search"
+                    className="flex-1 bg-transparent outline-none text-lg"
+                  />
                 </div>
-              )}
-              {results.length === 0 && <div className="p-6 text-center text-sm text-muted-foreground">No results</div>}
-            </div>
-          </motion.div>
+                {results.length > 0 && (
+                  <div className="max-h-72 overflow-y-auto p-2">
+                    {results.map((app, i) => (
+                      <button
+                        key={app.id}
+                        onClick={() => openResult(app.id)}
+                        onMouseEnter={() => setActiveIndex(i)}
+                        className={cn(
+                          "flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors",
+                          i === activeIndex ? "bg-primary text-primary-foreground" : "hover:bg-black/5 dark:hover:bg-white/10",
+                        )}
+                      >
+                        <span className={cn("p-1.5 rounded-lg", app.accent)}>
+                          <app.icon className="h-4 w-4" />
+                        </span>
+                        <span className="text-sm font-medium">{app.title}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {results.length === 0 && <div className="p-6 text-center text-sm text-muted-foreground">No results</div>}
+              </div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
