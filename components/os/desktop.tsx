@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, Search } from "lucide-react"
 import { useIsMobile } from "@/components/ui/use-mobile"
 import { APPS, APP_ORDER, RESUME_ICON } from "./app-registry"
-import { Window } from "./window"
+import { Window, type OriginRect } from "./window"
 import { Dock } from "./dock"
 import { MenuBar } from "./menubar"
+import { StatusBar } from "./ios/status-bar"
 import { Spotlight } from "./spotlight"
 import { OSContextMenu } from "./context-menu"
 import type { AppId, OpenWindow } from "./types"
@@ -71,6 +72,7 @@ export function Desktop({ initialApp }: DesktopProps) {
   const [wallpaperIdx, setWallpaperIdx] = useState(0)
   const [bounceId, setBounceId] = useState<AppId | null>(null)
   const [bounceToken, setBounceToken] = useState(0)
+  const [pendingOrigin, setPendingOrigin] = useState<OriginRect | null>(null)
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -105,7 +107,8 @@ export function Desktop({ initialApp }: DesktopProps) {
     a.click()
   }
 
-  const openApp = (id: AppId) => {
+  const openApp = (id: AppId, rect?: DOMRect) => {
+    setPendingOrigin(rect ? { top: rect.top, left: rect.left, width: rect.width, height: rect.height } : null)
     const existing = openWindows.find((w) => w.id === id)
     zRef.current += 1
     const z = zRef.current
@@ -220,36 +223,37 @@ export function Desktop({ initialApp }: DesktopProps) {
         />
       )}
 
-      {isMobile && !mobileAppOpen && (
-        <button
-          onClick={() => setSpotlightOpen(true)}
-          className="fixed top-3 right-3 z-[9200] p-2.5 rounded-full bg-white/70 dark:bg-black/40 backdrop-blur-xl shadow-md"
-          aria-label="Search"
-        >
-          <Search className="h-4 w-4" />
-        </button>
-      )}
+      {isMobile && <StatusBar />}
 
       {/* Desktop icons */}
       <motion.div
         variants={iconContainerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-0 grid grid-cols-4 gap-x-3 gap-y-6 p-5 pt-14 justify-items-center sm:absolute sm:top-11 sm:right-4 sm:grid-cols-1 sm:justify-items-end sm:gap-5 sm:p-0 w-full sm:w-auto"
+        className="relative z-0 grid grid-cols-4 gap-x-3 gap-y-6 p-5 pt-16 justify-items-center sm:absolute sm:top-11 sm:right-4 sm:grid-cols-1 sm:justify-items-end sm:gap-5 sm:p-0 w-full sm:w-auto"
       >
+        {isMobile && (
+          <button
+            onClick={() => setSpotlightOpen(true)}
+            className="col-span-4 flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/60 dark:bg-black/30 backdrop-blur-xl text-muted-foreground text-sm"
+          >
+            <Search className="h-4 w-4" />
+            Search
+          </button>
+        )}
         {APP_ORDER.map((id) => {
           const app = APPS[id]
           return (
             <motion.button
               key={id}
               variants={iconItemVariants}
-              onClick={() => openApp(id)}
+              onClick={(e) => openApp(id, e.currentTarget.getBoundingClientRect())}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
               className="flex flex-col items-center gap-1.5 w-16 sm:w-20 text-center"
             >
-              <span className={cn("w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shadow-md", app.accent)}>
+              <span className={cn("w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] flex items-center justify-center shadow-md", app.accent)}>
                 <app.icon className="h-6 w-6 sm:h-7 sm:w-7" />
               </span>
               <span className="text-[11px] sm:text-xs font-medium text-foreground/90 leading-tight drop-shadow-sm">
@@ -267,7 +271,7 @@ export function Desktop({ initialApp }: DesktopProps) {
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
           className="flex flex-col items-center gap-1.5 w-16 sm:w-20 text-center"
         >
-          <span className={cn("w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center shadow-md", RESUME_ICON.accent)}>
+          <span className={cn("w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] flex items-center justify-center shadow-md", RESUME_ICON.accent)}>
             <RESUME_ICON.icon className="h-6 w-6 sm:h-7 sm:w-7" />
           </span>
           <span className="text-[11px] sm:text-xs font-medium text-foreground/90 leading-tight drop-shadow-sm">
@@ -289,6 +293,7 @@ export function Desktop({ initialApp }: DesktopProps) {
             isFocused={focusedApp === w.id}
             pos={w.pos}
             size={w.size}
+            originRect={pendingOrigin}
             onClose={() => closeApp(w.id)}
             onMinimize={() => minimizeApp(w.id)}
             onToggleMaximize={() => toggleMaximize(w.id)}
@@ -316,8 +321,9 @@ export function Desktop({ initialApp }: DesktopProps) {
             </button>
             <p className="text-sm font-semibold mb-1">Welcome to ashish-os 🖥️</p>
             <p className="text-sm text-muted-foreground">
-              Click a dock icon or desktop item to open it. Drag windows by the title bar, resize from the corner,
-              press ⌘K to search, ⌘Tab to switch windows, or right-click the desktop.
+              {isMobile
+                ? "Tap an icon to open it. Swipe up on the handle at the bottom of an app to close it."
+                : "Click a dock icon or desktop item to open it. Drag windows by the title bar, resize from the corner, press ⌘K to search, ⌘Tab to switch windows, or right-click the desktop."}
             </p>
           </motion.div>
         )}

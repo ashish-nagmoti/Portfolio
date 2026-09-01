@@ -4,11 +4,19 @@ import { useRef, type PointerEvent as ReactPointerEvent } from "react"
 import { motion, useDragControls, AnimatePresence } from "framer-motion"
 import { X, Minus, Square } from "lucide-react"
 import { APPS } from "./app-registry"
+import { STATUS_BAR_HEIGHT } from "./ios/status-bar"
 import type { AppId } from "./types"
 import { cn } from "@/lib/utils"
 
 const MIN_WIDTH = 340
 const MIN_HEIGHT = 280
+
+export interface OriginRect {
+  top: number
+  left: number
+  width: number
+  height: number
+}
 
 interface WindowProps {
   appId: AppId
@@ -19,6 +27,7 @@ interface WindowProps {
   isFocused: boolean
   pos: { x: number; y: number }
   size: { width: number; height: number }
+  originRect?: OriginRect | null
   onClose: () => void
   onMinimize: () => void
   onToggleMaximize: () => void
@@ -35,6 +44,7 @@ export function Window({
   isFocused,
   pos,
   size,
+  originRect,
   onClose,
   onMinimize,
   onToggleMaximize,
@@ -48,20 +58,34 @@ export function Window({
   sizeRef.current = size
 
   if (isMobile) {
+    const vw = typeof window !== "undefined" ? window.innerWidth : 390
+    const vh = typeof window !== "undefined" ? window.innerHeight : 844
+    const origin = originRect ?? { top: vh - 90, left: vw / 2 - 28, width: 56, height: 56 }
+
     return (
       <AnimatePresence>
         <motion.div
           key={appId}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 24 }}
-          transition={{ duration: 0.2 }}
-          style={{ zIndex }}
-          className="fixed inset-0 bg-background flex flex-col"
+          initial={{
+            top: origin.top,
+            left: origin.left,
+            width: origin.width,
+            height: origin.height,
+            borderRadius: 22,
+            opacity: 0.4,
+          }}
+          animate={{ top: 0, left: 0, width: vw, height: vh, borderRadius: 0, opacity: 1 }}
+          exit={{ top: origin.top, left: origin.left, width: origin.width, height: origin.height, borderRadius: 22, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 32 }}
+          style={{ position: "fixed", zIndex }}
+          className="bg-background flex flex-col overflow-hidden"
         >
-          <div className="flex items-center justify-between px-4 py-3 bg-card shadow-sm border-b border-black/5 dark:border-white/10 shrink-0">
+          <div
+            className="flex items-center justify-between px-4 pb-3 bg-card shadow-sm border-b border-black/5 dark:border-white/10 shrink-0"
+            style={{ paddingTop: STATUS_BAR_HEIGHT - 12 }}
+          >
             <div className="flex items-center gap-2 min-w-0">
-              <span className={cn("p-1.5 rounded-lg shrink-0", app.accent)}>
+              <span className={cn("p-1.5 rounded-[22%] shrink-0", app.accent)}>
                 <app.icon className="h-4 w-4" />
               </span>
               <span className="font-semibold truncate">{app.title}</span>
@@ -77,6 +101,17 @@ export function Window({
           <div className="flex-1 overflow-y-auto overscroll-contain">
             <Content />
           </div>
+          <motion.button
+            onClick={onClose}
+            drag="y"
+            dragConstraints={{ top: -50, bottom: 0 }}
+            dragElastic={{ top: 0.4, bottom: 0 }}
+            onDragEnd={(_, info) => {
+              if (info.offset.y < -28 || info.velocity.y < -400) onClose()
+            }}
+            aria-label="Close (swipe up for home)"
+            className="absolute bottom-1.5 inset-x-0 mx-auto w-32 h-1.5 rounded-full bg-foreground/30 touch-none"
+          />
         </motion.div>
       </AnimatePresence>
     )

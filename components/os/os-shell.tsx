@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react"
 import { AnimatePresence, MotionConfig } from "framer-motion"
+import { useIsMobile } from "@/components/ui/use-mobile"
 import { BootScreen } from "./boot-screen"
+import { LockScreen } from "./ios/lock-screen"
 import { Desktop } from "./desktop"
 import type { AppId } from "./types"
 
@@ -11,6 +13,7 @@ interface OSShellProps {
 }
 
 export function OSShell({ initialApp }: OSShellProps) {
+  const isMobile = useIsMobile()
   const [booted, setBooted] = useState<boolean | null>(null)
 
   useEffect(() => {
@@ -26,7 +29,10 @@ export function OSShell({ initialApp }: OSShellProps) {
 
   return (
     <MotionConfig reducedMotion="user">
-      <AnimatePresence mode="wait">{!booted && <BootScreen key="boot" onDone={finishBoot} />}</AnimatePresence>
+      <AnimatePresence mode="wait">
+        {!booted &&
+          (isMobile ? <LockScreen key="lock" onUnlock={finishBoot} /> : <BootScreen key="boot" onDone={finishBoot} />)}
+      </AnimatePresence>
       {booted && <Desktop initialApp={initialApp} />}
     </MotionConfig>
   )

@@ -27,7 +27,7 @@ function DockIcon({
   children,
 }: {
   mouseX: MotionValue<number>
-  onClick: () => void
+  onClick: (rect?: DOMRect) => void
   label: string
   isOpen: boolean
   bounceToken?: number
@@ -71,7 +71,7 @@ function DockIcon({
         ref={ref}
         style={{ width, height: width }}
         animate={controls}
-        onClick={onClick}
+        onClick={() => onClick(ref.current?.getBoundingClientRect())}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         whileTap={{ scale: 0.9 }}
@@ -92,7 +92,7 @@ function DockIcon({
 
 interface DockProps {
   openWindows: OpenWindow[]
-  onOpen: (id: AppId) => void
+  onOpen: (id: AppId, rect?: DOMRect) => void
   bounceId?: AppId | null
   bounceToken?: number
 }
@@ -116,12 +116,12 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
             <DockIcon
               key={id}
               mouseX={mouseX}
-              onClick={() => onOpen(id)}
+              onClick={(rect) => onOpen(id, rect)}
               label={app.title}
               isOpen={openWindows.some((w) => w.id === id)}
               bounceToken={bounceId === id ? bounceToken : undefined}
             >
-              <span className={cn("w-full h-full rounded-2xl flex items-center justify-center shadow-sm", app.accent)}>
+              <span className={cn("w-full h-full rounded-[22%] flex items-center justify-center shadow-sm", app.accent)}>
                 <app.icon className="h-1/2 w-1/2" />
               </span>
             </DockIcon>
@@ -131,7 +131,7 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
         <div className="w-px h-11 bg-black/10 dark:bg-white/15 self-center mx-0.5" />
 
         <DockIcon mouseX={mouseX} onClick={() => window.open(RESUME_ICON.href, "_blank")} label={RESUME_ICON.title} isOpen={false}>
-          <span className={cn("w-full h-full rounded-2xl flex items-center justify-center shadow-sm", RESUME_ICON.accent)}>
+          <span className={cn("w-full h-full rounded-[22%] flex items-center justify-center shadow-sm", RESUME_ICON.accent)}>
             <RESUME_ICON.icon className="h-1/2 w-1/2" />
           </span>
         </DockIcon>
