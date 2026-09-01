@@ -100,6 +100,36 @@
   @apply bg-muted-foreground/50;
 }
 
+/* Dark scrollbar for the terminal app, which sits on a near-black surface
+   regardless of the light/dark theme toggle. */
+.terminal-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+}
+
+.terminal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+/* Hides the scrollbar on the terminal's horizontally-scrolling quick-command
+   chip row while keeping it scrollable (mobile users swipe, not drag a bar). */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 /* Terminal cursor animation */
 @keyframes blink {
   0%,
