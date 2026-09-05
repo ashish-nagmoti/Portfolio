@@ -5,12 +5,14 @@ const SIZES = {
   sm: { box: "h-7 w-7", icon: "h-3.5 w-3.5" },
   md: { box: "h-9 w-9", icon: "h-4 w-4" },
   lg: { box: "h-11 w-11", icon: "h-5 w-5" },
+  xl: { box: "h-16 w-16", icon: "h-7 w-7" },
 } as const
 
 interface IconBadgeProps {
   icon: LucideIcon
   gradient: string
   size?: keyof typeof SIZES
+  /** Color override only (e.g. "text-emerald-400") — replaces the white default entirely, so never pass a size class here. Use `size` for that. */
   iconClassName?: string
   className?: string
 }

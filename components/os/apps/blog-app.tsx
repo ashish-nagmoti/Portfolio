@@ -2,9 +2,6 @@
 
 import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
-import { IconBadge } from "@/components/os/icon-badge"
-import { NativeSection, NativeRow } from "@/components/os/native-list"
-import { Newspaper } from "lucide-react"
 
 const blogPosts = [
   {
@@ -49,48 +46,82 @@ const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.08 },
+    transition: { staggerChildren: 0.06 },
   },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 12 },
   visible: { opacity: 1, y: 0 },
 }
 
-export function BlogApp() {
+// Mirrors the real Calendar.app icon: a red month header over a white day
+// number — used here as the "event date" marker in Calendar's list view.
+function DateChip({ dateStr }: { dateStr: string }) {
+  const date = new Date(dateStr)
+  const day = date.getDate()
+  const month = date.toLocaleDateString("en-US", { month: "short" }).toUpperCase()
+  const weekday = date.toLocaleDateString("en-US", { weekday: "short" })
   return (
-    <motion.div variants={containerVariants} initial="hidden" animate="visible" className="p-6 space-y-6">
-      <motion.div variants={itemVariants}>
-        <NativeSection label={`${blogPosts.length} Posts`}>
-          {blogPosts.map((post) => (
-            <NativeRow
-              key={post.id}
-              icon={<IconBadge icon={Newspaper} gradient="from-orange-400 to-amber-600" size="md" />}
-              title={post.title}
-              subtitle={
-                <>
-                  {post.excerpt}
-                  <div className="mt-1.5 flex flex-wrap gap-1.5">
+    <div className="flex shrink-0 flex-col items-center">
+      <div className="w-12 overflow-hidden rounded-lg border border-black/[0.08] shadow-sm dark:border-white/[0.1]">
+        <div className="bg-red-500 py-0.5 text-center text-[9px] font-bold tracking-wide text-white">{month}</div>
+        <div className="flex h-8 items-center justify-center bg-white text-lg font-semibold text-zinc-900 dark:bg-zinc-800 dark:text-white">
+          {day}
+        </div>
+      </div>
+      <span className="mt-1 text-[10px] text-muted-foreground">{weekday}</span>
+    </div>
+  )
+}
+
+function groupByMonth(posts: typeof blogPosts) {
+  const sorted = [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  const groups: { label: string; posts: typeof blogPosts }[] = []
+  for (const post of sorted) {
+    const label = new Date(post.date).toLocaleDateString("en-US", { month: "long", year: "numeric" })
+    const group = groups.find((g) => g.label === label)
+    if (group) group.posts.push(post)
+    else groups.push({ label, posts: [post] })
+  }
+  return groups
+}
+
+export function BlogApp() {
+  const groups = groupByMonth(blogPosts)
+
+  return (
+    <motion.div variants={containerVariants} initial="hidden" animate="visible" className="p-6 space-y-7">
+      {groups.map((group) => (
+        <motion.div key={group.label} variants={itemVariants}>
+          <h3 className="mb-3 px-1 text-sm font-semibold text-muted-foreground">{group.label}</h3>
+          <div className="space-y-2">
+            {group.posts.map((post) => (
+              <a
+                key={post.id}
+                href={post.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-4 rounded-xl border border-black/[0.06] bg-card p-3 transition-colors hover:bg-black/[0.02] dark:border-white/[0.08] dark:hover:bg-white/[0.03]"
+              >
+                <DateChip dateStr={post.date} />
+                <div className="min-w-0 flex-1 pt-0.5">
+                  <p className="font-medium leading-tight">{post.title}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{post.excerpt}</p>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
                     {post.tags.map((tag) => (
                       <Badge key={tag} variant="outline" className="text-xs">
                         {tag}
                       </Badge>
                     ))}
                   </div>
-                </>
-              }
-              trailing={
-                <div className="flex shrink-0 flex-col items-end gap-1 text-xs text-muted-foreground">
-                  <span>{new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
-                  <span>{post.readTime}</span>
                 </div>
-              }
-              href={post.url}
-            />
-          ))}
-        </NativeSection>
-      </motion.div>
+                <span className="shrink-0 pt-0.5 text-xs text-muted-foreground">{post.readTime}</span>
+              </a>
+            ))}
+          </div>
+        </motion.div>
+      ))}
 
       <motion.div
         variants={itemVariants}
