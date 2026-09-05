@@ -206,9 +206,9 @@ export function InterestsApp() {
             <thead>
               <tr className="border-b border-white/10 text-left text-xs text-[#a7a7a7]">
                 <th className="w-10 py-2 pl-3 font-normal">#</th>
-                <th className="py-2 font-normal">Title</th>
-                <th className="hidden py-2 font-normal sm:table-cell">Date added</th>
-                <th className="w-10 py-2 pr-3 text-right font-normal">
+                <th className="py-2 pr-3 font-normal">Title</th>
+                <th className="hidden py-2 pr-3 font-normal sm:table-cell">Date added</th>
+                <th className="w-10 py-2 pr-3 font-normal">
                   <Heart className="ml-auto h-4 w-4" />
                 </th>
               </tr>
@@ -229,28 +229,24 @@ export function InterestsApp() {
                       </button>
                     </td>
                     <td className="py-2 pr-3">
-                      <button onClick={() => playItem(item.id)} className="flex min-w-0 items-center gap-3 text-left">
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex min-w-0 items-center gap-3 text-left"
+                      >
                         <Cover type={item.type} className="h-10 w-10" iconClassName="h-4 w-4" />
                         <div className="min-w-0">
-                          <p className={cn("truncate font-medium", active ? "text-[#1DB954]" : "text-white")}>{item.title}</p>
+                          <p className={cn("truncate font-medium hover:underline", active ? "text-[#1DB954]" : "text-white")}>
+                            {item.title}
+                          </p>
                           <p className="truncate text-xs text-[#a7a7a7]">{item.author}</p>
                         </div>
-                      </button>
+                      </a>
                     </td>
                     <td className="hidden whitespace-nowrap py-2 pr-3 text-xs text-[#a7a7a7] sm:table-cell">{fmtDate(item.dateAdded)}</td>
-                    <td className="py-2 pr-3">
-                      <div className="flex items-center justify-end gap-3">
-                        <Heart className="h-4 w-4 fill-[#1DB954] text-[#1DB954]" />
-                        <a
-                          href={item.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Open ${item.title}`}
-                          className="text-[#a7a7a7] opacity-0 transition-opacity hover:text-white group-hover:opacity-100"
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </a>
-                      </div>
+                    <td className="w-10 py-2 pr-3">
+                      <Heart className="ml-auto h-4 w-4 fill-[#1DB954] text-[#1DB954]" />
                     </td>
                   </tr>
                 )
