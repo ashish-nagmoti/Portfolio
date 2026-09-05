@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { IconBadge } from "@/components/os/icon-badge"
 import { NativeSection, NativeRow } from "@/components/os/native-list"
-import { Mail, Linkedin, Github, Globe, MapPin, Clock, ExternalLink, Copy, Check } from "lucide-react"
+import { Mail, Linkedin, Github, Globe, ExternalLink, Copy, Check } from "lucide-react"
 
 const contactMethods = [
   {
@@ -125,16 +125,8 @@ export function ContactApp() {
 
         <motion.div variants={itemVariants} className="space-y-6">
           <NativeSection label="Location & Availability">
-            <NativeRow
-              icon={<IconBadge icon={MapPin} gradient="from-emerald-400 to-green-600" size="md" />}
-              title="Maharashtra, India"
-              subtitle="Open to work (remote/onsite)"
-            />
-            <NativeRow
-              icon={<IconBadge icon={Clock} gradient="from-amber-400 to-orange-500" size="md" />}
-              title="UTC+5:30 (IST)"
-              subtitle="Flexible with global teams"
-            />
+            <NativeRow title="Maharashtra, India" subtitle="Open to work (remote/onsite)" />
+            <NativeRow title="UTC+5:30 (IST)" subtitle="Flexible with global teams" />
           </NativeSection>
 
           <NativeSection label="Services Offered">
