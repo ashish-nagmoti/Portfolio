@@ -104,8 +104,8 @@ export function Spotlight({ open, onClose, onOpenApp }: SpotlightProps) {
                           i === activeIndex ? "bg-primary text-primary-foreground" : "hover:bg-black/5 dark:hover:bg-white/10",
                         )}
                       >
-                        <span className={cn("p-1.5 rounded-lg", app.accent)}>
-                          <app.icon className="h-4 w-4" />
+                        <span className={cn("p-1.5 rounded-lg squircle", app.accent)}>
+                          <app.icon className={cn("h-4 w-4", app.iconClassName ?? "text-white")} strokeWidth={2.25} />
                         </span>
                         <span className="text-sm font-medium">{app.title}</span>
                       </button>

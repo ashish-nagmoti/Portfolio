@@ -269,9 +269,13 @@ export function Desktop({ initialApp }: DesktopProps) {
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
               className="flex flex-col items-center gap-1.5 w-16 sm:w-20 text-center"
             >
-              <span className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] shadow-md">
+              <span className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] shadow-lg">
                 <span className={cn("squircle absolute inset-0 flex items-center justify-center", app.accent)}>
-                  <app.icon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={2.25} />
+                  <span className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/5 to-transparent" />
+                  <app.icon
+                    className={cn("relative h-7 w-7 sm:h-8 sm:w-8 drop-shadow-sm", app.iconClassName ?? "text-white")}
+                    strokeWidth={2.25}
+                  />
                 </span>
               </span>
               <span className="text-[11px] sm:text-xs font-medium text-foreground/90 leading-tight drop-shadow-sm">
@@ -289,9 +293,13 @@ export function Desktop({ initialApp }: DesktopProps) {
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
           className="flex flex-col items-center gap-1.5 w-16 sm:w-20 text-center"
         >
-          <span className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] shadow-md">
+          <span className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] shadow-lg">
             <span className={cn("squircle absolute inset-0 flex items-center justify-center", RESUME_ICON.accent)}>
-              <RESUME_ICON.icon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={2.25} />
+              <span className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/10 to-transparent" />
+              <RESUME_ICON.icon
+                className={cn("relative h-7 w-7 sm:h-8 sm:w-8 drop-shadow-sm", RESUME_ICON.iconClassName)}
+                strokeWidth={2.25}
+              />
             </span>
           </span>
           <span className="text-[11px] sm:text-xs font-medium text-foreground/90 leading-tight drop-shadow-sm">

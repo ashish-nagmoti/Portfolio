@@ -13,6 +13,7 @@ export interface AppDef {
   title: string
   icon: LucideIcon
   accent: string
+  iconClassName?: string
   defaultSize: { width: number; height: number }
   defaultPos: { x: number; y: number }
   Content: ComponentType
@@ -23,7 +24,7 @@ export const APPS: Record<AppId, AppDef> = {
     id: "about",
     title: "About.txt",
     icon: User,
-    accent: "bg-gradient-to-b from-clay-indigo/20 to-clay-indigo/35 text-clay-indigo",
+    accent: "bg-gradient-to-b from-violet-400 to-indigo-600",
     defaultSize: { width: 760, height: 620 },
     defaultPos: { x: 90, y: 90 },
     Content: AboutApp,
@@ -32,7 +33,7 @@ export const APPS: Record<AppId, AppDef> = {
     id: "projects",
     title: "Projects/",
     icon: FolderGit2,
-    accent: "bg-gradient-to-b from-clay-sky/25 to-clay-sky/40 text-clay-sky",
+    accent: "bg-gradient-to-b from-sky-400 to-blue-600",
     defaultSize: { width: 780, height: 580 },
     defaultPos: { x: 150, y: 130 },
     Content: ProjectsApp,
@@ -41,7 +42,8 @@ export const APPS: Record<AppId, AppDef> = {
     id: "terminal",
     title: "Terminal",
     icon: TerminalSquare,
-    accent: "bg-gradient-to-b from-clay-mint/25 to-clay-mint/40 text-clay-mint",
+    accent: "bg-gradient-to-b from-zinc-700 to-zinc-900",
+    iconClassName: "text-emerald-400",
     defaultSize: { width: 680, height: 520 },
     defaultPos: { x: 210, y: 160 },
     Content: TerminalApp,
@@ -50,7 +52,7 @@ export const APPS: Record<AppId, AppDef> = {
     id: "contact",
     title: "Contact.app",
     icon: Mail,
-    accent: "bg-gradient-to-b from-clay-pink/25 to-clay-pink/40 text-clay-pink",
+    accent: "bg-gradient-to-b from-rose-400 to-rose-600",
     defaultSize: { width: 780, height: 620 },
     defaultPos: { x: 130, y: 100 },
     Content: ContactApp,
@@ -59,7 +61,7 @@ export const APPS: Record<AppId, AppDef> = {
     id: "blog",
     title: "Blog",
     icon: Newspaper,
-    accent: "bg-gradient-to-b from-clay-peach/25 to-clay-peach/40 text-clay-peach",
+    accent: "bg-gradient-to-b from-orange-400 to-orange-600",
     defaultSize: { width: 640, height: 580 },
     defaultPos: { x: 190, y: 175 },
     Content: BlogApp,
@@ -68,7 +70,7 @@ export const APPS: Record<AppId, AppDef> = {
     id: "interests",
     title: "Interests",
     icon: Sparkles,
-    accent: "bg-gradient-to-b from-clay-pink/25 to-clay-pink/40 text-clay-pink",
+    accent: "bg-gradient-to-b from-fuchsia-400 to-pink-600",
     defaultSize: { width: 740, height: 620 },
     defaultPos: { x: 230, y: 140 },
     Content: InterestsApp,
@@ -80,6 +82,7 @@ export const APP_ORDER: AppId[] = ["about", "projects", "terminal", "contact", "
 export const RESUME_ICON = {
   title: "Resume.pdf",
   icon: FileText,
-  accent: "bg-gradient-to-b from-white to-secondary text-foreground dark:from-white/10 dark:to-secondary",
+  accent: "bg-gradient-to-b from-white to-slate-200",
+  iconClassName: "text-slate-700",
   href: "/clg_resume_v3.pdf",
 }
