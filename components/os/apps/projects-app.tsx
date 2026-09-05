@@ -1,12 +1,13 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { IconBadge } from "@/components/os/icon-badge"
-import { ExternalLink, Github, Code, Brain, Globe } from "lucide-react"
+import { NativeSection, NativeRow } from "@/components/os/native-list"
+import { ExternalLink, Github, Brain, Globe, Code } from "lucide-react"
 
 const CATEGORY_GRADIENT: Record<string, string> = {
   AI: "from-violet-400 to-fuchsia-600",
@@ -69,94 +70,96 @@ const itemVariants = {
 }
 
 export function ProjectsApp() {
+  const [selected, setSelected] = useState<(typeof projects)[number] | null>(null)
+
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="p-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {projects.map((project) => (
-          <motion.div key={project.id} variants={itemVariants} whileHover={{ y: -6 }} transition={{ type: "spring", stiffness: 300 }}>
-            <Card className="h-full group cursor-pointer relative hover:shadow-clay-lg transition-all duration-300">
-              <div className="absolute top-4 right-4 z-10">
-                <Badge variant="secondary" className="text-xs">{project.category}</Badge>
-              </div>
-              <div className="flex flex-col items-start sm:items-center justify-center py-5 sm:py-8 gap-3 px-5 text-left sm:text-center">
+      <motion.div variants={itemVariants}>
+        <NativeSection label={`${projects.length} Projects`}>
+          {projects.map((project) => (
+            <NativeRow
+              key={project.id}
+              icon={
                 <IconBadge
                   icon={project.icon}
                   gradient={CATEGORY_GRADIENT[project.category] ?? "from-violet-400 to-indigo-600"}
-                  size="lg"
-                  className="mb-1 sm:h-16 sm:w-16"
-                  iconClassName="text-white sm:h-7 sm:w-7"
+                  size="md"
                 />
-                <h2 className="text-base font-bold leading-tight">{project.title}</h2>
-                <p className="text-xs text-muted-foreground font-semibold tracking-wide">{project.date}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed">{project.description}</p>
-                <div className="flex flex-wrap justify-start sm:justify-center gap-2">
-                  {project.tech.map((tech) => (
-                    <Badge key={tech} variant="outline" className="text-xs">
-                      {tech}
-                    </Badge>
-                  ))}
+              }
+              title={project.title}
+              subtitle={
+                <>
+                  {project.description}
+                  <div className="mt-1.5 flex flex-wrap gap-1.5">
+                    {project.tech.map((tech) => (
+                      <Badge key={tech} variant="outline" className="text-xs">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+                </>
+              }
+              trailing={
+                <div className="flex shrink-0 flex-col items-end gap-1.5">
+                  <Badge variant="secondary" className="text-xs">
+                    {project.category}
+                  </Badge>
+                  <span className="text-xs text-muted-foreground">{project.date}</span>
                 </div>
-                <div className="flex gap-2 justify-start sm:justify-center mt-1">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" size="sm">
-                        <Code className="h-4 w-4 mr-2" />
-                        Details
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl">
-                      <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2.5">
-                          <IconBadge
-                            icon={project.icon}
-                            gradient={CATEGORY_GRADIENT[project.category] ?? "from-violet-400 to-indigo-600"}
-                            size="sm"
-                          />
-                          {project.title}
-                        </DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <p className="text-muted-foreground">{project.longDescription}</p>
-                        <div>
-                          <h4 className="font-semibold mb-2">Technologies Used:</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {project.tech.map((tech) => (
-                              <Badge key={tech} variant="secondary">
-                                {tech}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button asChild>
-                            <a href={project.github} target="_blank" rel="noopener noreferrer">
-                              <Github className="h-4 w-4 mr-2" />
-                              GitHub
-                            </a>
-                          </Button>
-                          {project.demo && project.demo !== "#" && (
-                            <Button variant="outline" asChild>
-                              <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                                <ExternalLink className="h-4 w-4 mr-2" />
-                                Live Demo
-                              </a>
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                  <Button variant="ghost" size="icon" asChild>
-                    <a href={project.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="h-4 w-4" />
+              }
+              onClick={() => setSelected(project)}
+            />
+          ))}
+        </NativeSection>
+      </motion.div>
+
+      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
+        <DialogContent className="max-w-2xl">
+          {selected && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2.5">
+                  <IconBadge
+                    icon={selected.icon}
+                    gradient={CATEGORY_GRADIENT[selected.category] ?? "from-violet-400 to-indigo-600"}
+                    size="sm"
+                  />
+                  {selected.title}
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <p className="text-muted-foreground">{selected.longDescription}</p>
+                <div>
+                  <h4 className="font-semibold mb-2">Technologies Used:</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selected.tech.map((tech) => (
+                      <Badge key={tech} variant="secondary">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button asChild>
+                    <a href={selected.github} target="_blank" rel="noopener noreferrer">
+                      <Github className="h-4 w-4 mr-2" />
+                      GitHub
                     </a>
                   </Button>
+                  {selected.demo && selected.demo !== "#" && (
+                    <Button variant="outline" asChild>
+                      <a href={selected.demo} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Live Demo
+                      </a>
+                    </Button>
+                  )}
                 </div>
               </div>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </motion.div>
   )
 }

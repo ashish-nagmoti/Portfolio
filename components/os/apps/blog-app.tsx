@@ -1,10 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Calendar, Clock, ArrowRight } from "lucide-react"
+import { IconBadge } from "@/components/os/icon-badge"
+import { NativeSection, NativeRow } from "@/components/os/native-list"
+import { Newspaper } from "lucide-react"
 
 const blogPosts = [
   {
@@ -61,48 +61,44 @@ const itemVariants = {
 export function BlogApp() {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="visible" className="p-6 space-y-6">
-      {blogPosts.map((post) => (
-        <motion.div key={post.id} variants={itemVariants} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
-          <Card className="group cursor-pointer hover:-translate-y-1 hover:shadow-clay-lg transition-all duration-300">
-            <CardHeader>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
-                <div className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
-                  {new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+      <motion.div variants={itemVariants}>
+        <NativeSection label={`${blogPosts.length} Posts`}>
+          {blogPosts.map((post) => (
+            <NativeRow
+              key={post.id}
+              icon={<IconBadge icon={Newspaper} gradient="from-orange-400 to-amber-600" size="md" />}
+              title={post.title}
+              subtitle={
+                <>
+                  {post.excerpt}
+                  <div className="mt-1.5 flex flex-wrap gap-1.5">
+                    {post.tags.map((tag) => (
+                      <Badge key={tag} variant="outline" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </>
+              }
+              trailing={
+                <div className="flex shrink-0 flex-col items-end gap-1 text-xs text-muted-foreground">
+                  <span>{new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                  <span>{post.readTime}</span>
                 </div>
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  {post.readTime}
-                </div>
-              </div>
-              <CardTitle className="group-hover:text-primary transition-colors text-lg">{post.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">{post.excerpt}</p>
-              <div className="flex items-center justify-between">
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-                <Button variant="ghost" size="sm" className="group/btn" asChild>
-                  <a href={post.url} target="_blank" rel="noopener noreferrer">
-                    Read More
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      ))}
+              }
+              href={post.url}
+            />
+          ))}
+        </NativeSection>
+      </motion.div>
 
-      <motion.div variants={itemVariants} className="text-center p-8 rounded-3xl bg-card shadow-clay-inset">
+      <motion.div
+        variants={itemVariants}
+        className="rounded-2xl border border-black/[0.06] bg-card p-8 text-center dark:border-white/[0.08]"
+      >
         <h3 className="text-lg font-semibold mb-2">More Posts Coming Soon</h3>
         <p className="text-muted-foreground text-sm">
-          I'm working on more in-depth articles about AI engineering, cloud architecture, and backend development.
+          I&apos;m working on more in-depth articles about AI engineering, cloud architecture, and backend development.
         </p>
       </motion.div>
     </motion.div>

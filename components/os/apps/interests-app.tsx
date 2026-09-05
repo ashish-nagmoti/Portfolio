@@ -2,11 +2,11 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { IconBadge } from "@/components/os/icon-badge"
-import { Headphones, Trophy, Coffee, Globe, BookOpen, LinkIcon, Star, Youtube, ExternalLink, Calendar } from "lucide-react"
+import { NativeSection, NativeRow } from "@/components/os/native-list"
+import { Headphones, Trophy, Coffee, Globe, BookOpen, LinkIcon, Star, Youtube } from "lucide-react"
 
 const interestItems = [
   {
@@ -177,64 +177,55 @@ export function InterestsApp() {
         </div>
       </motion.div>
 
-      <div className="space-y-6">
-        {filteredItems.map((item) => {
-          const Icon = getIcon(item.type)
-          return (
-            <motion.div key={item.id} variants={itemVariants} whileHover={{ y: -2 }} transition={{ type: "spring", stiffness: 300 }}>
-              <Card className="group cursor-pointer hover:-translate-y-1 hover:shadow-clay-lg transition-all duration-300">
-                <CardHeader>
-                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-                    <div className="flex items-start gap-3 flex-1 min-w-0">
-                      <IconBadge icon={Icon} gradient={getTypeGradient(item.type)} size="md" />
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="group-hover:text-primary transition-colors text-base leading-tight">
-                          {item.title}
-                        </CardTitle>
-                        <p className="text-sm text-muted-foreground mt-1">by {item.author}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 pl-[52px] sm:pl-0 sm:flex-shrink-0">
-                      <Badge className={getTypeColor(item.type)}>{item.type}</Badge>
-                      <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className={`h-3.5 w-3.5 ${i < item.rating ? "text-yellow-400 fill-current" : "text-muted-foreground/30"}`} />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4 leading-relaxed text-sm">{item.description}</p>
-                  <div className="flex items-center justify-between flex-wrap gap-3">
-                    <div className="flex flex-wrap gap-2">
+      <motion.div variants={itemVariants}>
+        <NativeSection label={`${filteredItems.length} Saved`}>
+          {filteredItems.map((item) => {
+            const Icon = getIcon(item.type)
+            return (
+              <NativeRow
+                key={item.id}
+                icon={<IconBadge icon={Icon} gradient={getTypeGradient(item.type)} size="md" />}
+                title={item.title}
+                subtitle={
+                  <>
+                    by {item.author}
+                    <p className="mt-1">{item.description}</p>
+                    <div className="mt-1.5 flex flex-wrap gap-1.5">
                       {item.tags.map((tag) => (
                         <Badge key={tag} variant="outline" className="text-xs">
                           {tag}
                         </Badge>
                       ))}
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        {new Date(item.dateAdded).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                      </div>
-                      <Button variant="ghost" size="sm" asChild>
-                        <a href={item.url} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Read
-                        </a>
-                      </Button>
+                  </>
+                }
+                trailing={
+                  <div className="flex shrink-0 flex-col items-end gap-1.5">
+                    <Badge className={getTypeColor(item.type)}>{item.type}</Badge>
+                    <div className="flex items-center">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-3.5 w-3.5 ${i < item.rating ? "text-yellow-400 fill-current" : "text-muted-foreground/30"}`}
+                        />
+                      ))}
                     </div>
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(item.dateAdded).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                    </span>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )
-        })}
-      </div>
+                }
+                href={item.url}
+              />
+            )
+          })}
+        </NativeSection>
+      </motion.div>
 
-      <motion.div variants={itemVariants} className="p-8 rounded-3xl bg-gradient-to-br from-clay-sky/15 via-primary/10 to-clay-pink/15 shadow-clay">
+      <motion.div
+        variants={itemVariants}
+        className="rounded-2xl border border-black/[0.06] bg-gradient-to-br from-clay-sky/10 via-primary/5 to-clay-pink/10 p-8 dark:border-white/[0.08]"
+      >
         <h3 className="text-xl font-bold mb-6 text-center">Fun Facts About Me</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {[
@@ -252,10 +243,13 @@ export function InterestsApp() {
         </div>
       </motion.div>
 
-      <motion.div variants={itemVariants} className="text-center p-8 rounded-3xl bg-card shadow-clay-inset">
+      <motion.div
+        variants={itemVariants}
+        className="text-center rounded-2xl border border-black/[0.06] bg-card p-8 dark:border-white/[0.08]"
+      >
         <blockquote className="text-base italic text-muted-foreground mb-4">
-          "The best way to predict the future is to create it. Whether it's through code, community, or personal
-          growth, I believe in continuous learning and making a positive impact."
+          &quot;The best way to predict the future is to create it. Whether it&apos;s through code, community, or
+          personal growth, I believe in continuous learning and making a positive impact.&quot;
         </blockquote>
         <cite className="text-sm font-semibold">— My Personal Philosophy</cite>
       </motion.div>
