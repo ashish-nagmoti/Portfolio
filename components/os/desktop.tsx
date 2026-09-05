@@ -11,6 +11,7 @@ import { MenuBar } from "./menubar"
 import { StatusBar } from "./ios/status-bar"
 import { Spotlight } from "./spotlight"
 import { OSContextMenu } from "./context-menu"
+import { SquircleDefs } from "./squircle-defs"
 import type { AppId, OpenWindow } from "./types"
 import { cn } from "@/lib/utils"
 
@@ -211,6 +212,7 @@ export function Desktop({ initialApp }: DesktopProps) {
         setContextMenu({ x: e.clientX, y: e.clientY })
       }}
     >
+      <SquircleDefs />
       {/* Wallpaper */}
       <div className={cn("pointer-events-none absolute inset-0 overflow-hidden bg-gradient-to-br", WALLPAPERS[wallpaperIdx])}>
         <div className="clay-blob absolute -top-32 -left-20 h-[32rem] w-[32rem] rounded-full bg-clay-indigo/30 blur-[100px]" />
@@ -267,8 +269,10 @@ export function Desktop({ initialApp }: DesktopProps) {
               transition={{ type: "spring", stiffness: 400, damping: 20 }}
               className="flex flex-col items-center gap-1.5 w-16 sm:w-20 text-center"
             >
-              <span className={cn("w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] flex items-center justify-center shadow-md", app.accent)}>
-                <app.icon className="h-6 w-6 sm:h-7 sm:w-7" />
+              <span className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] shadow-md">
+                <span className={cn("squircle absolute inset-0 flex items-center justify-center", app.accent)}>
+                  <app.icon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={2.25} />
+                </span>
               </span>
               <span className="text-[11px] sm:text-xs font-medium text-foreground/90 leading-tight drop-shadow-sm">
                 {app.title}
@@ -285,8 +289,10 @@ export function Desktop({ initialApp }: DesktopProps) {
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
           className="flex flex-col items-center gap-1.5 w-16 sm:w-20 text-center"
         >
-          <span className={cn("w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] flex items-center justify-center shadow-md", RESUME_ICON.accent)}>
-            <RESUME_ICON.icon className="h-6 w-6 sm:h-7 sm:w-7" />
+          <span className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] shadow-md">
+            <span className={cn("squircle absolute inset-0 flex items-center justify-center", RESUME_ICON.accent)}>
+              <RESUME_ICON.icon className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={2.25} />
+            </span>
           </span>
           <span className="text-[11px] sm:text-xs font-medium text-foreground/90 leading-tight drop-shadow-sm">
             {RESUME_ICON.title}

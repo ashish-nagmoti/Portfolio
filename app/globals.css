@@ -161,6 +161,11 @@
   animation: float-blob 14s ease-in-out infinite;
 }
 
+/* True macOS icon shape (continuous-curvature squircle) — see squircle-defs.tsx */
+.squircle {
+  clip-path: url(#squircle-clip);
+}
+
 /* Smooth transitions */
 * {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, box-shadow, transform;

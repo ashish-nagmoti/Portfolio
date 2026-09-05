@@ -121,8 +121,10 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
               isOpen={openWindows.some((w) => w.id === id)}
               bounceToken={bounceId === id ? bounceToken : undefined}
             >
-              <span className={cn("w-full h-full rounded-[22%] flex items-center justify-center shadow-sm", app.accent)}>
-                <app.icon className="h-1/2 w-1/2" />
+              <span className="relative w-full h-full rounded-[22%] shadow-sm">
+                <span className={cn("squircle absolute inset-0 flex items-center justify-center", app.accent)}>
+                  <app.icon className="h-1/2 w-1/2" strokeWidth={2.25} />
+                </span>
               </span>
             </DockIcon>
           )
@@ -131,8 +133,10 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
         <div className="w-px h-11 bg-black/10 dark:bg-white/15 self-center mx-0.5" />
 
         <DockIcon mouseX={mouseX} onClick={() => window.open(RESUME_ICON.href, "_blank")} label={RESUME_ICON.title} isOpen={false}>
-          <span className={cn("w-full h-full rounded-[22%] flex items-center justify-center shadow-sm", RESUME_ICON.accent)}>
-            <RESUME_ICON.icon className="h-1/2 w-1/2" />
+          <span className="relative w-full h-full rounded-[22%] shadow-sm">
+            <span className={cn("squircle absolute inset-0 flex items-center justify-center", RESUME_ICON.accent)}>
+              <RESUME_ICON.icon className="h-1/2 w-1/2" strokeWidth={2.25} />
+            </span>
           </span>
         </DockIcon>
       </motion.div>
