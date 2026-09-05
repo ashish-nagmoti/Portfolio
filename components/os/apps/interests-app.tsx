@@ -2,11 +2,9 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { IconBadge } from "@/components/os/icon-badge"
-import { NativeSection, NativeRow } from "@/components/os/native-list"
-import { Headphones, Trophy, Coffee, Globe, BookOpen, LinkIcon, Star, Youtube } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Headphones, Trophy, Coffee, Globe, BookOpen, LinkIcon, Star, Youtube, Play } from "lucide-react"
 
 const interestItems = [
   {
@@ -99,7 +97,12 @@ const interestItems = [
   },
 ]
 
-const categories = ["All", "blog", "video", "article"]
+const LIBRARY = [
+  { id: "All", label: "All Saved", dot: "bg-foreground/60" },
+  { id: "blog", label: "Blogs", dot: "bg-sky-500" },
+  { id: "video", label: "Videos", dot: "bg-rose-500" },
+  { id: "article", label: "Articles", dot: "bg-emerald-500" },
+] as const
 
 const getIcon = (type: string) => {
   switch (type) {
@@ -111,19 +114,6 @@ const getIcon = (type: string) => {
       return LinkIcon
     default:
       return LinkIcon
-  }
-}
-
-const getTypeColor = (type: string) => {
-  switch (type) {
-    case "blog":
-      return "bg-sky-500/15 text-sky-600 dark:text-sky-300"
-    case "video":
-      return "bg-rose-500/15 text-rose-600 dark:text-rose-300"
-    case "article":
-      return "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300"
-    default:
-      return "bg-secondary text-secondary-foreground"
   }
 }
 
@@ -149,110 +139,144 @@ const containerVariants = {
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 12 },
   visible: { opacity: 1, y: 0 },
 }
 
+const featured = interestItems.reduce((best, item) => (item.rating > best.rating ? item : best), interestItems[0])
+
 export function InterestsApp() {
-  const [selectedCategory, setSelectedCategory] = useState("All")
+  const [selectedCategory, setSelectedCategory] = useState<string>("All")
 
   const filteredItems =
     selectedCategory === "All" ? interestItems : interestItems.filter((item) => item.type === selectedCategory)
 
   return (
-    <motion.div variants={containerVariants} initial="hidden" animate="visible" className="p-6 space-y-8">
-      <motion.div variants={itemVariants} className="flex justify-center">
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedCategory(category)}
-              className="capitalize"
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
-      </motion.div>
-
-      <motion.div variants={itemVariants}>
-        <NativeSection label={`${filteredItems.length} Saved`}>
-          {filteredItems.map((item) => {
-            const Icon = getIcon(item.type)
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="flex min-h-0 flex-1 overflow-hidden">
+        {/* Sidebar, Music.app Library style */}
+        <div className="w-[160px] min-h-0 shrink-0 space-y-0.5 overflow-y-auto border-r border-black/[0.06] p-2 dark:border-white/[0.08]">
+          <p className="px-2 pb-1.5 pt-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">Library</p>
+          {LIBRARY.map((lib) => {
+            const isActive = selectedCategory === lib.id
             return (
-              <NativeRow
-                key={item.id}
-                icon={<IconBadge icon={Icon} gradient={getTypeGradient(item.type)} size="md" />}
-                title={item.title}
-                subtitle={
-                  <>
-                    by {item.author}
-                    <p className="mt-1">{item.description}</p>
-                    <div className="mt-1.5 flex flex-wrap gap-1.5">
-                      {item.tags.map((tag) => (
-                        <Badge key={tag} variant="outline" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </>
-                }
-                trailing={
-                  <div className="flex shrink-0 flex-col items-end gap-1.5">
-                    <Badge className={getTypeColor(item.type)}>{item.type}</Badge>
-                    <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-3.5 w-3.5 ${i < item.rating ? "text-yellow-400 fill-current" : "text-muted-foreground/30"}`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(item.dateAdded).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                    </span>
-                  </div>
-                }
-                href={item.url}
-              />
+              <button
+                key={lib.id}
+                onClick={() => setSelectedCategory(lib.id)}
+                className={cn(
+                  "flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-sm transition-colors",
+                  isActive ? "bg-primary text-primary-foreground" : "text-foreground/80 hover:bg-black/[0.04] dark:hover:bg-white/[0.06]",
+                )}
+              >
+                <span className={cn("h-2 w-2 shrink-0 rounded-full", isActive ? "bg-primary-foreground" : lib.dot)} />
+                {lib.label}
+              </button>
             )
           })}
-        </NativeSection>
-      </motion.div>
-
-      <motion.div
-        variants={itemVariants}
-        className="rounded-2xl border border-black/[0.06] bg-gradient-to-br from-clay-sky/10 via-primary/5 to-clay-pink/10 p-8 dark:border-white/[0.08]"
-      >
-        <h3 className="text-xl font-bold mb-6 text-center">Fun Facts About Me</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {[
-            { icon: Coffee, title: "Coffee Enthusiast", description: "Can't start coding without a perfect cup of coffee", gradient: "from-orange-400 to-amber-600" },
-            { icon: Headphones, title: "Music While Coding", description: "Electronic and lo-fi beats fuel my productivity", gradient: "from-fuchsia-400 to-pink-600" },
-            { icon: Globe, title: "Remote Work Advocate", description: "Believe in the power of distributed teams", gradient: "from-sky-400 to-blue-600" },
-            { icon: Trophy, title: "Hackathon Winner", description: "Won multiple hackathons and coding competitions", gradient: "from-yellow-400 to-amber-600" },
-          ].map((fact) => (
-            <motion.div key={fact.title} className="text-center space-y-3" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
-              <IconBadge icon={fact.icon} gradient={fact.gradient} size="lg" className="mx-auto" />
-              <h4 className="font-semibold text-sm">{fact.title}</h4>
-              <p className="text-xs text-muted-foreground">{fact.description}</p>
-            </motion.div>
-          ))}
         </div>
-      </motion.div>
 
-      <motion.div
-        variants={itemVariants}
-        className="text-center rounded-2xl border border-black/[0.06] bg-card p-8 dark:border-white/[0.08]"
-      >
-        <blockquote className="text-base italic text-muted-foreground mb-4">
-          &quot;The best way to predict the future is to create it. Whether it&apos;s through code, community, or
-          personal growth, I believe in continuous learning and making a positive impact.&quot;
-        </blockquote>
-        <cite className="text-sm font-semibold">— My Personal Philosophy</cite>
-      </motion.div>
-    </motion.div>
+        {/* Song list */}
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="min-h-0 flex-1 overflow-y-auto p-4">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-black/[0.06] text-left text-xs text-muted-foreground dark:border-white/[0.08]">
+                <th className="pb-2 font-medium">Title</th>
+                <th className="hidden pb-2 font-medium sm:table-cell">Type</th>
+                <th className="pb-2 font-medium">Rating</th>
+                <th className="hidden pb-2 font-medium md:table-cell">Added</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredItems.map((item) => {
+                const Icon = getIcon(item.type)
+                return (
+                  <tr
+                    key={item.id}
+                    onClick={() => window.open(item.url, "_blank", "noopener,noreferrer")}
+                    className="group cursor-pointer border-b border-black/[0.04] transition-colors hover:bg-black/[0.02] dark:border-white/[0.06] dark:hover:bg-white/[0.03]"
+                  >
+                    <td className="py-2.5 pr-3">
+                      <div className="flex items-center gap-3">
+                        <IconBadge icon={Icon} gradient={getTypeGradient(item.type)} size="sm" />
+                        <div className="min-w-0">
+                          <p className="truncate font-medium">{item.title}</p>
+                          <p className="truncate text-xs text-muted-foreground">{item.author}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="hidden py-2.5 pr-3 capitalize text-muted-foreground sm:table-cell">{item.type}</td>
+                    <td className="py-2.5 pr-3">
+                      <div className="flex items-center">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={cn("h-3 w-3", i < item.rating ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground/25")}
+                          />
+                        ))}
+                      </div>
+                    </td>
+                    <td className="hidden whitespace-nowrap py-2.5 text-muted-foreground md:table-cell">
+                      {new Date(item.dateAdded).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+
+          {filteredItems.length === 0 && <p className="p-6 text-center text-sm text-muted-foreground">Nothing saved here yet.</p>}
+
+          <motion.div
+            variants={itemVariants}
+            className="mt-8 rounded-2xl border border-black/[0.06] bg-gradient-to-br from-clay-sky/10 via-primary/5 to-clay-pink/10 p-8 dark:border-white/[0.08]"
+          >
+            <h3 className="text-xl font-bold mb-6 text-center">Fun Facts About Me</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {[
+                { icon: Coffee, title: "Coffee Enthusiast", description: "Can't start coding without a perfect cup of coffee", gradient: "from-orange-400 to-amber-600" },
+                { icon: Headphones, title: "Music While Coding", description: "Electronic and lo-fi beats fuel my productivity", gradient: "from-fuchsia-400 to-pink-600" },
+                { icon: Globe, title: "Remote Work Advocate", description: "Believe in the power of distributed teams", gradient: "from-sky-400 to-blue-600" },
+                { icon: Trophy, title: "Hackathon Winner", description: "Won multiple hackathons and coding competitions", gradient: "from-yellow-400 to-amber-600" },
+              ].map((fact) => (
+                <motion.div key={fact.title} className="text-center space-y-3" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
+                  <IconBadge icon={fact.icon} gradient={fact.gradient} size="lg" className="mx-auto" />
+                  <h4 className="font-semibold text-sm">{fact.title}</h4>
+                  <p className="text-xs text-muted-foreground">{fact.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            className="mt-6 text-center rounded-2xl border border-black/[0.06] bg-card p-8 dark:border-white/[0.08]"
+          >
+            <blockquote className="text-base italic text-muted-foreground mb-4">
+              &quot;The best way to predict the future is to create it. Whether it&apos;s through code, community, or
+              personal growth, I believe in continuous learning and making a positive impact.&quot;
+            </blockquote>
+            <cite className="text-sm font-semibold">— My Personal Philosophy</cite>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Now Playing bar, Music.app style */}
+      <div className="flex shrink-0 items-center gap-3 border-t border-black/[0.06] px-4 py-2.5 dark:border-white/[0.08]">
+        <IconBadge icon={getIcon(featured.type)} gradient={getTypeGradient(featured.type)} size="md" />
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium">{featured.title}</p>
+          <p className="truncate text-xs text-muted-foreground">{featured.author}</p>
+        </div>
+        <a
+          href={featured.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${featured.title}`}
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground text-background transition-transform hover:scale-105"
+        >
+          <Play className="ml-0.5 h-3.5 w-3.5 fill-current" />
+        </a>
+      </div>
+    </div>
   )
 }

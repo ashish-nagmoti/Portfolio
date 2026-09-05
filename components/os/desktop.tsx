@@ -246,7 +246,7 @@ export function Desktop({ initialApp }: DesktopProps) {
         variants={iconContainerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-0 grid grid-cols-4 gap-x-3 gap-y-6 p-5 pt-16 justify-items-center sm:absolute sm:top-11 sm:right-4 sm:grid-cols-1 sm:justify-items-end sm:gap-5 sm:p-0 w-full sm:w-auto"
+        className="relative z-0 grid grid-cols-4 gap-x-3 gap-y-6 p-5 pt-16 justify-items-center sm:absolute sm:top-11 sm:bottom-24 sm:right-4 sm:grid-cols-1 sm:justify-items-end sm:gap-5 sm:overflow-y-auto sm:p-0 sm:pr-1 w-full sm:w-auto"
       >
         {isMobile && (
           <button

@@ -217,7 +217,7 @@ export function Window({
           {app.title}
         </span>
       </div>
-      <div className="flex-1 overflow-y-auto overscroll-contain bg-background">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-background">
         <Content />
       </div>
       {!maximized && (
