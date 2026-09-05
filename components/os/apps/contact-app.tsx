@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { IconBadge } from "@/components/os/icon-badge"
 import {
   Mail,
   Linkedin,
@@ -26,6 +27,7 @@ const contactMethods = [
     href: "mailto:ashishnagmoti2310@gmail.com",
     description: "Best for project inquiries and detailed discussions",
     primary: true,
+    gradient: "from-violet-400 to-indigo-600",
   },
   {
     icon: Linkedin,
@@ -34,6 +36,7 @@ const contactMethods = [
     href: "https://www.linkedin.com/in/ashish-nagmoti-54269b249",
     description: "Professional networking and career opportunities",
     primary: true,
+    gradient: "from-sky-500 to-blue-700",
   },
   {
     icon: Github,
@@ -42,6 +45,7 @@ const contactMethods = [
     href: "https://github.com/ashish-nagmoti",
     description: "Check out my code and open source contributions",
     primary: false,
+    gradient: "from-zinc-700 to-zinc-900",
   },
   {
     icon: Globe,
@@ -50,6 +54,7 @@ const contactMethods = [
     href: "https://medium.com/@ashishnagmoti7",
     description: "My technical blog on Medium",
     primary: false,
+    gradient: "from-slate-600 to-slate-800",
   },
 ]
 
@@ -91,8 +96,8 @@ export function ContactApp() {
         <motion.div variants={itemVariants} className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MessageCircle className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2.5">
+                <IconBadge icon={MessageCircle} gradient="from-violet-400 to-indigo-600" size="sm" />
                 Get In Touch
               </CardTitle>
             </CardHeader>
@@ -105,9 +110,7 @@ export function ContactApp() {
                   }`}
                 >
                   <div className="flex items-center gap-4 min-w-0">
-                    <div className={`p-2 rounded-full shrink-0 ${method.primary ? "bg-primary/15" : "bg-secondary"}`}>
-                      <method.icon className={`h-5 w-5 ${method.primary ? "text-primary" : "text-muted-foreground"}`} />
-                    </div>
+                    <IconBadge icon={method.icon} gradient={method.gradient} size="md" />
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{method.label}</span>
@@ -142,21 +145,21 @@ export function ContactApp() {
         <motion.div variants={itemVariants} className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MapPin className="h-5 w-5" />
+              <CardTitle className="flex items-center gap-2.5">
+                <IconBadge icon={MapPin} gradient="from-emerald-400 to-green-600" size="sm" />
                 Location & Availability
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-3">
-                <MapPin className="h-4 w-4 text-muted-foreground shrink-0" />
+                <IconBadge icon={MapPin} gradient="from-emerald-400 to-green-600" size="md" />
                 <div>
                   <p className="font-medium">Maharashtra, India</p>
                   <p className="text-sm text-muted-foreground">Open to work (remote/onsite)</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
+                <IconBadge icon={Clock} gradient="from-amber-400 to-orange-500" size="md" />
                 <div>
                   <p className="font-medium">UTC+5:30 (IST)</p>
                   <p className="text-sm text-muted-foreground">Flexible with global teams</p>

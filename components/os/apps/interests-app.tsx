@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { IconBadge } from "@/components/os/icon-badge"
 import { Headphones, Trophy, Coffee, Globe, BookOpen, LinkIcon, Star, Youtube, ExternalLink, Calendar } from "lucide-react"
 
 const interestItems = [
@@ -116,13 +117,26 @@ const getIcon = (type: string) => {
 const getTypeColor = (type: string) => {
   switch (type) {
     case "blog":
-      return "bg-clay-sky/20 text-clay-sky"
+      return "bg-sky-500/15 text-sky-600 dark:text-sky-300"
     case "video":
-      return "bg-clay-pink/20 text-clay-pink"
+      return "bg-rose-500/15 text-rose-600 dark:text-rose-300"
     case "article":
-      return "bg-clay-mint/20 text-clay-mint"
+      return "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300"
     default:
       return "bg-secondary text-secondary-foreground"
+  }
+}
+
+const getTypeGradient = (type: string) => {
+  switch (type) {
+    case "blog":
+      return "from-sky-400 to-blue-600"
+    case "video":
+      return "from-rose-400 to-rose-600"
+    case "article":
+      return "from-emerald-400 to-green-600"
+    default:
+      return "from-zinc-500 to-zinc-700"
   }
 }
 
@@ -172,9 +186,7 @@ export function InterestsApp() {
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
                     <div className="flex items-start gap-3 flex-1 min-w-0">
-                      <div className="p-2 rounded-full bg-secondary shadow-clay-sm group-hover:bg-primary/10 transition-colors shrink-0">
-                        <Icon className="h-5 w-5 group-hover:text-primary transition-colors" />
-                      </div>
+                      <IconBadge icon={Icon} gradient={getTypeGradient(item.type)} size="md" />
                       <div className="flex-1 min-w-0">
                         <CardTitle className="group-hover:text-primary transition-colors text-base leading-tight">
                           {item.title}
@@ -226,15 +238,13 @@ export function InterestsApp() {
         <h3 className="text-xl font-bold mb-6 text-center">Fun Facts About Me</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {[
-            { icon: Coffee, title: "Coffee Enthusiast", description: "Can't start coding without a perfect cup of coffee" },
-            { icon: Headphones, title: "Music While Coding", description: "Electronic and lo-fi beats fuel my productivity" },
-            { icon: Globe, title: "Remote Work Advocate", description: "Believe in the power of distributed teams" },
-            { icon: Trophy, title: "Hackathon Winner", description: "Won multiple hackathons and coding competitions" },
+            { icon: Coffee, title: "Coffee Enthusiast", description: "Can't start coding without a perfect cup of coffee", gradient: "from-orange-400 to-amber-600" },
+            { icon: Headphones, title: "Music While Coding", description: "Electronic and lo-fi beats fuel my productivity", gradient: "from-fuchsia-400 to-pink-600" },
+            { icon: Globe, title: "Remote Work Advocate", description: "Believe in the power of distributed teams", gradient: "from-sky-400 to-blue-600" },
+            { icon: Trophy, title: "Hackathon Winner", description: "Won multiple hackathons and coding competitions", gradient: "from-yellow-400 to-amber-600" },
           ].map((fact) => (
             <motion.div key={fact.title} className="text-center space-y-3" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
-              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 shadow-clay-sm flex items-center justify-center">
-                <fact.icon className="h-6 w-6 text-primary" />
-              </div>
+              <IconBadge icon={fact.icon} gradient={fact.gradient} size="lg" className="mx-auto" />
               <h4 className="font-semibold text-sm">{fact.title}</h4>
               <p className="text-xs text-muted-foreground">{fact.description}</p>
             </motion.div>

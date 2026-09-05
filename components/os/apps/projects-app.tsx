@@ -5,7 +5,13 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { IconBadge } from "@/components/os/icon-badge"
 import { ExternalLink, Github, Code, Brain, Globe } from "lucide-react"
+
+const CATEGORY_GRADIENT: Record<string, string> = {
+  AI: "from-violet-400 to-fuchsia-600",
+  Web: "from-sky-400 to-blue-600",
+}
 
 const projects = [
   {
@@ -73,9 +79,13 @@ export function ProjectsApp() {
                 <Badge variant="secondary" className="text-xs">{project.category}</Badge>
               </div>
               <div className="flex flex-col items-start sm:items-center justify-center py-5 sm:py-8 gap-3 px-5 text-left sm:text-center">
-                <div className="rounded-full bg-primary/10 p-3 sm:p-4 mb-1 shadow-clay-sm">
-                  <project.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
-                </div>
+                <IconBadge
+                  icon={project.icon}
+                  gradient={CATEGORY_GRADIENT[project.category] ?? "from-violet-400 to-indigo-600"}
+                  size="lg"
+                  className="mb-1 sm:h-16 sm:w-16"
+                  iconClassName="text-white sm:h-7 sm:w-7"
+                />
                 <h2 className="text-base font-bold leading-tight">{project.title}</h2>
                 <p className="text-xs text-muted-foreground font-semibold tracking-wide">{project.date}</p>
                 <p className="text-sm text-muted-foreground leading-relaxed">{project.description}</p>
@@ -96,8 +106,12 @@ export function ProjectsApp() {
                     </DialogTrigger>
                     <DialogContent className="max-w-2xl">
                       <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2">
-                          <project.icon className="h-5 w-5" />
+                        <DialogTitle className="flex items-center gap-2.5">
+                          <IconBadge
+                            icon={project.icon}
+                            gradient={CATEGORY_GRADIENT[project.category] ?? "from-violet-400 to-indigo-600"}
+                            size="sm"
+                          />
                           {project.title}
                         </DialogTitle>
                       </DialogHeader>
