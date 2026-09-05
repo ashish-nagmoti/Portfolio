@@ -1,10 +1,25 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
-import { IconBadge } from "@/components/os/icon-badge"
 import { cn } from "@/lib/utils"
-import { Headphones, Trophy, Coffee, Globe, BookOpen, LinkIcon, Star, Youtube, Play } from "lucide-react"
+import {
+  Headphones,
+  Trophy,
+  Coffee,
+  Globe,
+  BookOpen,
+  LinkIcon,
+  Youtube,
+  Play,
+  Pause,
+  SkipBack,
+  SkipForward,
+  Shuffle,
+  Heart,
+  ExternalLink,
+  Volume2,
+  type LucideIcon,
+} from "lucide-react"
 
 const interestItems = [
   {
@@ -13,10 +28,7 @@ const interestItems = [
     title: "Building Microservices with Python and Docker",
     author: "Real Python",
     url: "https://realpython.com/python-microservices-grpc/",
-    description: "Comprehensive guide on building scalable microservices architecture using Python, gRPC, and Docker containers.",
     dateAdded: "2024-01-15",
-    tags: ["Python", "Microservices", "Docker", "gRPC"],
-    rating: 5,
   },
   {
     id: 2,
@@ -24,10 +36,7 @@ const interestItems = [
     title: "AWS re:Invent 2023 - Serverless at Scale",
     author: "AWS Events",
     url: "https://youtube.com/watch?v=example",
-    description: "Deep dive into serverless architecture patterns and how to scale serverless applications on AWS.",
     dateAdded: "2024-01-12",
-    tags: ["AWS", "Serverless", "Lambda", "Architecture"],
-    rating: 4,
   },
   {
     id: 3,
@@ -35,10 +44,7 @@ const interestItems = [
     title: "The State of AI in 2024: LLMs and Beyond",
     author: "Towards Data Science",
     url: "https://towardsdatascience.com/ai-2024-trends",
-    description: "Analysis of current AI trends, LLM developments, and predictions for the future of artificial intelligence.",
     dateAdded: "2024-01-10",
-    tags: ["AI", "LLM", "Machine Learning", "Trends"],
-    rating: 5,
   },
   {
     id: 4,
@@ -46,10 +52,7 @@ const interestItems = [
     title: "System Design Interview: Design a Chat System",
     author: "Tech Dummies",
     url: "https://youtube.com/watch?v=example2",
-    description: "Step-by-step walkthrough of designing a scalable chat system for system design interviews.",
     dateAdded: "2024-01-08",
-    tags: ["System Design", "Interview", "Scalability", "Architecture"],
-    rating: 4,
   },
   {
     id: 5,
@@ -57,10 +60,7 @@ const interestItems = [
     title: "FastAPI vs Django: Performance Comparison 2024",
     author: "Python Weekly",
     url: "https://pythonweekly.com/fastapi-django-comparison",
-    description: "Detailed performance benchmarks and use case analysis comparing FastAPI and Django frameworks.",
     dateAdded: "2024-01-05",
-    tags: ["FastAPI", "Django", "Performance", "Python"],
-    rating: 4,
   },
   {
     id: 6,
@@ -68,10 +68,7 @@ const interestItems = [
     title: "Building Production-Ready APIs with Python",
     author: "ArjanCodes",
     url: "https://youtube.com/watch?v=example3",
-    description: "Best practices for building robust, scalable APIs in Python with proper error handling and testing.",
     dateAdded: "2024-01-03",
-    tags: ["Python", "API", "Best Practices", "Production"],
-    rating: 5,
   },
   {
     id: 7,
@@ -79,10 +76,7 @@ const interestItems = [
     title: "Understanding Kubernetes Networking",
     author: "CNCF Blog",
     url: "https://cncf.io/blog/kubernetes-networking",
-    description: "Deep dive into Kubernetes networking concepts, CNI plugins, and service mesh architecture.",
     dateAdded: "2024-01-01",
-    tags: ["Kubernetes", "Networking", "DevOps", "Cloud Native"],
-    rating: 4,
   },
   {
     id: 8,
@@ -90,21 +84,13 @@ const interestItems = [
     title: "The Psychology of Code Reviews",
     author: "Stack Overflow Blog",
     url: "https://stackoverflow.blog/code-review-psychology",
-    description: "How to give and receive constructive feedback in code reviews while maintaining team morale.",
     dateAdded: "2023-12-28",
-    tags: ["Code Review", "Team", "Psychology", "Development"],
-    rating: 3,
   },
 ]
 
-const LIBRARY = [
-  { id: "All", label: "All Saved", dot: "bg-foreground/60" },
-  { id: "blog", label: "Blogs", dot: "bg-sky-500" },
-  { id: "video", label: "Videos", dot: "bg-rose-500" },
-  { id: "article", label: "Articles", dot: "bg-emerald-500" },
-] as const
+const FILTERS = ["All", "blog", "video", "article"] as const
 
-const getIcon = (type: string) => {
+const getIcon = (type: string): LucideIcon => {
   switch (type) {
     case "blog":
       return BookOpen
@@ -130,152 +116,224 @@ const getTypeGradient = (type: string) => {
   }
 }
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06 },
-  },
+function Cover({ type, className, iconClassName }: { type: string; className?: string; iconClassName?: string }) {
+  const Icon = getIcon(type)
+  return (
+    <div className={cn("relative flex shrink-0 items-center justify-center overflow-hidden rounded bg-gradient-to-br shadow-md", getTypeGradient(type), className)}>
+      <Icon className={cn("text-white/90", iconClassName)} />
+    </div>
+  )
 }
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: { opacity: 1, y: 0 },
-}
-
-const featured = interestItems.reduce((best, item) => (item.rating > best.rating ? item : best), interestItems[0])
+const fmtDate = (d: string) => new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
 
 export function InterestsApp() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All")
+  const [filter, setFilter] = useState<string>("All")
+  const [nowPlayingId, setNowPlayingId] = useState<number>(interestItems[0].id)
+  const [isPlaying, setIsPlaying] = useState(false)
 
-  const filteredItems =
-    selectedCategory === "All" ? interestItems : interestItems.filter((item) => item.type === selectedCategory)
+  const filteredItems = filter === "All" ? interestItems : interestItems.filter((item) => item.type === filter)
+  const nowPlaying = interestItems.find((i) => i.id === nowPlayingId) ?? interestItems[0]
+
+  const playItem = (id: number) => {
+    if (id === nowPlayingId) setIsPlaying((p) => !p)
+    else {
+      setNowPlayingId(id)
+      setIsPlaying(true)
+    }
+  }
+
+  const skip = (dir: 1 | -1) => {
+    const list = filteredItems.length ? filteredItems : interestItems
+    const idx = list.findIndex((i) => i.id === nowPlayingId)
+    const next = list[(idx + dir + list.length) % list.length] ?? list[0]
+    setNowPlayingId(next.id)
+    setIsPlaying(true)
+  }
 
   return (
-    <div className="flex h-full min-h-0 flex-col">
-      <div className="flex min-h-0 flex-1 overflow-hidden">
-        {/* Sidebar, Music.app Library style */}
-        <div className="w-[160px] min-h-0 shrink-0 space-y-0.5 overflow-y-auto border-r border-black/[0.06] p-2 dark:border-white/[0.08]">
-          <p className="px-2 pb-1.5 pt-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">Library</p>
-          {LIBRARY.map((lib) => {
-            const isActive = selectedCategory === lib.id
-            return (
-              <button
-                key={lib.id}
-                onClick={() => setSelectedCategory(lib.id)}
-                className={cn(
-                  "flex w-full items-center gap-2.5 rounded-md px-2 py-1.5 text-sm transition-colors",
-                  isActive ? "bg-primary text-primary-foreground" : "text-foreground/80 hover:bg-black/[0.04] dark:hover:bg-white/[0.06]",
-                )}
-              >
-                <span className={cn("h-2 w-2 shrink-0 rounded-full", isActive ? "bg-primary-foreground" : lib.dot)} />
-                {lib.label}
-              </button>
-            )
-          })}
+    <div className="flex h-full min-h-0 flex-col bg-[#121212] text-white">
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        {/* Hero, "Liked Songs" style */}
+        <div className="bg-gradient-to-b from-indigo-700 via-indigo-800/60 to-[#121212] px-6 pb-6 pt-10">
+          <div className="flex items-end gap-5">
+            <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded bg-gradient-to-br from-indigo-400 to-purple-800 shadow-2xl sm:h-32 sm:w-32">
+              <Heart className="h-12 w-12 fill-white text-white sm:h-14 sm:w-14" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-semibold">Playlist</p>
+              <h1 className="mt-1 truncate text-3xl font-black tracking-tight sm:text-5xl">Liked Interests</h1>
+              <p className="mt-3 text-sm text-white/70">Ashish Nagmoti &middot; {interestItems.length} saved</p>
+            </div>
+          </div>
         </div>
 
-        {/* Song list */}
-        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="min-h-0 flex-1 overflow-y-auto p-4">
+        {/* Action bar */}
+        <div className="flex items-center gap-6 bg-gradient-to-b from-black/20 to-[#121212] px-6 py-4">
+          <button
+            onClick={() => playItem((filteredItems[0] ?? interestItems[0]).id)}
+            aria-label="Play"
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-[#1DB954] shadow-lg transition-transform hover:scale-105"
+          >
+            {isPlaying && nowPlayingId === (filteredItems[0] ?? interestItems[0]).id ? (
+              <Pause className="h-6 w-6 fill-black text-black" />
+            ) : (
+              <Play className="ml-0.5 h-6 w-6 fill-black text-black" />
+            )}
+          </button>
+          <Shuffle className="h-5 w-5 text-[#1DB954]" />
+        </div>
+
+        {/* Filter pills */}
+        <div className="flex flex-wrap gap-2 px-6 pb-4">
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={cn(
+                "rounded-full px-3.5 py-1.5 text-xs font-semibold capitalize transition-colors",
+                filter === f ? "bg-white text-black" : "bg-[#232323] text-white hover:bg-[#2a2a2a]",
+              )}
+            >
+              {f === "All" ? "All" : `${f}s`}
+            </button>
+          ))}
+        </div>
+
+        {/* Track list */}
+        <div className="px-2 pb-6 sm:px-6">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-black/[0.06] text-left text-xs text-muted-foreground dark:border-white/[0.08]">
-                <th className="pb-2 font-medium">Title</th>
-                <th className="hidden pb-2 font-medium sm:table-cell">Type</th>
-                <th className="pb-2 font-medium">Rating</th>
-                <th className="hidden pb-2 font-medium md:table-cell">Added</th>
+              <tr className="border-b border-white/10 text-left text-xs text-[#a7a7a7]">
+                <th className="w-10 py-2 pl-3 font-normal">#</th>
+                <th className="py-2 font-normal">Title</th>
+                <th className="hidden py-2 font-normal sm:table-cell">Date added</th>
+                <th className="w-10 py-2 pr-3 text-right font-normal">
+                  <Heart className="ml-auto h-4 w-4" />
+                </th>
               </tr>
             </thead>
             <tbody>
-              {filteredItems.map((item) => {
-                const Icon = getIcon(item.type)
+              {filteredItems.map((item, i) => {
+                const active = item.id === nowPlayingId
                 return (
-                  <tr
-                    key={item.id}
-                    onClick={() => window.open(item.url, "_blank", "noopener,noreferrer")}
-                    className="group cursor-pointer border-b border-black/[0.04] transition-colors hover:bg-black/[0.02] dark:border-white/[0.06] dark:hover:bg-white/[0.03]"
-                  >
-                    <td className="py-2.5 pr-3">
-                      <div className="flex items-center gap-3">
-                        <IconBadge icon={Icon} gradient={getTypeGradient(item.type)} size="sm" />
+                  <tr key={item.id} className="group rounded transition-colors hover:bg-white/10">
+                    <td className="w-10 py-2 pl-3 align-middle">
+                      <button onClick={() => playItem(item.id)} aria-label="Play" className="relative flex h-5 w-5 items-center justify-center">
+                        <span className={cn("text-sm group-hover:hidden", active ? "text-[#1DB954]" : "text-[#a7a7a7]")}>{i + 1}</span>
+                        {active && isPlaying ? (
+                          <Pause className="hidden h-3.5 w-3.5 fill-white text-white group-hover:block" />
+                        ) : (
+                          <Play className="hidden h-3.5 w-3.5 fill-white text-white group-hover:block" />
+                        )}
+                      </button>
+                    </td>
+                    <td className="py-2 pr-3">
+                      <button onClick={() => playItem(item.id)} className="flex min-w-0 items-center gap-3 text-left">
+                        <Cover type={item.type} className="h-10 w-10" iconClassName="h-4 w-4" />
                         <div className="min-w-0">
-                          <p className="truncate font-medium">{item.title}</p>
-                          <p className="truncate text-xs text-muted-foreground">{item.author}</p>
+                          <p className={cn("truncate font-medium", active ? "text-[#1DB954]" : "text-white")}>{item.title}</p>
+                          <p className="truncate text-xs text-[#a7a7a7]">{item.author}</p>
                         </div>
-                      </div>
+                      </button>
                     </td>
-                    <td className="hidden py-2.5 pr-3 capitalize text-muted-foreground sm:table-cell">{item.type}</td>
-                    <td className="py-2.5 pr-3">
-                      <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={cn("h-3 w-3", i < item.rating ? "fill-yellow-400 text-yellow-400" : "text-muted-foreground/25")}
-                          />
-                        ))}
+                    <td className="hidden whitespace-nowrap py-2 pr-3 text-xs text-[#a7a7a7] sm:table-cell">{fmtDate(item.dateAdded)}</td>
+                    <td className="py-2 pr-3">
+                      <div className="flex items-center justify-end gap-3">
+                        <Heart className="h-4 w-4 fill-[#1DB954] text-[#1DB954]" />
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Open ${item.title}`}
+                          className="text-[#a7a7a7] opacity-0 transition-opacity hover:text-white group-hover:opacity-100"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
                       </div>
-                    </td>
-                    <td className="hidden whitespace-nowrap py-2.5 text-muted-foreground md:table-cell">
-                      {new Date(item.dateAdded).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                     </td>
                   </tr>
                 )
               })}
             </tbody>
           </table>
+          {filteredItems.length === 0 && <p className="p-6 text-center text-sm text-[#a7a7a7]">Nothing saved here yet.</p>}
+        </div>
 
-          {filteredItems.length === 0 && <p className="p-6 text-center text-sm text-muted-foreground">Nothing saved here yet.</p>}
+        {/* Fun facts */}
+        <div className="mx-2 mb-4 rounded-lg bg-[#181818] p-6 sm:mx-6 sm:p-8">
+          <h3 className="mb-6 text-center text-xl font-bold">Fun Facts About Me</h3>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {[
+              { icon: Coffee, title: "Coffee Enthusiast", description: "Can't start coding without a perfect cup of coffee" },
+              { icon: Headphones, title: "Music While Coding", description: "Electronic and lo-fi beats fuel my productivity" },
+              { icon: Globe, title: "Remote Work Advocate", description: "Believe in the power of distributed teams" },
+              { icon: Trophy, title: "Hackathon Winner", description: "Won multiple hackathons and coding competitions" },
+            ].map((fact) => (
+              <div key={fact.title} className="space-y-2 text-center">
+                <fact.icon className="mx-auto h-7 w-7 text-[#1DB954]" />
+                <h4 className="text-sm font-semibold">{fact.title}</h4>
+                <p className="text-xs text-[#a7a7a7]">{fact.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          <motion.div
-            variants={itemVariants}
-            className="mt-8 rounded-2xl border border-black/[0.06] bg-gradient-to-br from-clay-sky/10 via-primary/5 to-clay-pink/10 p-8 dark:border-white/[0.08]"
-          >
-            <h3 className="text-xl font-bold mb-6 text-center">Fun Facts About Me</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {[
-                { icon: Coffee, title: "Coffee Enthusiast", description: "Can't start coding without a perfect cup of coffee", gradient: "from-orange-400 to-amber-600" },
-                { icon: Headphones, title: "Music While Coding", description: "Electronic and lo-fi beats fuel my productivity", gradient: "from-fuchsia-400 to-pink-600" },
-                { icon: Globe, title: "Remote Work Advocate", description: "Believe in the power of distributed teams", gradient: "from-sky-400 to-blue-600" },
-                { icon: Trophy, title: "Hackathon Winner", description: "Won multiple hackathons and coding competitions", gradient: "from-yellow-400 to-amber-600" },
-              ].map((fact) => (
-                <motion.div key={fact.title} className="text-center space-y-3" whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
-                  <IconBadge icon={fact.icon} gradient={fact.gradient} size="lg" className="mx-auto" />
-                  <h4 className="font-semibold text-sm">{fact.title}</h4>
-                  <p className="text-xs text-muted-foreground">{fact.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="mt-6 text-center rounded-2xl border border-black/[0.06] bg-card p-8 dark:border-white/[0.08]"
-          >
-            <blockquote className="text-base italic text-muted-foreground mb-4">
-              &quot;The best way to predict the future is to create it. Whether it&apos;s through code, community, or
-              personal growth, I believe in continuous learning and making a positive impact.&quot;
-            </blockquote>
-            <cite className="text-sm font-semibold">— My Personal Philosophy</cite>
-          </motion.div>
-        </motion.div>
+        <div className="mx-2 mb-6 rounded-lg bg-[#181818] p-6 text-center sm:mx-6 sm:p-8">
+          <blockquote className="mb-3 text-sm italic text-[#d1d1d1]">
+            &quot;The best way to predict the future is to create it. Whether it&apos;s through code, community, or
+            personal growth, I believe in continuous learning and making a positive impact.&quot;
+          </blockquote>
+          <cite className="text-xs font-semibold text-[#a7a7a7]">— My Personal Philosophy</cite>
+        </div>
       </div>
 
-      {/* Now Playing bar, Music.app style */}
-      <div className="flex shrink-0 items-center gap-3 border-t border-black/[0.06] px-4 py-2.5 dark:border-white/[0.08]">
-        <IconBadge icon={getIcon(featured.type)} gradient={getTypeGradient(featured.type)} size="md" />
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium">{featured.title}</p>
-          <p className="truncate text-xs text-muted-foreground">{featured.author}</p>
+      {/* Now Playing bar, Spotify style */}
+      <div className="flex h-[72px] shrink-0 items-center gap-4 border-t border-white/10 bg-[#181818] px-4">
+        <div className="flex min-w-0 flex-1 items-center gap-3 sm:flex-none sm:w-1/3">
+          <Cover type={nowPlaying.type} className="h-12 w-12" iconClassName="h-5 w-5" />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium">{nowPlaying.title}</p>
+            <p className="truncate text-xs text-[#a7a7a7]">{nowPlaying.author}</p>
+          </div>
+          <Heart className="ml-2 hidden h-4 w-4 shrink-0 fill-[#1DB954] text-[#1DB954] sm:block" />
         </div>
-        <a
-          href={featured.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`Open ${featured.title}`}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground text-background transition-transform hover:scale-105"
-        >
-          <Play className="ml-0.5 h-3.5 w-3.5 fill-current" />
-        </a>
+
+        <div className="hidden flex-1 flex-col items-center gap-1.5 sm:flex">
+          <div className="flex items-center gap-5">
+            <Shuffle className="h-4 w-4 text-[#a7a7a7] hover:text-white" />
+            <button onClick={() => skip(-1)} aria-label="Previous">
+              <SkipBack className="h-4 w-4 fill-white text-white" />
+            </button>
+            <button
+              onClick={() => setIsPlaying((p) => !p)}
+              aria-label={isPlaying ? "Pause" : "Play"}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-white transition-transform hover:scale-105"
+            >
+              {isPlaying ? <Pause className="h-4 w-4 fill-black text-black" /> : <Play className="ml-0.5 h-4 w-4 fill-black text-black" />}
+            </button>
+            <button onClick={() => skip(1)} aria-label="Next">
+              <SkipForward className="h-4 w-4 fill-white text-white" />
+            </button>
+            <a href={nowPlaying.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${nowPlaying.title}`}>
+              <ExternalLink className="h-4 w-4 text-[#a7a7a7] hover:text-white" />
+            </a>
+          </div>
+          <div className="flex w-full max-w-md items-center gap-2">
+            <span className="text-[10px] text-[#a7a7a7]">{isPlaying ? "0:42" : "0:00"}</span>
+            <div className="h-1 flex-1 rounded-full bg-white/20">
+              <div className={cn("h-1 rounded-full bg-white", isPlaying ? "w-1/3" : "w-0")} />
+            </div>
+            <span className="text-[10px] text-[#a7a7a7]">2:14</span>
+          </div>
+        </div>
+
+        <div className="hidden w-1/3 items-center justify-end gap-2 sm:flex">
+          <Volume2 className="h-4 w-4 text-[#a7a7a7]" />
+          <div className="h-1 w-20 rounded-full bg-white/20">
+            <div className="h-1 w-2/3 rounded-full bg-white" />
+          </div>
+        </div>
       </div>
     </div>
   )
