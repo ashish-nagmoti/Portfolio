@@ -2,24 +2,7 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import {
-  Headphones,
-  Trophy,
-  Coffee,
-  Globe,
-  BookOpen,
-  LinkIcon,
-  Youtube,
-  Play,
-  Pause,
-  SkipBack,
-  SkipForward,
-  Shuffle,
-  Heart,
-  ExternalLink,
-  Volume2,
-  type LucideIcon,
-} from "lucide-react"
+import { Headphones, Trophy, Coffee, Globe, BookOpen, LinkIcon, Youtube, Play, Shuffle, Heart, type LucideIcon } from "lucide-react"
 
 const interestItems = [
   {
@@ -127,29 +110,17 @@ function Cover({ type, className, iconClassName }: { type: string; className?: s
 
 const fmtDate = (d: string) => new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
 
+const TYPE_META = [
+  { type: "blog", label: "Blogs", dot: "bg-sky-400", bar: "bg-sky-400" },
+  { type: "video", label: "Videos", dot: "bg-rose-400", bar: "bg-rose-400" },
+  { type: "article", label: "Articles", dot: "bg-emerald-400", bar: "bg-emerald-400" },
+] as const
+
 export function InterestsApp() {
   const [filter, setFilter] = useState<string>("All")
-  const [nowPlayingId, setNowPlayingId] = useState<number>(interestItems[0].id)
-  const [isPlaying, setIsPlaying] = useState(false)
 
   const filteredItems = filter === "All" ? interestItems : interestItems.filter((item) => item.type === filter)
-  const nowPlaying = interestItems.find((i) => i.id === nowPlayingId) ?? interestItems[0]
-
-  const playItem = (id: number) => {
-    if (id === nowPlayingId) setIsPlaying((p) => !p)
-    else {
-      setNowPlayingId(id)
-      setIsPlaying(true)
-    }
-  }
-
-  const skip = (dir: 1 | -1) => {
-    const list = filteredItems.length ? filteredItems : interestItems
-    const idx = list.findIndex((i) => i.id === nowPlayingId)
-    const next = list[(idx + dir + list.length) % list.length] ?? list[0]
-    setNowPlayingId(next.id)
-    setIsPlaying(true)
-  }
+  const typeCounts = TYPE_META.map((t) => ({ ...t, count: interestItems.filter((i) => i.type === t.type).length }))
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-[#121212] text-white">
@@ -170,17 +141,15 @@ export function InterestsApp() {
 
         {/* Action bar */}
         <div className="flex items-center gap-6 bg-gradient-to-b from-black/20 to-[#121212] px-6 py-4">
-          <button
-            onClick={() => playItem((filteredItems[0] ?? interestItems[0]).id)}
-            aria-label="Play"
+          <a
+            href={(filteredItems[0] ?? interestItems[0]).url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open top saved item"
             className="flex h-14 w-14 items-center justify-center rounded-full bg-[#1DB954] shadow-lg transition-transform hover:scale-105"
           >
-            {isPlaying && nowPlayingId === (filteredItems[0] ?? interestItems[0]).id ? (
-              <Pause className="h-6 w-6 fill-black text-black" />
-            ) : (
-              <Play className="ml-0.5 h-6 w-6 fill-black text-black" />
-            )}
-          </button>
+            <Play className="ml-0.5 h-6 w-6 fill-black text-black" />
+          </a>
           <Shuffle className="h-5 w-5 text-[#1DB954]" />
         </div>
 
@@ -215,18 +184,19 @@ export function InterestsApp() {
             </thead>
             <tbody>
               {filteredItems.map((item, i) => {
-                const active = item.id === nowPlayingId
                 return (
                   <tr key={item.id} className="group rounded transition-colors hover:bg-white/10">
                     <td className="w-10 py-2 pl-3 align-middle">
-                      <button onClick={() => playItem(item.id)} aria-label="Play" className="relative flex h-5 w-5 items-center justify-center">
-                        <span className={cn("text-sm group-hover:hidden", active ? "text-[#1DB954]" : "text-[#a7a7a7]")}>{i + 1}</span>
-                        {active && isPlaying ? (
-                          <Pause className="hidden h-3.5 w-3.5 fill-white text-white group-hover:block" />
-                        ) : (
-                          <Play className="hidden h-3.5 w-3.5 fill-white text-white group-hover:block" />
-                        )}
-                      </button>
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Open ${item.title}`}
+                        className="relative flex h-5 w-5 items-center justify-center"
+                      >
+                        <span className="text-sm text-[#a7a7a7] group-hover:hidden">{i + 1}</span>
+                        <Play className="hidden h-3.5 w-3.5 fill-white text-white group-hover:block" />
+                      </a>
                     </td>
                     <td className="py-2 pr-3">
                       <a
@@ -237,9 +207,7 @@ export function InterestsApp() {
                       >
                         <Cover type={item.type} className="h-10 w-10" iconClassName="h-4 w-4" />
                         <div className="min-w-0">
-                          <p className={cn("truncate font-medium hover:underline", active ? "text-[#1DB954]" : "text-white")}>
-                            {item.title}
-                          </p>
+                          <p className="truncate font-medium text-white hover:underline">{item.title}</p>
                           <p className="truncate text-xs text-[#a7a7a7]">{item.author}</p>
                         </div>
                       </a>
@@ -284,51 +252,30 @@ export function InterestsApp() {
         </div>
       </div>
 
-      {/* Now Playing bar, Spotify style */}
-      <div className="flex h-[72px] shrink-0 items-center gap-4 border-t border-white/10 bg-[#181818] px-4">
-        <div className="flex min-w-0 flex-1 items-center gap-3 sm:flex-none sm:w-1/3">
-          <Cover type={nowPlaying.type} className="h-12 w-12" iconClassName="h-5 w-5" />
-          <div className="min-w-0">
-            <p className="truncate text-sm font-medium">{nowPlaying.title}</p>
-            <p className="truncate text-xs text-[#a7a7a7]">{nowPlaying.author}</p>
-          </div>
-          <Heart className="ml-2 hidden h-4 w-4 shrink-0 fill-[#1DB954] text-[#1DB954] sm:block" />
+      {/* Interests at a glance, mini stats footer */}
+      <div className="flex h-[72px] shrink-0 items-center gap-4 border-t border-white/10 bg-[#181818] px-4 sm:px-6">
+        <div className="shrink-0">
+          <p className="text-sm font-semibold leading-tight">{interestItems.length} saved</p>
+          <p className="text-xs text-[#a7a7a7]">at a glance</p>
         </div>
 
-        <div className="hidden flex-1 flex-col items-center gap-1.5 sm:flex">
-          <div className="flex items-center gap-5">
-            <Shuffle className="h-4 w-4 text-[#a7a7a7] hover:text-white" />
-            <button onClick={() => skip(-1)} aria-label="Previous">
-              <SkipBack className="h-4 w-4 fill-white text-white" />
-            </button>
-            <button
-              onClick={() => setIsPlaying((p) => !p)}
-              aria-label={isPlaying ? "Pause" : "Play"}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-white transition-transform hover:scale-105"
-            >
-              {isPlaying ? <Pause className="h-4 w-4 fill-black text-black" /> : <Play className="ml-0.5 h-4 w-4 fill-black text-black" />}
-            </button>
-            <button onClick={() => skip(1)} aria-label="Next">
-              <SkipForward className="h-4 w-4 fill-white text-white" />
-            </button>
-            <a href={nowPlaying.url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${nowPlaying.title}`}>
-              <ExternalLink className="h-4 w-4 text-[#a7a7a7] hover:text-white" />
-            </a>
-          </div>
-          <div className="flex w-full max-w-md items-center gap-2">
-            <span className="text-[10px] text-[#a7a7a7]">{isPlaying ? "0:42" : "0:00"}</span>
-            <div className="h-1 flex-1 rounded-full bg-white/20">
-              <div className={cn("h-1 rounded-full bg-white", isPlaying ? "w-1/3" : "w-0")} />
+        <div className="flex h-2 flex-1 overflow-hidden rounded-full bg-white/10">
+          {typeCounts.map((t) => (
+            <div
+              key={t.type}
+              className={cn("h-full", t.bar)}
+              style={{ width: `${(t.count / interestItems.length) * 100}%` }}
+            />
+          ))}
+        </div>
+
+        <div className="hidden shrink-0 items-center gap-4 sm:flex">
+          {typeCounts.map((t) => (
+            <div key={t.type} className="flex items-center gap-1.5 text-xs text-[#a7a7a7]">
+              <span className={cn("h-2 w-2 rounded-full", t.dot)} />
+              {t.label} ({t.count})
             </div>
-            <span className="text-[10px] text-[#a7a7a7]">2:14</span>
-          </div>
-        </div>
-
-        <div className="hidden w-1/3 items-center justify-end gap-2 sm:flex">
-          <Volume2 className="h-4 w-4 text-[#a7a7a7]" />
-          <div className="h-1 w-20 rounded-full bg-white/20">
-            <div className="h-1 w-2/3 rounded-full bg-white" />
-          </div>
+          ))}
         </div>
       </div>
     </div>
