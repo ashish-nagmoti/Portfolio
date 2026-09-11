@@ -2,11 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Search } from "lucide-react"
+import { X } from "lucide-react"
 import { useIsMobile } from "@/components/ui/use-mobile"
-import { APPS, APP_ORDER, RESUME_ICON } from "./app-registry"
+import { APPS, RESUME_ICON } from "./app-registry"
 import { Window, type OriginRect } from "./window"
 import { Dock } from "./dock"
+import { DesktopWidgets } from "./widgets"
 import { MenuBar } from "./menubar"
 import { StatusBar } from "./ios/status-bar"
 import { Spotlight } from "./spotlight"
@@ -52,16 +53,6 @@ function spawnRect(id: AppId, openCount: number, size: { width: number; height: 
   const x = Math.min(Math.max(20, app.defaultPos.x + jitterX + cascade), maxX)
   const y = Math.min(Math.max(40, app.defaultPos.y + jitterY + cascade), maxY)
   return { x, y }
-}
-
-const iconContainerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.05, delayChildren: 0.3 } },
-}
-
-const iconItemVariants = {
-  hidden: { opacity: 0, y: 12, scale: 0.9 },
-  visible: { opacity: 1, y: 0, scale: 1 },
 }
 
 export function Desktop({ initialApp }: DesktopProps) {
@@ -241,72 +232,8 @@ export function Desktop({ initialApp }: DesktopProps) {
 
       {isMobile && <StatusBar />}
 
-      {/* Desktop icons */}
-      <motion.div
-        variants={iconContainerVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative z-0 grid grid-cols-4 gap-x-3 gap-y-6 p-5 pt-16 justify-items-center sm:absolute sm:top-11 sm:bottom-24 sm:right-4 sm:grid-cols-1 sm:justify-items-end sm:gap-5 sm:overflow-y-auto sm:p-0 sm:pr-1 w-full sm:w-auto"
-      >
-        {isMobile && (
-          <button
-            onClick={() => setSpotlightOpen(true)}
-            className="col-span-4 flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/60 dark:bg-black/30 backdrop-blur-xl text-muted-foreground text-sm"
-          >
-            <Search className="h-4 w-4" />
-            Search
-          </button>
-        )}
-        {APP_ORDER.map((id) => {
-          const app = APPS[id]
-          return (
-            <motion.button
-              key={id}
-              variants={iconItemVariants}
-              onClick={(e) => openApp(id, e.currentTarget.getBoundingClientRect())}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              className="flex flex-col items-center gap-1.5 w-16 sm:w-20 text-center"
-            >
-              <span className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] shadow-lg">
-                <span className={cn("squircle absolute inset-0 flex items-center justify-center", app.accent)}>
-                  <span className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/5 to-transparent" />
-                  <app.icon
-                    className={cn("relative h-7 w-7 sm:h-8 sm:w-8 drop-shadow-sm", app.iconClassName ?? "text-white")}
-                    strokeWidth={2.25}
-                  />
-                </span>
-              </span>
-              <span className="text-[11px] sm:text-xs font-medium text-foreground/90 leading-tight drop-shadow-sm">
-                {app.title}
-              </span>
-            </motion.button>
-          )
-        })}
-        <motion.a
-          variants={iconItemVariants}
-          href={RESUME_ICON.href}
-          download
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          className="flex flex-col items-center gap-1.5 w-16 sm:w-20 text-center"
-        >
-          <span className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[22%] shadow-lg">
-            <span className={cn("squircle absolute inset-0 flex items-center justify-center", RESUME_ICON.accent)}>
-              <span className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/10 to-transparent" />
-              <RESUME_ICON.icon
-                className={cn("relative h-7 w-7 sm:h-8 sm:w-8 drop-shadow-sm", RESUME_ICON.iconClassName)}
-                strokeWidth={2.25}
-              />
-            </span>
-          </span>
-          <span className="text-[11px] sm:text-xs font-medium text-foreground/90 leading-tight drop-shadow-sm">
-            {RESUME_ICON.title}
-          </span>
-        </motion.a>
-      </motion.div>
+      {/* Desktop widgets (apps launch from the Dock / Spotlight) */}
+      <DesktopWidgets onOpenApp={openApp} />
 
       {/* Windows */}
       <AnimatePresence>
@@ -351,7 +278,7 @@ export function Desktop({ initialApp }: DesktopProps) {
             <p className="text-sm text-muted-foreground">
               {isMobile
                 ? "Tap an icon to open it. Swipe up on the handle at the bottom of an app to close it."
-                : "Click a dock icon or desktop item to open it. Drag windows by the title bar, resize from the corner, press ⌘K to search, ⌘Tab to switch windows, or right-click the desktop."}
+                : "Click a dock icon to open an app. Drag windows by the title bar, resize from the corner, press ⌘K to search, ⌘Tab to switch windows, or right-click the desktop."}
             </p>
           </motion.div>
         )}
