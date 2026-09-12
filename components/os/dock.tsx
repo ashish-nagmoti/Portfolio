@@ -16,10 +16,11 @@ import { cn } from "@/lib/utils"
 
 const BASE = 46
 // Icons magnify with a transform rather than by growing their box, so the dock
-// background never changes size. Capped so a magnified icon grows into the gap
-// beside it (BASE * (MAX_SCALE - 1) / 2 <= GAP) instead of over its neighbour.
-const MAX_SCALE = 1.45
-const DISTANCE = 130
+// background never changes size. The falloff is deliberately tight: only the
+// icon under the pointer really pops, which keeps neighbours from crowding it.
+const MAX_SCALE = 1.65
+const DISTANCE = 80
+const MAGNIFY_SPRING = { mass: 0.05, stiffness: 520, damping: 20 }
 
 function DockIcon({
   mouseX,
@@ -46,7 +47,7 @@ function DockIcon({
     return val - (rect.left + rect.width / 2)
   })
   const scaleSync = useTransform(distance, [-DISTANCE, 0, DISTANCE], [1, MAX_SCALE, 1])
-  const scale = useSpring(scaleSync, { mass: 0.1, stiffness: 250, damping: 16 })
+  const scale = useSpring(scaleSync, MAGNIFY_SPRING)
 
   useEffect(() => {
     if (bounceToken) {
@@ -120,7 +121,7 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 300, damping: 26, delay: 0.15 }}
         className={cn(
-          "pointer-events-auto flex items-end gap-2.5 px-3 pb-2 pt-2 rounded-[26px] backdrop-blur-2xl border shadow-2xl",
+          "pointer-events-auto flex items-end gap-3.5 px-3 pb-2 pt-2 rounded-[26px] backdrop-blur-2xl border shadow-2xl",
           "transition-[background-color,border-color,box-shadow] duration-300 ease-out",
           dockHovered
             ? "bg-white/70 dark:bg-white/[0.18] border-white/80 dark:border-white/25 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.55)]"
