@@ -117,7 +117,9 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
         transition={{ type: "spring", stiffness: 300, damping: 26, delay: 0.15 }}
         // A plain tray: it never reacts to hover, and because icons magnify
         // with a transform it never changes size either.
-        className="pointer-events-auto flex items-end gap-3.5 rounded-[26px] border border-white/60 bg-white/60 px-3 pb-2 pt-2 shadow-xl backdrop-blur-2xl dark:border-white/10 dark:bg-white/[0.12]"
+        // Plain translucent tray, no backdrop-filter: re-blurring the backdrop
+        // behind seven icons that magnify every frame is far too expensive.
+        className="pointer-events-auto flex items-end gap-3.5 rounded-[26px] border border-white/60 bg-white/60 px-3 pb-2 pt-2 shadow-xl dark:border-white/10 dark:bg-white/[0.14]"
       >
         {APP_ORDER.map((id) => {
           const app = APPS[id]
