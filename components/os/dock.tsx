@@ -15,12 +15,8 @@ import type { AppId, OpenWindow } from "./types"
 import { cn } from "@/lib/utils"
 
 const BASE = 46
-// Icons magnify with a transform rather than by growing their box, so the dock
-// background never changes size. The falloff is deliberately tight: only the
-// icon under the pointer really pops, which keeps neighbours from crowding it.
-const MAX_SCALE = 1.65
-const DISTANCE = 80
-const MAGNIFY_SPRING = { mass: 0.05, stiffness: 520, damping: 20 }
+const MAX = 76
+const DISTANCE = 130
 
 function DockIcon({
   mouseX,
@@ -46,8 +42,9 @@ function DockIcon({
     if (!rect) return DISTANCE
     return val - (rect.left + rect.width / 2)
   })
-  const scaleSync = useTransform(distance, [-DISTANCE, 0, DISTANCE], [1, MAX_SCALE, 1])
-  const scale = useSpring(scaleSync, MAGNIFY_SPRING)
+  const widthSync = useTransform(distance, [-DISTANCE, 0, DISTANCE], [BASE, MAX, BASE])
+  const width = useSpring(widthSync, { mass: 0.1, stiffness: 250, damping: 16 })
+  const iconSize = useTransform(width, (w) => w * 0.52)
 
   useEffect(() => {
     if (bounceToken) {
@@ -56,7 +53,7 @@ function DockIcon({
   }, [bounceToken, controls])
 
   return (
-    <div className={cn("relative flex flex-col items-center", hovered && "z-10")}>
+    <div className="relative flex flex-col items-center">
       <AnimatePresence>
         {hovered && (
           <motion.span
@@ -64,8 +61,7 @@ function DockIcon({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 4, scale: 0.9 }}
             transition={{ duration: 0.1 }}
-            // Clears the magnified icon, which grows upward past the dock.
-            className="absolute -top-14 whitespace-nowrap rounded-lg bg-black/80 dark:bg-white/90 text-white dark:text-black text-xs font-medium px-2.5 py-1 pointer-events-none"
+            className="absolute -top-9 whitespace-nowrap rounded-lg bg-black/80 dark:bg-white/90 text-white dark:text-black text-xs font-medium px-2.5 py-1 pointer-events-none"
           >
             {label}
           </motion.span>
@@ -73,19 +69,16 @@ function DockIcon({
       </AnimatePresence>
       <motion.button
         ref={ref}
-        style={{ width: BASE, height: BASE }}
+        style={{ width, height: width }}
         animate={controls}
         onClick={() => onClick(ref.current?.getBoundingClientRect())}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         whileTap={{ scale: 0.9 }}
-        className="relative flex items-center justify-center"
+        className="flex items-center justify-center"
         aria-label={label}
       >
-        {/* flex, not block: the icon child is a <span>, which needs blockifying for h/w-full to apply */}
-        <motion.span style={{ scale, transformOrigin: "bottom center" }} className="flex h-full w-full">
-          {children}
-        </motion.span>
+        {children}
       </motion.button>
       <span
         className={cn(
@@ -121,7 +114,7 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 300, damping: 26, delay: 0.15 }}
         className={cn(
-          "pointer-events-auto flex items-end gap-3.5 px-3 pb-2 pt-2 rounded-[26px] backdrop-blur-2xl border shadow-2xl",
+          "pointer-events-auto flex items-end gap-2.5 px-3 pb-2 pt-2 rounded-[26px] backdrop-blur-2xl border shadow-2xl",
           "transition-[background-color,border-color,box-shadow] duration-300 ease-out",
           dockHovered
             ? "bg-white/70 dark:bg-white/[0.18] border-white/80 dark:border-white/25 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.55)]"
