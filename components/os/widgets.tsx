@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react"
 import { motion } from "framer-motion"
-import { MapPin, Trophy, Github, FolderGit2 } from "lucide-react"
+import { MapPin, Trophy, Github, FolderGit2, Hammer, BookOpen, Youtube } from "lucide-react"
 import type { AppId } from "./types"
 import { cn } from "@/lib/utils"
 
@@ -145,6 +145,62 @@ function ProjectWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
   )
 }
 
+/**
+ * What Ashish is on right now. Seeded from the featured project and the saved
+ * items in the Interests app — update these as they change.
+ */
+const CURRENTLY = [
+  {
+    label: "Building",
+    value: "StoryMail",
+    icon: Hammer,
+    tint: "text-violet-500",
+    app: "projects" as AppId,
+  },
+  {
+    label: "Reading",
+    value: "Kubernetes Networking",
+    icon: BookOpen,
+    tint: "text-sky-500",
+    app: "interests" as AppId,
+  },
+  {
+    label: "Watching",
+    value: "Production-Ready APIs",
+    icon: Youtube,
+    tint: "text-rose-500",
+    app: "interests" as AppId,
+  },
+]
+
+function CurrentlyWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
+  return (
+    <Widget className="col-span-2">
+      <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Currently</p>
+      <div className="mt-2.5 space-y-1">
+        {CURRENTLY.map((row) => (
+          <button
+            key={row.label}
+            onClick={() => onOpenApp(row.app)}
+            aria-label={`${row.label}: ${row.value}`}
+            className="flex w-full items-center gap-2.5 rounded-xl px-1.5 py-1.5 text-left transition-colors hover:bg-black/5 dark:hover:bg-white/10"
+          >
+            <row.icon className={cn("h-4 w-4 shrink-0", row.tint)} />
+            <span className="min-w-0">
+              <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                {row.label}
+              </span>
+              <span className="block truncate text-[12px] font-semibold leading-tight text-foreground">
+                {row.value}
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </Widget>
+  )
+}
+
 const STACK = ["Python", "Django", "FastAPI", "AWS", "GCP", "LLMs"]
 
 function StackWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
@@ -165,25 +221,41 @@ function StackWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
   )
 }
 
+// A widget column: narrow, pinned between the menu bar and the Dock. Hidden on
+// short viewports (a landscape phone), which lack the room to show a widget
+// without clipping it.
+const COLUMN = "absolute top-11 bottom-24 z-0 grid w-[268px] auto-rows-min grid-cols-2 gap-3 [@media(max-height:560px)]:hidden"
+
 /**
- * The desktop's right-hand widget column, in place of app icons — every app is
- * still reachable from the Dock and Spotlight. Hidden on short viewports (a
- * landscape phone), which lack the room between menu bar and Dock to show a
- * widget without clipping it.
+ * The desktop's widgets, in place of app icons — every app is still reachable
+ * from the Dock and Spotlight. Split across both edges so the desktop isn't
+ * lopsided; the left column drops out on narrower screens, where an open
+ * window would sit on top of it anyway.
  */
 export function DesktopWidgets({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="absolute right-4 top-11 bottom-24 z-0 grid w-[268px] auto-rows-min grid-cols-2 gap-3 overflow-y-auto pr-1 [@media(max-height:560px)]:hidden"
-    >
-      <CalendarWidget />
-      <LocationWidget />
-      <StatsWidget onOpenApp={onOpenApp} />
-      <ProjectWidget onOpenApp={onOpenApp} />
-      <StackWidget onOpenApp={onOpenApp} />
-    </motion.div>
+    <>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className={cn(COLUMN, "left-4 overflow-y-auto pl-1 max-lg:hidden")}
+      >
+        <CurrentlyWidget onOpenApp={onOpenApp} />
+        <StackWidget onOpenApp={onOpenApp} />
+      </motion.div>
+
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className={cn(COLUMN, "right-4 overflow-y-auto pr-1")}
+      >
+        <CalendarWidget />
+        <LocationWidget />
+        <StatsWidget onOpenApp={onOpenApp} />
+        <ProjectWidget onOpenApp={onOpenApp} />
+      </motion.div>
+    </>
   )
 }
