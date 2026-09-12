@@ -99,27 +99,18 @@ interface DockProps {
 
 export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) {
   const mouseX = useMotionValue(Infinity)
-  const [dockHovered, setDockHovered] = useState(false)
 
   return (
     <div className="fixed bottom-2 inset-x-0 z-[9000] flex justify-center pointer-events-none px-2">
       <motion.div
         onMouseMove={(e) => mouseX.set(e.clientX)}
-        onMouseEnter={() => setDockHovered(true)}
-        onMouseLeave={() => {
-          mouseX.set(Infinity)
-          setDockHovered(false)
-        }}
+        onMouseLeave={() => mouseX.set(Infinity)}
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 300, damping: 26, delay: 0.15 }}
-        className={cn(
-          "pointer-events-auto flex items-end gap-2.5 px-3 pb-2 pt-2 rounded-[26px] backdrop-blur-2xl border shadow-2xl",
-          "transition-[background-color,border-color,box-shadow] duration-300 ease-out",
-          dockHovered
-            ? "bg-white/70 dark:bg-white/[0.18] border-white/80 dark:border-white/25 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.55)]"
-            : "bg-white/50 dark:bg-white/[0.10] border-white/60 dark:border-white/10",
-        )}
+        // No tray behind the icons — they sit straight on the wallpaper, so
+        // magnification never shows a container growing with them.
+        className="pointer-events-auto flex items-end gap-2.5 px-3 pb-2 pt-2"
       >
         {APP_ORDER.map((id) => {
           const app = APPS[id]
