@@ -58,6 +58,7 @@ function spawnRect(id: AppId, openCount: number, size: { width: number; height: 
 export function Desktop({ initialApp }: DesktopProps) {
   const isMobile = useIsMobile()
   const zRef = useRef(10)
+  const desktopRef = useRef<HTMLDivElement>(null)
   const [openWindows, setOpenWindows] = useState<OpenWindow[]>(() =>
     initialApp
       ? [
@@ -203,6 +204,7 @@ export function Desktop({ initialApp }: DesktopProps) {
 
   return (
     <div
+      ref={desktopRef}
       className="relative min-h-screen h-screen w-full overflow-hidden"
       onContextMenu={(e) => {
         if (isMobile) return
@@ -240,7 +242,7 @@ export function Desktop({ initialApp }: DesktopProps) {
       {isMobile && <StatusBar />}
 
       {/* Desktop widgets (apps launch from the Dock / Spotlight) */}
-      <DesktopWidgets onOpenApp={openApp} />
+      <DesktopWidgets onOpenApp={openApp} dragBoundsRef={desktopRef} />
 
       {/* Windows */}
       <AnimatePresence>
