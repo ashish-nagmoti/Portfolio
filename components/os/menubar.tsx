@@ -15,7 +15,8 @@ interface MenuBarProps {
   openWindows: OpenWindow[]
   onOpenApp: (id: AppId) => void
   onOpenSpotlight: () => void
-  onRefresh: () => void
+  /** Full reboot: replays the boot screen, unlike the context menu's lighter "Refresh". */
+  onRestart: () => void
   onCloseFocused: () => void
   onDownloadResume: () => void
   onShowDesktop: () => void
@@ -60,7 +61,7 @@ export function MenuBar({
   openWindows,
   onOpenApp,
   onOpenSpotlight,
-  onRefresh,
+  onRestart,
   onCloseFocused,
   onDownloadResume,
   onShowDesktop,
@@ -165,7 +166,7 @@ export function MenuBar({
                   items={[
                     { label: "About This OS", action: run(() => onOpenApp("about")) },
                     { label: "System Settings…", action: run(() => setTheme(theme === "light" ? "dark" : "light")) },
-                    { label: "Restart Desktop", action: run(onRefresh) },
+                    { label: "Restart Desktop", action: run(onRestart) },
                   ]}
                 />
               </>

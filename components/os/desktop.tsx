@@ -113,6 +113,13 @@ export function Desktop({ initialApp }: DesktopProps) {
     a.click()
   }
 
+  // A real reboot: the boot screen is skipped once "os-booted" is set for the
+  // session (see os-shell.tsx), so forget it before reloading.
+  const restart = () => {
+    sessionStorage.removeItem("os-booted")
+    window.location.reload()
+  }
+
   const openApp = (id: AppId, rect?: DOMRect) => {
     setPendingOrigin(rect ? { top: rect.top, left: rect.left, width: rect.width, height: rect.height } : null)
     const existing = openWindows.find((w) => w.id === id)
@@ -223,7 +230,7 @@ export function Desktop({ initialApp }: DesktopProps) {
           openWindows={openWindows}
           onOpenApp={openApp}
           onOpenSpotlight={() => setSpotlightOpen(true)}
-          onRefresh={() => setOpenWindows([])}
+          onRestart={restart}
           onCloseFocused={closeFocused}
           onDownloadResume={downloadResume}
           onShowDesktop={showDesktop}
