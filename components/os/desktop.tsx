@@ -7,7 +7,7 @@ import { useIsMobile } from "@/components/ui/use-mobile"
 import { APPS, RESUME_ICON } from "./app-registry"
 import { Window, type OriginRect } from "./window"
 import { Dock } from "./dock"
-import { DesktopWidgets } from "./widgets"
+import { DesktopWidgets, clearWidgetLayout } from "./widgets"
 import { MenuBar } from "./menubar"
 import { StatusBar } from "./ios/status-bar"
 import { Spotlight } from "./spotlight"
@@ -119,6 +119,14 @@ export function Desktop({ initialApp }: DesktopProps) {
   const restart = () => {
     sessionStorage.removeItem("os-booted")
     window.location.reload()
+  }
+
+  // Remounting the widgets puts each back in its slot (and replays their
+  // entrance), which reads as the reset it is.
+  const [widgetLayoutKey, setWidgetLayoutKey] = useState(0)
+  const resetWidgetLayout = () => {
+    clearWidgetLayout()
+    setWidgetLayoutKey((k) => k + 1)
   }
 
   const openApp = (id: AppId, rect?: DOMRect) => {
@@ -233,6 +241,7 @@ export function Desktop({ initialApp }: DesktopProps) {
           onOpenApp={openApp}
           onOpenSpotlight={() => setSpotlightOpen(true)}
           onRestart={restart}
+          onResetWidgets={resetWidgetLayout}
           onCloseFocused={closeFocused}
           onDownloadResume={downloadResume}
           onShowDesktop={showDesktop}
@@ -242,7 +251,7 @@ export function Desktop({ initialApp }: DesktopProps) {
       {isMobile && <StatusBar />}
 
       {/* Desktop widgets (apps launch from the Dock / Spotlight) */}
-      <DesktopWidgets onOpenApp={openApp} dragBoundsRef={desktopRef} />
+      <DesktopWidgets key={widgetLayoutKey} onOpenApp={openApp} dragBoundsRef={desktopRef} />
 
       {/* Windows */}
       <AnimatePresence>

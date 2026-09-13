@@ -17,6 +17,8 @@ interface MenuBarProps {
   onOpenSpotlight: () => void
   /** Full reboot: replays the boot screen, unlike the context menu's lighter "Refresh". */
   onRestart: () => void
+  /** Puts every desktop widget back in its default slot. */
+  onResetWidgets: () => void
   onCloseFocused: () => void
   onDownloadResume: () => void
   onShowDesktop: () => void
@@ -62,6 +64,7 @@ export function MenuBar({
   onOpenApp,
   onOpenSpotlight,
   onRestart,
+  onResetWidgets,
   onCloseFocused,
   onDownloadResume,
   onShowDesktop,
@@ -166,6 +169,7 @@ export function MenuBar({
                   items={[
                     { label: "About This OS", action: run(() => onOpenApp("about")) },
                     { label: "System Settings…", action: run(() => setTheme(theme === "light" ? "dark" : "light")) },
+                    { label: "Reset Widget Layout", action: run(onResetWidgets) },
                     { label: "Restart Desktop", action: run(onRestart) },
                   ]}
                 />

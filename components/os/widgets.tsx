@@ -41,6 +41,15 @@ function savePosition(id: string, pos: Pos) {
   }
 }
 
+/** Forget every saved widget position. Remount `DesktopWidgets` afterwards to apply. */
+export function clearWidgetLayout() {
+  try {
+    localStorage.removeItem(POS_KEY)
+  } catch {
+    /* nothing saved, nothing to clear */
+  }
+}
+
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
 
 /** The element widgets may be dragged within (the desktop). */
