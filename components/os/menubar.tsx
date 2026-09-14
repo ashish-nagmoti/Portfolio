@@ -168,7 +168,6 @@ export function MenuBar({
                 <Dropdown
                   items={[
                     { label: "About This OS", action: run(() => onOpenApp("about")) },
-                    { label: "System Settings…", action: run(() => setTheme(theme === "light" ? "dark" : "light")) },
                     { label: "Reset Widget Layout", action: run(onResetWidgets) },
                     { label: "Restart Desktop", action: run(onRestart) },
                   ]}
