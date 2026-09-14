@@ -115,9 +115,11 @@ export function Desktop({ initialApp }: DesktopProps) {
   }
 
   // A real reboot: the boot screen is skipped once "os-booted" is set for the
-  // session (see os-shell.tsx), so forget it before reloading.
+  // session (see os-shell.tsx), so forget it before reloading. Widgets come
+  // back in their default slots too, like a fresh desktop.
   const restart = () => {
     sessionStorage.removeItem("os-booted")
+    clearWidgetLayout()
     window.location.reload()
   }
 
