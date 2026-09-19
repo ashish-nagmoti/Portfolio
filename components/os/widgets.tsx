@@ -175,7 +175,7 @@ function LocationWidget() {
 
 const STATS = [
   { icon: Trophy, label: "LeetCode", value: "100+", sub: "solved", tint: "text-amber-500" },
-  { icon: Github, label: "GitHub", value: "50+", sub: "repos", tint: "text-foreground" },
+  { icon: Github, label: "GitHub", value: "45+", sub: "repos", tint: "text-foreground" },
 ]
 
 function StatsWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
@@ -228,7 +228,7 @@ function ProjectWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
 const CURRENTLY = [
   {
     label: "Building",
-    value: "StoryMail",
+    value: "System Map",
     icon: Hammer,
     tint: "text-violet-500",
     app: "projects" as AppId,

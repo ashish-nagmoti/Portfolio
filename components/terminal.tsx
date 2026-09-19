@@ -72,7 +72,7 @@ AI Engineering Student & Backend Developer
 
 💻 Coding Profiles:
   • LeetCode: https://leetcode.com/u/ashish_nagmoti/ (100+ Problems Solved)
-  • GitHub: https://github.com/ashish-nagmoti (50+ Repositories`,
+  • GitHub: https://github.com/ashish-nagmoti (45+ Repositories)`,
 
   skills: `🛠️ Technical Stack:
 

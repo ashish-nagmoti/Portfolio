@@ -6,17 +6,19 @@ import { Badge } from "@/components/ui/badge"
 import { IconBadge } from "@/components/os/icon-badge"
 import { NativeSection, NativeRow } from "@/components/os/native-list"
 import { cn } from "@/lib/utils"
-import { Code, Code2, Cloud, Database, Users, Award, Briefcase, Building2, Star } from "lucide-react"
+import { Code, Code2, Cloud, Database, Users, Award, Briefcase, Building2, Star, LayoutTemplate } from "lucide-react"
 
 const skills = {
   backend: ["Python", "Django", "FastAPI", "REST APIs"],
-  cloud: ["AWS", "GCP"],
+  frontend: ["React", "Next.js", "TypeScript"],
+  cloud: ["AWS", "GCP", "Docker"],
   databases: ["PostgreSQL", "MongoDB", "S3"],
   ai: ["LLM Integration", "Gemini API", "Langchain", "Vector Databases"],
 }
 
 const SKILL_META = {
   backend: { icon: Code, gradient: "from-violet-400 to-indigo-600", label: "Backend" },
+  frontend: { icon: LayoutTemplate, gradient: "from-cyan-400 to-teal-600", label: "Frontend" },
   cloud: { icon: Cloud, gradient: "from-sky-400 to-blue-600", label: "Cloud" },
   databases: { icon: Database, gradient: "from-emerald-400 to-green-600", label: "Databases" },
   ai: { icon: Award, gradient: "from-fuchsia-400 to-pink-600", label: "AI/ML" },
@@ -35,7 +37,7 @@ const codingProfiles = [
     platform: "GitHub",
     username: "ashish-nagmoti",
     url: "https://github.com/ashish-nagmoti",
-    stats: "50+ Repositories",
+    stats: "45+ Repositories",
     description: "Open source contributions and personal projects",
     gradient: "from-zinc-700 to-zinc-900",
   },

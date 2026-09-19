@@ -6,14 +6,28 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { IconBadge } from "@/components/os/icon-badge"
 import { cn } from "@/lib/utils"
-import { ExternalLink, Github, Brain, Globe, Code, LayoutGrid, List, Search, Folder, Sparkles } from "lucide-react"
+import { ExternalLink, Github, Brain, Globe, Code, LayoutGrid, List, Search, Folder, Sparkles, Boxes, Wrench } from "lucide-react"
 
 const CATEGORY_GRADIENT: Record<string, string> = {
   AI: "from-violet-400 to-fuchsia-600",
   Web: "from-sky-400 to-blue-600",
+  Tools: "from-amber-400 to-orange-600",
 }
 
 const projects = [
+  {
+    id: 4,
+    title: "System Map – Isometric Codebase Visualizer",
+    description: "Turns any codebase into an interactive isometric blueprint diagram.",
+    longDescription:
+      "A Claude Code skill that reads a codebase and renders its real routes, functions, models and tables as an interactive isometric blueprint — cross-hatched cubes on a technical-drawing canvas. Every number is pulled from source, never invented; click any block to drill into its actual internals. Outputs a single self-contained HTML file with no server or build step.",
+    tech: ["Claude Code", "HTML", "SVG", "JavaScript"],
+    category: "Tools",
+    icon: Boxes,
+    github: "https://github.com/ashish-nagmoti/codebase-isometric-visualizer",
+    demo: null,
+    date: "Aug 2026",
+  },
   {
     id: 1,
     title: "StoryMail – AI-Powered Smart Email Platform",
@@ -59,6 +73,7 @@ const FAVORITES = [
   { id: "all", label: "All Projects", icon: Folder },
   { id: "AI", label: "AI", icon: Sparkles },
   { id: "Web", label: "Web", icon: Globe },
+  { id: "Tools", label: "Tools", icon: Wrench },
 ] as const
 
 export function ProjectsApp() {
