@@ -112,6 +112,8 @@ export function MenuBar({
       items: [
         { label: "Spotlight Search…", shortcut: "⌘K", action: run(onOpenSpotlight) },
         { label: "Download Resume", action: run(onDownloadResume) },
+        { label: "Open llms.txt", action: run(() => window.open("/llms.txt", "_blank", "noopener")) },
+        { label: "Open robots.txt", action: run(() => window.open("/robots.txt", "_blank", "noopener")) },
         { label: "Close Window", shortcut: "Esc", action: run(onCloseFocused), disabled: !focusedApp },
       ],
     },
