@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { IconBadge } from "@/components/os/icon-badge"
 import { cn } from "@/lib/utils"
-import { ExternalLink, Github, Brain, Globe, Code, LayoutGrid, List, Search, Folder, Sparkles, Boxes, Wrench } from "lucide-react"
+import { ExternalLink, Github, Brain, Globe, Code, LayoutGrid, List, Search, Folder, Sparkles, Boxes, Wrench, ShieldCheck } from "lucide-react"
 
 const CATEGORY_GRADIENT: Record<string, string> = {
   AI: "from-violet-400 to-fuchsia-600",
@@ -15,6 +15,19 @@ const CATEGORY_GRADIENT: Record<string, string> = {
 }
 
 const projects = [
+  {
+    id: 6,
+    title: "KAVACH – LLM Security Platform",
+    description: "Enterprise LLM security and governance. 1st place at Sharp Tank, ESDS.",
+    longDescription:
+      "KAVACH is an LLM Security Platform focused on enterprise LLM security, governance, and protecting AI systems and sensitive organizational data. Built by Team Patronus — Ashish Nagmoti, Avani Jethiwal, Krushna Malwatkar, Sakshi Yeole and Kaustubh Chaudhari — with Ashish as CEO & CTO, responsible for the technical and product direction. Presented at Sharp Tank at ESDS Software Solution Ltd., where it won 1st place.",
+    tech: ["LLM Security", "AI Governance", "Access Control", "Enterprise AI"],
+    category: "AI",
+    icon: ShieldCheck,
+    github: null,
+    demo: null,
+    date: "Sharp Tank, ESDS — 1st Place",
+  },
   {
     id: 5,
     title: "SovereignRAG – Decentralized Enterprise AI",

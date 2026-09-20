@@ -62,8 +62,13 @@ AI Engineer & Researcher — ESDS Software Solution Ltd.
 🌟 Research: Sovereign AI, decentralized RAG, zero-trust AI architectures
 
 🏆 Leadership:
+  • KAVACH (Team Patronus) - CEO & CTO
   • Phoenix Club - Vice President
   • Young Indians Nashik Chapter - Innovation Coordinator
+
+🥇 Awards:
+  • 1st Place, Sharp Tank @ ESDS — KAVACH, LLM Security Platform
+  • Certificate of Excellence — Transformation & Change Drive, ESDS
 
 💼 Earlier:
   • Backend Intern, PrimeAcademy
@@ -105,27 +110,33 @@ Cloud & Data:
 
   projects: `🚀 Recent Projects:
 
-1. SovereignRAG – Decentralized Enterprise AI
+1. KAVACH – LLM Security Platform
+   • 1st Place, Sharp Tank @ ESDS Software Solution Ltd.
+   • CEO & CTO, Team Patronus
+   • Enterprise LLM security and governance — protecting AI systems
+     and sensitive organizational data.
+
+2. SovereignRAG – Decentralized Enterprise AI
    • ESDS Swaraj CloudForge Hackathon 2026, Team Patronus
    • Tech: Python, FastAPI, PostgreSQL, Qdrant, Ed25519, vLLM, React
    • Decentralized RAG where sensitive data stays at its source;
      nodes exchange signed claims under locally enforced policy.
 
-2. System Map – Isometric Codebase Visualizer
+3. System Map – Isometric Codebase Visualizer
    • Aug 2026
    • Tech: Claude Code, HTML, SVG, JavaScript
    • Renders a codebase's real routes, functions, models and tables
      as an interactive isometric blueprint.
    • GitHub: https://github.com/ashish-nagmoti/codebase-isometric-visualizer
 
-3. StoryMail – AI-Powered Smart Email Platform
+4. StoryMail – AI-Powered Smart Email Platform
    • Mar 2024 – Oct 2024
    • Tech: Django, Auth0, Postgres SQL, GeminiAPI
    • AI platform for email classification, weekly digests, and querying.
    • Demo: http://story-mail-olive.vercel.app/
    • GitHub: https://github.com/ashish-nagmoti/storymail
 
-4. KalaShala – Platform Empowering Local Artists
+5. KalaShala – Platform Empowering Local Artists
    • Feb 2024 – Mar 2024
    • Tech: Django, AWS, Postgres SQL
    • Role: Backend Development and Deployment
@@ -133,7 +144,7 @@ Cloud & Data:
    • Demo: https://kalashala-frontend1-zxra.vercel.app/
    • GitHub: https://github.com/ashish-nagmoti/kalashala-backend
 
-5. AceUp – Student Resource Hub with AI Chatbot
+6. AceUp – Student Resource Hub with AI Chatbot
    • 2024
    • Tech: Django, Tailwind CSS, Jinja, SQLite3, Python
    • Student hub with notes, roadmaps, events, and chatbot.

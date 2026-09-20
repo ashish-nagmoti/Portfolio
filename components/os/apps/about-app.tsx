@@ -47,6 +47,12 @@ const codingProfiles = [
 
 const leadership = [
   {
+    org: "KAVACH — Team Patronus",
+    role: "CEO & CTO",
+    description:
+      "Led the technical and product direction of KAVACH, an LLM Security Platform for enterprise LLM security and governance. 1st place at Sharp Tank, ESDS Software Solution Ltd.",
+  },
+  {
     org: "Phoenix Club",
     role: "Vice President",
     description: "Leading technical initiatives and organizing tech events for 200+ members.",
@@ -64,6 +70,12 @@ const leadership = [
 ]
 
 const sideProjects = [
+  {
+    name: "KAVACH – LLM Security Platform",
+    date: "Sharp Tank, ESDS · 1st Place",
+    detail:
+      "CEO & CTO, Team Patronus. Enterprise LLM security and governance — protecting AI systems and sensitive organizational data.",
+  },
   {
     name: "SovereignRAG – Decentralized Enterprise AI",
     date: "ESDS Swaraj CloudForge Hackathon 2026",
@@ -93,6 +105,16 @@ const sideProjects = [
 ]
 
 const achievements = [
+  {
+    title: "Sharp Tank, ESDS Software Solution Ltd.",
+    place: "1st Place",
+    description: "Won as part of Team Patronus for KAVACH, an LLM Security Platform, contributing as CEO & CTO.",
+  },
+  {
+    title: "Certificate of Excellence — Transformation & Change Drive",
+    place: "ESDS Software Solution Ltd.",
+    description: "Recognition for contributions toward organizational transformation and change initiatives.",
+  },
   { title: "Codethon – Arambh", place: "Winner (1st place)", description: "Coding competition winner for innovative solutions." },
   { title: "Code-O-Fiesta 2.0", place: "3rd Place", description: "Placed 3rd in a competitive coding event." },
   { title: "Social Winter of Code", place: "Contributor", description: "Completed open-source contributions under SWOC." },
@@ -135,7 +157,9 @@ const HISTORY = [
     changes: [
       "LLM inference and model serving on GPU infrastructure",
       "Kubernetes AI workloads, RAG, AI agents and AgentOps",
+      "1st place, Sharp Tank — KAVACH, an LLM Security Platform, as CEO & CTO of Team Patronus",
       "Sovereign AI research — SovereignRAG, CloudForge Hackathon 2026",
+      "Certificate of Excellence, Transformation & Change Drive",
     ],
   },
   {

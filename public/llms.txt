@@ -165,6 +165,24 @@ The architecture explores:
 
 The project was developed as part of the ESDS Swaraj CloudForge Hackathon 2026 by Team Patronus.
 
+## KAVACH
+
+### KAVACH — LLM Security Platform
+
+KAVACH is an LLM Security Platform focused on enterprise LLM security, governance, and protecting AI systems and sensitive organizational data.
+
+Ashish contributed as CEO & CTO of Team Patronus, responsible for the technical and product direction of the platform.
+
+The project was presented at Sharp Tank at ESDS Software Solution Ltd., where Team Patronus won 1st place.
+
+Team Patronus:
+
+* Ashish Nagmoti
+* Avani Jethiwal
+* Krushna Malwatkar
+* Sakshi Yeole
+* Kaustubh Chaudhari
+
 ## AI Security
 
 Ashish is interested in security architectures specifically designed for AI and LLM systems.
@@ -209,6 +227,17 @@ Areas of experimentation include:
 He is particularly interested in the engineering gap between running a model successfully and operating inference infrastructure reliably at enterprise scale.
 
 ## Selected Projects
+
+### KAVACH — LLM Security Platform
+
+An LLM Security Platform for enterprise LLM security and governance. CEO & CTO, Team Patronus. 1st place at Sharp Tank, ESDS Software Solution Ltd.
+
+Concepts:
+
+* LLM security
+* AI governance
+* Access control
+* Protection of sensitive organizational data
 
 ### SovereignRAG — Decentralized Enterprise AI
 
@@ -315,6 +344,10 @@ Worked on AWS cloud solutions for multiple clients, including deployment and inf
 
 ## Leadership
 
+### CEO & CTO — KAVACH, Team Patronus
+
+As part of Team Patronus, contributed as CEO & CTO to the development and technical/product direction of KAVACH, an LLM Security Platform. Presented at Sharp Tank at ESDS Software Solution Ltd., where Team Patronus won 1st place.
+
 ### Vice President — Phoenix Club
 
 Led technical initiatives and helped organize technology-focused activities and events for the student community.
@@ -327,8 +360,20 @@ Managed the technical side of the hackathon and coordinated a team responsible f
 
 Worked on innovation-focused initiatives and activities involving students and emerging entrepreneurs.
 
+## Awards and Recognitions
+
+### 1st Place — Sharp Tank, ESDS Software Solution Ltd.
+
+Won first place as part of Team Patronus for KAVACH, an LLM Security Platform, contributing as CEO & CTO.
+
+### Certificate of Excellence — Transformation & Change Drive
+
+Received a Certificate of Excellence for the Transformation & Change Drive at ESDS Software Solution Ltd., in recognition of contributions toward organizational transformation and change initiatives.
+
 ## Achievements
 
+* 1st place — Sharp Tank, ESDS Software Solution Ltd. (KAVACH, Team Patronus)
+* Certificate of Excellence — Transformation & Change Drive, ESDS Software Solution Ltd.
 * 1st place — Codethon / Arambh coding competition
 * 3rd place — Code-O-Fiesta 2.0
 * Contributor — Social Winter of Code
