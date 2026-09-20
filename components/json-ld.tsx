@@ -12,8 +12,8 @@ export default function JsonLd() {
         '@context': 'https://schema.org',
         '@type': 'Person',
         name: 'Ashish Nagmoti',
-        url: 'https://ashishnagmoti.com',
-        image: 'https://ashishnagmoti.com/profile-image.jpg', // Update with your actual profile image
+        url: 'https://ashish-nagmoti.tech',
+        image: 'https://ashish-nagmoti.tech/profile-image.jpg', // Update with your actual profile image
         jobTitle: 'AI & Data Science Student | Backend & Cloud Developer',
         worksFor: {
           '@type': 'Organization',

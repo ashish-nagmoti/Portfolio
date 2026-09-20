@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ashishnagmoti.com/sitemap.xml
+# Plain-text version of this site for AI agents (https://llmstxt.org)
+# https://ashish-nagmoti.tech/llms.txt
+
+Sitemap: https://ashish-nagmoti.tech/sitemap.xml

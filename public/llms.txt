@@ -1,0 +1,62 @@
+# Ashish Nagmoti
+
+> AI Engineer and Backend Developer from Maharashtra, India. AI & Data Science student at K.K. Wagh Institute of Engineering Education and Research (9.1 CGPA, graduating 2026). Builds backend systems, AI integrations and cloud infrastructure with Python, Django, FastAPI, AWS and GCP. Open to work — remote or onsite.
+
+This site (https://ashish-nagmoti.tech) is a portfolio styled as a macOS desktop. The content below is the same information the visual site presents, in plain text for agents. It is hand-maintained; when it and a linked source disagree, trust the source.
+
+Contact: ashishnagmoti2310@gmail.com (best for project inquiries). Resume: https://ashish-nagmoti.tech/clg_resume_v3.pdf
+
+## Links
+
+- [GitHub](https://github.com/ashish-nagmoti): 45+ public repositories, personal projects and open-source contributions
+- [LinkedIn](https://www.linkedin.com/in/ashish-nagmoti-54269b249): professional profile
+- [LeetCode](https://leetcode.com/u/ashish_nagmoti/): 100+ problems solved
+- [Medium](https://medium.com/@ashishnagmoti7): technical blog
+- [Resume (PDF)](https://ashish-nagmoti.tech/clg_resume_v3.pdf)
+
+## Skills
+
+- Backend: Python, Django, FastAPI, REST APIs
+- Frontend: React, Next.js, TypeScript
+- Cloud: AWS, GCP, Docker
+- Databases: PostgreSQL, MongoDB, S3
+- AI/ML: LLM integration, Gemini API, LangChain, vector databases
+
+Services offered: Python/Django/FastAPI development; AWS cloud solutions and migration; API design and development.
+
+## Projects
+
+- [System Map – Isometric Codebase Visualizer](https://github.com/ashish-nagmoti/codebase-isometric-visualizer): A Claude Code skill that reads a codebase and renders its real routes, functions, models and tables as an interactive isometric blueprint diagram. Every number is pulled from source, never invented. Outputs a single self-contained HTML file. Aug 2026. Tech: Claude Code, HTML, SVG, JavaScript.
+- [StoryMail – AI-Powered Smart Email Platform](https://github.com/ashish-nagmoti/storymail): Classifies emails, generates weekly digests, and lets users query their inbox in natural language. Mar–Oct 2024. Tech: Django, Auth0, PostgreSQL, Gemini API. Live: http://story-mail-olive.vercel.app/
+- [KalaShala – Platform Empowering Local Artists](https://github.com/ashish-nagmoti/kalashala-backend): A platform for local artists to showcase work, publish content and grow an audience. Role: backend development and deployment. Feb–Mar 2024. Tech: Django, AWS, PostgreSQL. Live: https://kalashala-frontend1-zxra.vercel.app/
+- [AceUp – Student Resource Hub with AI Chatbot](https://github.com/riaan-attar/AceUp): Notes, roadmaps, events and an integrated AI chatbot for students. 2024. Tech: Django, Tailwind CSS, Jinja, SQLite3, Python. Live: https://inevitable-lucky-predeator-b19e8de5.koyeb.app/
+
+## Experience
+
+- Backend Intern, PrimeAcademy (remote), Mar–Aug 2025: backend work in Django with AWS deployment.
+- Technical Intern, Lead Cured (remote), Sep–Nov 2024: built and tested serverless APIs on AWS Lambda, EC2, S3 and IAM.
+- Freelance: AWS cloud work for 3+ clients.
+
+## Leadership
+
+- Vice President, Phoenix Club: leads technical initiatives and organises tech events for 200+ members.
+- Web and IT Head, Innovera Hackathon: managed a team of 10+ building the website and running the hackathon's technical side.
+- Student Coordinator (Innovation), Young Indians Nashik Chapter: drives innovation projects and mentors emerging entrepreneurs.
+
+## Achievements
+
+- Winner (1st place), Codethon – Arambh coding competition
+- 3rd place, Code-O-Fiesta 2.0
+- Contributor, Social Winter of Code (open source)
+
+## Writing
+
+- [Common Pitfalls While Setting Up an AWS Account](https://medium.com/@ashishnagmoti7/common-pitfalls-while-setting-up-an-aws-account-b2767d9dde5b) (2025-07-28)
+- [My CS50 experience](https://medium.com/long-sweet-valuable/my-cs50-experience-44b5b8826c4d) (2024-06-21)
+- [I switched to Arch Linux](https://medium.com/@ashishnagmoti7/i-switched-to-arch-linux-cca16df9c2a7) (2024-01-30)
+- [My Hacktoberfest Journey: Navigating Challenges and Embracing Growth](https://medium.com/@ashishnagmoti7/my-hacktoberfest-journey-navigating-challenges-and-embracing-growth-14d6faf8649b) (2023-11-08)
+
+## Optional
+
+- [Site source](https://github.com/ashish-nagmoti/Portfolio): the Next.js code behind this site
+- Motto, as shown on the site's boot screen: "Life works in mysterious ways."
