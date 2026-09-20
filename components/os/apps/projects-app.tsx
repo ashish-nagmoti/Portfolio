@@ -16,6 +16,19 @@ const CATEGORY_GRADIENT: Record<string, string> = {
 
 const projects = [
   {
+    id: 5,
+    title: "SovereignRAG – Decentralized Enterprise AI",
+    description: "Enterprise RAG where sensitive data never leaves the team that owns it.",
+    longDescription:
+      "An architecture for decentralized enterprise RAG in which sensitive data stays at its source. Each organizational node keeps its own documents, vector database, retrieval, access policies and cryptographic identity. Instead of moving documents or embeddings between departments, nodes release signed claims according to locally enforced policy — so the orchestration layer, and the LLM itself, are never trusted with raw sensitive data. Built for the ESDS Swaraj CloudForge Hackathon 2026 by Team Patronus.",
+    tech: ["Python", "FastAPI", "PostgreSQL", "Qdrant", "Ed25519", "vLLM", "React"],
+    category: "AI",
+    icon: Brain,
+    github: null,
+    demo: null,
+    date: "2026",
+  },
+  {
     id: 4,
     title: "System Map – Isometric Codebase Visualizer",
     description: "Turns any codebase into an interactive isometric blueprint diagram.",
@@ -231,12 +244,14 @@ export function ProjectsApp() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <Button asChild>
-                    <a href={selected.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="h-4 w-4 mr-2" />
-                      GitHub
-                    </a>
-                  </Button>
+                  {selected.github && (
+                    <Button asChild>
+                      <a href={selected.github} target="_blank" rel="noopener noreferrer">
+                        <Github className="h-4 w-4 mr-2" />
+                        GitHub
+                      </a>
+                    </Button>
+                  )}
                   {selected.demo && selected.demo !== "#" && (
                     <Button variant="outline" asChild>
                       <a href={selected.demo} target="_blank" rel="noopener noreferrer">

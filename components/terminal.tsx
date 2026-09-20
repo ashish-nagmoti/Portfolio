@@ -37,9 +37,9 @@ const commands = {
   neofetch: `                   -\`                    user@ashish-nagmoti
                   .o+\`                   -----------------
                  \`ooo/                   OS: Arch Linux
-                \`+oooo:                  Host: Backend Developer
-               \`+oooooo:                 Packages: Django, FastAPI, AWS
-               -+oooooo+:                 Resolution: Full Stack
+                \`+oooo:                  Host: AI Engineer @ ESDS
+               \`+oooooo:                 Packages: vLLM, KServe, Kubeflow
+               -+oooooo+:                 Resolution: LLM Inference
              \`/:-:++oooo+:               DE: Hyprland
             \`/++++/+++++++:              IDE: VSCODE and Nvchad
            \`/++++++++++++++:             WM: wayland
@@ -49,26 +49,26 @@ const commands = {
        -osssssso.      :ssssssso.         Icons: Lucide
       :osssssss/        osssso+++.        Terminal: Interactive
      /ossssssss/        +ssssooo/-        Memory: Always Learning
-   \`/ossssso+/:-        -:/+osssso+-     GPU: Machine Learning
+   \`/ossssso+/:-        -:/+osssso+-     GPU: NVIDIA L40S / H100
   \`+sso+:-\`                 \`.-/+oso:
  \`++:.                           \`-/+/
  .\`                                 \`/`,
 
   about: `👨‍💻 Ashish Nagmoti
-AI Engineering Student & Backend Developer
+AI Engineer & Researcher — ESDS Software Solution Ltd.
 
-🎓 Education: K.K. Wagh Institute of Engineering Education and Research (9.1 CGPA, Expected 2026)
-🏢 Experience: Backend-focused, 4+ years
-🌟 Specialties: API Development, Cloud Architecture, AI Systems
+🎓 Education: B.Tech, AI & Data Science — K.K. Wagh Institute of Engineering Education and Research (9.1 CGPA)
+🏢 Work: LLM inference, GPU infrastructure, Kubernetes AI workloads, RAG, AI agents, AI security
+🌟 Research: Sovereign AI, decentralized RAG, zero-trust AI architectures
 
 🏆 Leadership:
   • Phoenix Club - Vice President
   • Young Indians Nashik Chapter - Innovation Coordinator
 
-💼 Professional:
-  • AWS Client Projects
-  • Freelance Development
-  • Cloud Solutions Architecture
+💼 Earlier:
+  • Backend Intern, PrimeAcademy
+  • Technical Intern, Lead Cured (AWS serverless)
+  • Freelance AWS cloud work
 
 💻 Coding Profiles:
   • LeetCode: https://leetcode.com/u/ashish_nagmoti/ (100+ Problems Solved)
@@ -76,44 +76,56 @@ AI Engineering Student & Backend Developer
 
   skills: `🛠️ Technical Stack:
 
+Generative AI & LLMs:
+  • LLM inference & model serving (vLLM, KServe, Hugging Face)
+  • RAG, vector search, LLM routing
+  • AI agents & AgentOps
+  • LLM security & governance
+
+AI Infrastructure:
+  • Kubernetes, Kubeflow
+  • NVIDIA GPUs, CUDA, GPU workload optimization
+  • Model registries, ML pipelines, AI observability
+
 Backend Development:
   • Python
-  • Django
   • FastAPI
+  • Django
   • REST APIs
 
-Cloud Platforms:
-  • AWS
-  • GCP
-  • Cloud Architecture
+Frontend:
+  • React
+  • Next.js
+  • TypeScript
 
-Databases:
-  • PostgreSQL
-  • MongoDB
-  • S3
-
-DevOps & Tools:
-  • Docker
-  • CI/CD
-  • Git
-  • Linux
-
-AI/ML:
-  • LLM Integration
-  • Gemini API
-  • Langchain
-  • Vector Databases`,
+Cloud & Data:
+  • AWS, GCP
+  • Docker, Linux
+  • PostgreSQL, MongoDB, Qdrant`,
 
   projects: `🚀 Recent Projects:
 
-1. StoryMail – AI-Powered Smart Email Platform
+1. SovereignRAG – Decentralized Enterprise AI
+   • ESDS Swaraj CloudForge Hackathon 2026, Team Patronus
+   • Tech: Python, FastAPI, PostgreSQL, Qdrant, Ed25519, vLLM, React
+   • Decentralized RAG where sensitive data stays at its source;
+     nodes exchange signed claims under locally enforced policy.
+
+2. System Map – Isometric Codebase Visualizer
+   • Aug 2026
+   • Tech: Claude Code, HTML, SVG, JavaScript
+   • Renders a codebase's real routes, functions, models and tables
+     as an interactive isometric blueprint.
+   • GitHub: https://github.com/ashish-nagmoti/codebase-isometric-visualizer
+
+3. StoryMail – AI-Powered Smart Email Platform
    • Mar 2024 – Oct 2024
    • Tech: Django, Auth0, Postgres SQL, GeminiAPI
    • AI platform for email classification, weekly digests, and querying.
    • Demo: http://story-mail-olive.vercel.app/
    • GitHub: https://github.com/ashish-nagmoti/storymail
 
-2. KalaShala – Platform Empowering Local Artists
+4. KalaShala – Platform Empowering Local Artists
    • Feb 2024 – Mar 2024
    • Tech: Django, AWS, Postgres SQL
    • Role: Backend Development and Deployment
@@ -121,7 +133,7 @@ AI/ML:
    • Demo: https://kalashala-frontend1-zxra.vercel.app/
    • GitHub: https://github.com/ashish-nagmoti/kalashala-backend
 
-3. AceUp – Student Resource Hub with AI Chatbot
+5. AceUp – Student Resource Hub with AI Chatbot
    • 2024
    • Tech: Django, Tailwind CSS, Jinja, SQLite3, Python
    • Student hub with notes, roadmaps, events, and chatbot.
@@ -135,21 +147,18 @@ AI/ML:
 🐙 GitHub: github.com/ashish-nagmoti
 🌐 Medium: medium.com/@ashishnagmoti7
 
-💼 Available for:
-  • Backend Development Projects
-  • Cloud Architecture Consulting
-  • AI/ML Integration
-  • Technical Leadership
-  • Freelance & Contract Work
+💼 Currently: AI Engineer & Researcher, ESDS Software Solution Ltd.
 
-📍 Location: Nashik, India
+🤝 Open to collaboration on:
+  • LLM inference & model serving
+  • AI infrastructure & GPU platforms
+  • RAG & sovereign AI architectures
+  • AI security & governance
+  • Research and technical discussions
+
+📍 Location: Maharashtra, India
 🕒 Timezone: UTC+5:30 (IST)
-💬 Preferred Contact: Email or LinkedIn
-
-📋 Services Offered:
-  • Python/Django/FastAPI Development
-  • AWS Cloud Solutions & Migration
-  • API Design & Development`,
+💬 Preferred Contact: Email or LinkedIn`,
 
   whoami: "ashish-nagmoti",
 

@@ -7,15 +7,32 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Ashish Nagmoti | AI Engineer | Backend Developer",
-  description: "Portfolio of Ashish Nagmoti, an AI Engineering student specializing in Python, Django, FastAPI, and cloud platforms.",
-  keywords: ["Ashish Nagmoti", "AI Engineer", "Backend Developer", "Python", "Django", "FastAPI", "AWS", "GCP", "Cloud Native", "Data Science"],
+  title: "Ashish Nagmoti | AI Engineer & Researcher",
+  description:
+    "Portfolio of Ashish Nagmoti, AI Engineer and Researcher at ESDS Software Solution Ltd., working on LLM inference, AI infrastructure, sovereign AI, RAG, GPU infrastructure, AI security and enterprise AI platforms.",
+  keywords: [
+    "Ashish Nagmoti",
+    "AI Engineer",
+    "AI Researcher",
+    "LLM Inference",
+    "AI Infrastructure",
+    "Sovereign AI",
+    "RAG",
+    "GPU Infrastructure",
+    "vLLM",
+    "Kubernetes",
+    "AI Security",
+    "Enterprise AI",
+    "ESDS",
+    "Python",
+    "FastAPI",
+  ],
   authors: [{ name: "Ashish Nagmoti" }],
   creator: "Ashish Nagmoti",
   publisher: "Ashish Nagmoti",
   openGraph: {
-    title: "Ashish Nagmoti - AI Engineer Portfolio",
-    description: "Showcasing Ashish Nagmoti's projects in AI, backend development, and cloud systems",
+    title: "Ashish Nagmoti — AI Engineer & Researcher",
+    description: "AI Engineer and Researcher at ESDS: LLM inference, AI infrastructure, sovereign AI, RAG and GPU platforms",
     type: "website",
     locale: "en_US",
     siteName: "Ashish Nagmoti Portfolio",
@@ -24,14 +41,14 @@ export const metadata: Metadata = {
         url: '/og-image.svg', // Replace with actual PNG when converted
         width: 1200,
         height: 630,
-        alt: 'Ashish Nagmoti - AI Engineer Portfolio',
+        alt: 'Ashish Nagmoti — AI Engineer & Researcher',
       }
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ashish Nagmoti - AI Engineer Portfolio",
-    description: "Showcasing Ashish Nagmoti's projects in AI, backend development, and cloud systems",
+    title: "Ashish Nagmoti — AI Engineer & Researcher",
+    description: "AI Engineer and Researcher at ESDS: LLM inference, AI infrastructure, sovereign AI, RAG and GPU platforms",
     images: ['/og-image.svg'], // Replace with actual PNG when converted
   },
   icons: {

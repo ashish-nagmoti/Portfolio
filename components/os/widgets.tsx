@@ -167,7 +167,7 @@ function LocationWidget() {
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
           <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
         </span>
-        <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">Open to work</span>
+        <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">AI Engineer @ ESDS</span>
       </div>
     </Widget>
   )
@@ -203,12 +203,12 @@ function ProjectWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
         <FolderGit2 className="h-3.5 w-3.5 text-sky-500" />
         <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Featured</p>
       </div>
-      <p className="mt-2 text-sm font-semibold leading-snug text-foreground">StoryMail</p>
+      <p className="mt-2 text-sm font-semibold leading-snug text-foreground">SovereignRAG</p>
       <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
-        AI-powered email platform — classification, digests and querying.
+        Decentralized enterprise RAG — sensitive data never leaves its owner.
       </p>
       <div className="mt-2.5 flex flex-wrap gap-1">
-        {["Django", "Gemini API", "Postgres"].map((t) => (
+        {["FastAPI", "vLLM", "Qdrant", "Ed25519"].map((t) => (
           <span
             key={t}
             className="rounded-full bg-black/5 px-2 py-0.5 text-[10px] font-medium text-muted-foreground dark:bg-white/10"
@@ -228,10 +228,10 @@ function ProjectWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
 const CURRENTLY = [
   {
     label: "Building",
-    value: "System Map",
+    value: "Enterprise AI platform @ ESDS",
     icon: Hammer,
     tint: "text-violet-500",
-    app: "projects" as AppId,
+    app: "about" as AppId,
   },
   {
     label: "Reading",
@@ -277,7 +277,7 @@ function CurrentlyWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
   )
 }
 
-const STACK = ["Python", "Django", "FastAPI", "AWS", "GCP", "LLMs"]
+const STACK = ["Python", "FastAPI", "vLLM", "Kubernetes", "CUDA", "RAG"]
 
 function StackWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
   return (

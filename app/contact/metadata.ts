@@ -1,12 +1,14 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact Ashish Nagmoti | AI & Backend Developer',
-  description: 'Get in touch with Ashish Nagmoti for collaboration, job opportunities, or questions about AI, backend development, and cloud projects.',
-  keywords: ['Contact Ashish Nagmoti', 'Hire AI developer', 'Backend developer contact', 'Project collaboration', 'AI student for hire'],
+  title: 'Contact Ashish Nagmoti | AI Engineer & Researcher',
+  description:
+    'Get in touch with Ashish Nagmoti for research, technical and project collaboration on LLM inference, AI infrastructure, RAG and sovereign AI.',
+  keywords: ['Contact Ashish Nagmoti', 'AI Engineer contact', 'AI research collaboration', 'LLM inference', 'AI infrastructure'],
   openGraph: {
-    title: 'Contact Ashish Nagmoti | AI & Backend Developer',
-    description: 'Get in touch with Ashish Nagmoti for collaboration, job opportunities, or questions about AI, backend development, and cloud projects.',
+    title: 'Contact Ashish Nagmoti | AI Engineer & Researcher',
+    description:
+      'Get in touch with Ashish Nagmoti for research, technical and project collaboration on LLM inference, AI infrastructure, RAG and sovereign AI.',
     url: '/contact',
     type: 'website',
   },

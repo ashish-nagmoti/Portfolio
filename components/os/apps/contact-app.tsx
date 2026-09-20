@@ -48,9 +48,10 @@ const contactMethods = [
 ]
 
 const services = [
-  "Python/Django/FastAPI Development",
-  "AWS Cloud Solutions & Migration",
-  "API Design & Development",
+  "LLM Inference & Model Serving",
+  "AI Infrastructure & GPU Platforms",
+  "RAG & Sovereign AI Architectures",
+  "AI Security & Governance",
 ]
 
 const containerVariants = {
@@ -125,11 +126,12 @@ export function ContactApp() {
 
         <motion.div variants={itemVariants} className="space-y-6">
           <NativeSection label="Location & Availability">
-            <NativeRow title="Maharashtra, India" subtitle="Open to work (remote/onsite)" />
+            <NativeRow title="Maharashtra, India" subtitle="AI Engineer & Researcher at ESDS Software Solution" />
+            <NativeRow title="Open to collaboration" subtitle="Research, technical and project inquiries welcome" />
             <NativeRow title="UTC+5:30 (IST)" subtitle="Flexible with global teams" />
           </NativeSection>
 
-          <NativeSection label="Services Offered">
+          <NativeSection label="Areas of Work">
             {services.map((service) => (
               <NativeRow key={service} title={service} />
             ))}

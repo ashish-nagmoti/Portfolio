@@ -6,22 +6,24 @@ import { Badge } from "@/components/ui/badge"
 import { IconBadge } from "@/components/os/icon-badge"
 import { NativeSection, NativeRow } from "@/components/os/native-list"
 import { cn } from "@/lib/utils"
-import { Code, Code2, Cloud, Database, Users, Award, Briefcase, Building2, Star, LayoutTemplate } from "lucide-react"
+import { Code, Code2, Cloud, Database, Users, Award, Briefcase, Building2, Star, LayoutTemplate, Cpu, Brain } from "lucide-react"
 
 const skills = {
-  backend: ["Python", "Django", "FastAPI", "REST APIs"],
+  llm: ["LLM Inference", "vLLM", "KServe", "Hugging Face", "RAG", "Vector Search", "AI Agents", "LLM Routing"],
+  infra: ["Kubernetes", "NVIDIA GPUs", "CUDA", "Kubeflow", "Model Registries", "ML Pipelines", "AI Observability"],
+  backend: ["Python", "FastAPI", "Django", "REST APIs"],
   frontend: ["React", "Next.js", "TypeScript"],
-  cloud: ["AWS", "GCP", "Docker"],
-  databases: ["PostgreSQL", "MongoDB", "S3"],
-  ai: ["LLM Integration", "Gemini API", "Langchain", "Vector Databases"],
+  cloud: ["AWS", "GCP", "Docker", "Linux"],
+  databases: ["PostgreSQL", "MongoDB", "Qdrant"],
 }
 
 const SKILL_META = {
+  llm: { icon: Brain, gradient: "from-fuchsia-400 to-pink-600", label: "Generative AI & LLMs" },
+  infra: { icon: Cpu, gradient: "from-amber-400 to-orange-600", label: "AI Infrastructure" },
   backend: { icon: Code, gradient: "from-violet-400 to-indigo-600", label: "Backend" },
   frontend: { icon: LayoutTemplate, gradient: "from-cyan-400 to-teal-600", label: "Frontend" },
   cloud: { icon: Cloud, gradient: "from-sky-400 to-blue-600", label: "Cloud" },
   databases: { icon: Database, gradient: "from-emerald-400 to-green-600", label: "Databases" },
-  ai: { icon: Award, gradient: "from-fuchsia-400 to-pink-600", label: "AI/ML" },
 } as const
 
 const codingProfiles = [
@@ -63,6 +65,17 @@ const leadership = [
 
 const sideProjects = [
   {
+    name: "SovereignRAG – Decentralized Enterprise AI",
+    date: "ESDS Swaraj CloudForge Hackathon 2026",
+    detail:
+      "Tech: Python, FastAPI, PostgreSQL, Qdrant, Ed25519, vLLM, React. Decentralized RAG where sensitive data stays at its source; nodes exchange signed claims under locally enforced policy instead of moving documents.",
+  },
+  {
+    name: "System Map – Isometric Codebase Visualizer",
+    date: "Aug 2026",
+    detail: "Tech: Claude Code, HTML, SVG, JavaScript. Renders a codebase's real routes, functions, models and tables as an interactive isometric blueprint.",
+  },
+  {
     name: "StoryMail – AI-Powered Smart Email Platform",
     date: "Mar 2024 – Oct 2024",
     detail: "Tech: Django, Auth0, Postgres SQL, GeminiAPI. AI platform for email classification, weekly digests, and querying.",
@@ -85,12 +98,13 @@ const achievements = [
   { title: "Social Winter of Code", place: "Contributor", description: "Completed open-source contributions under SWOC." },
 ]
 
-const internships = [
+const experience = [
   {
-    role: "Technical Intern",
-    company: "Lead Cured — Remote",
-    dates: "Sep 2024 – Nov 2024",
-    description: "Built and tested serverless APIs using AWS Lambda, EC2, S3, IAM.",
+    role: "AI Engineer & Researcher",
+    company: "ESDS Software Solution Ltd.",
+    dates: "Present",
+    description:
+      "AI infrastructure and enterprise AI platforms: LLM inference and model serving, GPU infrastructure, Kubernetes-based AI workloads, RAG, AI agents and AgentOps, AI security and governance, sovereign AI architectures.",
   },
   {
     role: "Backend Intern",
@@ -98,11 +112,17 @@ const internships = [
     dates: "Mar 2025 – Aug 2025",
     description: "Worked on backend using Django and AWS deployment.",
   },
+  {
+    role: "Technical Intern",
+    company: "Lead Cured — Remote",
+    dates: "Sep 2024 – Nov 2024",
+    description: "Built and tested serverless APIs using AWS Lambda, EC2, S3, IAM.",
+  },
 ]
 
 // A single accent runs through everything that's just "more of the same"
 // content about one person (leadership, side projects, achievements,
-// internships) — real macOS apps reserve color variation for things with an
+// experience) — real macOS apps reserve color variation for things with an
 // actual distinct identity (a brand, a tech domain), not for repeated rows
 // of the same category.
 const PROFILE_ACCENT = "from-violet-400 to-indigo-600"
@@ -114,7 +134,7 @@ const SECTIONS = [
   { id: "leadership", label: "Leadership", icon: Users },
   { id: "projects", label: "Projects", icon: Briefcase },
   { id: "achievements", label: "Achievements", icon: Award },
-  { id: "internships", label: "Internships", icon: Building2 },
+  { id: "experience", label: "Experience", icon: Building2 },
 ] as const
 
 type SectionId = (typeof SECTIONS)[number]["id"]
@@ -137,7 +157,7 @@ export function AboutApp() {
           </span>
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold">Ashish Nagmoti</p>
-            <p className="truncate text-xs text-muted-foreground">Backend Developer</p>
+            <p className="truncate text-xs text-muted-foreground">AI Engineer &amp; Researcher</p>
           </div>
         </div>
         <nav className="flex-1 space-y-0.5 overflow-y-auto p-2">
@@ -176,17 +196,19 @@ export function AboutApp() {
             {active === "stats" && (
               <div className="space-y-6">
                 <p className="text-sm leading-relaxed text-muted-foreground">
-                  An adaptable and passionate AI and Data Science student with a 9.1 CGPA (Expected 2026) at K.K.
-                  Wagh Institute of Engineering Education and Research. I love building impactful full-stack
-                  applications, with a strong focus on backend development, AI integration, and cloud
-                  infrastructure. From winning coding competitions to leading club events and building open-source
-                  projects, I enjoy turning ideas into usable tech.
+                  AI Engineer and Researcher at ESDS Software Solution Ltd., working on production AI systems:
+                  LLM inference and model serving, GPU infrastructure, Kubernetes-based AI workloads, RAG
+                  architectures, AI agents, and sovereign AI — where enterprise data stays with the team that
+                  owns it while AI systems still collaborate. B.Tech in Artificial Intelligence and Data Science
+                  from K.K. Wagh Institute of Engineering Education and Research, 9.1 CGPA. I care most about the
+                  engineering gap between running a model successfully and operating it reliably at enterprise
+                  scale.
                 </p>
                 <NativeSection label="Quick Stats">
-                  <NativeRow title="Experience" trailing={<span className="text-sm font-medium">Freelancing &amp; Internships</span>} />
-                  <NativeRow title="Projects" trailing={<span className="text-sm font-medium">15+</span>} />
-                  <NativeRow title="AWS Clients" trailing={<span className="text-sm font-medium">3+</span>} />
-                  <NativeRow title="Focus" trailing={<span className="text-sm font-medium">Backend + AI</span>} />
+                  <NativeRow title="Role" trailing={<span className="text-sm font-medium">AI Engineer &amp; Researcher</span>} />
+                  <NativeRow title="Company" trailing={<span className="text-sm font-medium">ESDS Software Solution</span>} />
+                  <NativeRow title="Focus" trailing={<span className="text-sm font-medium">LLM Inference + AI Infra</span>} />
+                  <NativeRow title="Research" trailing={<span className="text-sm font-medium">Sovereign AI, RAG, GPUs</span>} />
                 </NativeSection>
               </div>
             )}
@@ -293,9 +315,9 @@ export function AboutApp() {
               </NativeSection>
             )}
 
-            {active === "internships" && (
-              <NativeSection label="Internships">
-                {internships.map((i) => (
+            {active === "experience" && (
+              <NativeSection label="Experience">
+                {experience.map((i) => (
                   <NativeRow
                     key={i.role + i.company}
                     icon={<IconBadge icon={Building2} gradient={PROFILE_ACCENT} size="md" />}

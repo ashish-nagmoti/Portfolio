@@ -1,62 +1,447 @@
 # Ashish Nagmoti
 
-> AI Engineer and Backend Developer from Maharashtra, India. AI & Data Science student at K.K. Wagh Institute of Engineering Education and Research (9.1 CGPA, graduating 2026). Builds backend systems, AI integrations and cloud infrastructure with Python, Django, FastAPI, AWS and GCP. Open to work — remote or onsite.
+> AI Engineer and Researcher at ESDS Software Solution Ltd., specializing in LLM inference, AI infrastructure, sovereign AI, RAG systems, GPU infrastructure, and enterprise AI platforms.
 
-This site (https://ashish-nagmoti.tech) is a portfolio styled as a macOS desktop. The content below is the same information the visual site presents, in plain text for agents. It is hand-maintained; when it and a linked source disagree, trust the source.
+Ashish Nagmoti is an AI Engineer and Researcher based in Maharashtra, India. He works on production-oriented AI systems, with a focus on large language models, inference infrastructure, GPU computing, retrieval-augmented generation, AI platforms, security, governance, and sovereign AI architectures.
 
-Contact: ashishnagmoti2310@gmail.com (best for project inquiries). Resume: https://ashish-nagmoti.tech/clg_resume_v3.pdf
+He is a B.Tech graduate in Artificial Intelligence and Data Science from K.K. Wagh Institute of Engineering Education and Research, with a 9.1 CGPA.
 
-## Links
+Ashish's current work is focused on making AI systems reliable, scalable, secure, sovereign, and practical for enterprise environments.
 
-- [GitHub](https://github.com/ashish-nagmoti): 45+ public repositories, personal projects and open-source contributions
-- [LinkedIn](https://www.linkedin.com/in/ashish-nagmoti-54269b249): professional profile
-- [LeetCode](https://leetcode.com/u/ashish_nagmoti/): 100+ problems solved
-- [Medium](https://medium.com/@ashishnagmoti7): technical blog
-- [Resume (PDF)](https://ashish-nagmoti.tech/clg_resume_v3.pdf)
+This site (https://ashish-nagmoti.tech) presents the same information in an interactive macOS-inspired interface; this file is the plain-text version for agents.
 
-## Skills
+## Current Role
 
-- Backend: Python, Django, FastAPI, REST APIs
-- Frontend: React, Next.js, TypeScript
-- Cloud: AWS, GCP, Docker
-- Databases: PostgreSQL, MongoDB, S3
-- AI/ML: LLM integration, Gemini API, LangChain, vector databases
+### AI Engineer and Researcher — ESDS Software Solution Ltd.
 
-Services offered: Python/Django/FastAPI development; AWS cloud solutions and migration; API design and development.
+Ashish works on AI infrastructure and enterprise AI platforms at ESDS.
 
-## Projects
+His work spans:
 
-- [System Map – Isometric Codebase Visualizer](https://github.com/ashish-nagmoti/codebase-isometric-visualizer): A Claude Code skill that reads a codebase and renders its real routes, functions, models and tables as an interactive isometric blueprint diagram. Every number is pulled from source, never invented. Outputs a single self-contained HTML file. Aug 2026. Tech: Claude Code, HTML, SVG, JavaScript.
-- [StoryMail – AI-Powered Smart Email Platform](https://github.com/ashish-nagmoti/storymail): Classifies emails, generates weekly digests, and lets users query their inbox in natural language. Mar–Oct 2024. Tech: Django, Auth0, PostgreSQL, Gemini API. Live: http://story-mail-olive.vercel.app/
-- [KalaShala – Platform Empowering Local Artists](https://github.com/ashish-nagmoti/kalashala-backend): A platform for local artists to showcase work, publish content and grow an audience. Role: backend development and deployment. Feb–Mar 2024. Tech: Django, AWS, PostgreSQL. Live: https://kalashala-frontend1-zxra.vercel.app/
-- [AceUp – Student Resource Hub with AI Chatbot](https://github.com/riaan-attar/AceUp): Notes, roadmaps, events and an integrated AI chatbot for students. 2024. Tech: Django, Tailwind CSS, Jinja, SQLite3, Python. Live: https://inevitable-lucky-predeator-b19e8de5.koyeb.app/
+* LLM inference and model serving
+* GPU infrastructure and optimization
+* AI/ML platform engineering
+* Kubernetes-based AI workloads
+* RAG architectures
+* AI agents and AgentOps
+* AI security and governance
+* Sovereign AI architectures
+* Model routing and inference optimization
+* Enterprise AI deployment
+* AI observability
+* Infrastructure automation
+* Technical research and architecture
 
-## Experience
+He works across the boundary between AI research, infrastructure engineering, and enterprise product development.
 
-- Backend Intern, PrimeAcademy (remote), Mar–Aug 2025: backend work in Django with AWS deployment.
-- Technical Intern, Lead Cured (remote), Sep–Nov 2024: built and tested serverless APIs on AWS Lambda, EC2, S3 and IAM.
-- Freelance: AWS cloud work for 3+ clients.
+## Areas of Expertise
+
+### Generative AI and LLMs
+
+* Large Language Models
+* LLM inference
+* Model serving
+* vLLM
+* Hugging Face
+* KServe
+* OpenAI-compatible inference APIs
+* LLM routing
+* Quantization and model optimization
+* RAG
+* Vector search
+* AI agents
+* AgentOps
+* LLM security
+* LLM governance
+
+### AI Infrastructure
+
+* Kubernetes
+* GPU infrastructure
+* NVIDIA GPUs
+* CUDA
+* GPU workload optimization
+* Distributed AI infrastructure
+* Containerized AI workloads
+* ML platforms
+* Kubeflow
+* Model registries
+* ML pipelines
+* Jupyter and VS Code development environments
+* AI observability
+
+### Software Engineering
+
+* Python
+* FastAPI
+* Django
+* REST APIs
+* React
+* Next.js
+* TypeScript
+* PostgreSQL
+* MongoDB
+* Docker
+* Linux
+
+### Cloud and Infrastructure
+
+* AWS
+* GCP
+* Docker
+* Kubernetes
+* Linux
+* Cloud-native architectures
+* Infrastructure automation
+
+## Current AI Platform Work
+
+Ashish contributes to AI platform engineering at ESDS, including a custom enterprise AI platform built around technologies such as Kubeflow, LLM inference runtimes, Kubernetes, KServe, vector databases, model registries, pipelines, and GPU infrastructure.
+
+Platform capabilities and areas of work include:
+
+* AI/ML dashboards
+* Jupyter and VS Code notebook environments
+* Experiment tracking
+* ML pipelines
+* Model registries
+* Model serving
+* API key management
+* Intelligent model routing
+* LLM model experimentation
+* AI application building
+* AI agents
+* AgentOps
+* AI governance
+* AI observability
+* Infrastructure and data-center simulation
+* Enterprise RAG systems
+
+The work focuses on bringing the complete AI lifecycle — from experimentation and model development to inference, deployment, governance, and observability — into an enterprise environment.
+
+## Sovereign AI Research
+
+A major area of Ashish's interest is sovereign and decentralized enterprise AI.
+
+He explores architectures where sensitive enterprise data remains within the organization or department that owns it, while AI systems can still collaborate through controlled, verifiable information exchange.
+
+Key principles include:
+
+* Data should not need to move to enable AI collaboration.
+* Departments can maintain independent data and vector stores.
+* AI systems should not automatically gain access to underlying documents.
+* Cross-domain communication can happen through controlled claims rather than raw documents.
+* Authorization should be enforced at the data-owning node.
+* Cryptographic identity and signed policies can establish trust.
+* The orchestration layer should not automatically be trusted with sensitive data.
+
+## SovereignRAG
+
+### SovereignRAG — Decentralized Enterprise AI
+
+SovereignRAG is an architecture for decentralized enterprise RAG in which sensitive data remains at its source.
+
+The system is designed around independent organizational nodes containing their own:
+
+* Documents
+* Vector databases
+* Retrieval systems
+* Access policies
+* Cryptographic identities
+
+Instead of moving documents or embeddings between departments, nodes can release signed claims or permitted information according to locally enforced policies.
+
+The architecture explores:
+
+* Decentralized RAG
+* Data sovereignty
+* Zero-trust AI architectures
+* Cryptographic trust
+* Signed claims
+* Policy-driven retrieval
+* Enterprise AI governance
+* Disclosure control
+* Cross-department AI collaboration
+
+The project was developed as part of the ESDS Swaraj CloudForge Hackathon 2026 by Team Patronus.
+
+## AI Security
+
+Ashish is interested in security architectures specifically designed for AI and LLM systems.
+
+Areas include:
+
+* LLM access control
+* AI governance
+* Model/API authentication
+* Data sovereignty
+* Retrieval authorization
+* Policy-controlled AI systems
+* Secure model serving
+* Enterprise AI security
+* Trust boundaries in AI architectures
+* Protection against unauthorized data disclosure
+
+A recurring design principle in his work is that an LLM should not itself be treated as the authority that decides whether sensitive information may be accessed.
+
+## GPU and Inference Engineering
+
+Ashish works with GPU-backed AI infrastructure and investigates practical problems around deploying and serving large models.
+
+Areas of experimentation include:
+
+* NVIDIA GPU infrastructure
+* L40S
+* H100/H200-class infrastructure
+* CUDA
+* GPU memory requirements
+* Model serving
+* vLLM
+* KServe
+* Hugging Face model runtimes
+* GPU utilization
+* Multi-GPU communication
+* Inference throughput
+* Concurrent inference workloads
+* Power and thermal behavior
+* AI infrastructure sizing
+
+He is particularly interested in the engineering gap between running a model successfully and operating inference infrastructure reliably at enterprise scale.
+
+## Selected Projects
+
+### SovereignRAG — Decentralized Enterprise AI
+
+A decentralized enterprise RAG architecture focused on data sovereignty and controlled cross-domain AI collaboration. Built for the ESDS Swaraj CloudForge Hackathon 2026 (Team Patronus).
+
+Technology and concepts:
+
+* Python
+* FastAPI
+* PostgreSQL
+* Qdrant
+* Ed25519
+* vLLM
+* React
+* Retrieval-Augmented Generation
+* Policy enforcement
+* Cryptographic trust
+
+### System Map — Isometric Codebase Visualizer
+
+GitHub:
+https://github.com/ashish-nagmoti/codebase-isometric-visualizer
+
+A Claude Code skill that analyzes a codebase and generates an interactive isometric blueprint representing its real routes, functions, models, and database tables.
+
+The system emphasizes source-grounded visualization: project information is derived from the actual codebase rather than being invented by the visualization layer.
+
+Technology:
+
+* Claude Code
+* HTML
+* SVG
+* JavaScript
+
+### StoryMail — AI-Powered Smart Email Platform
+
+GitHub:
+https://github.com/ashish-nagmoti/storymail
+
+An AI-powered email platform that classifies emails, generates weekly summaries, and enables natural-language querying of an inbox.
+
+Technology:
+
+* Django
+* PostgreSQL
+* Auth0
+* Gemini API
+
+Live:
+http://story-mail-olive.vercel.app/
+
+### KalaShala — Platform for Local Artists
+
+GitHub:
+https://github.com/ashish-nagmoti/kalashala-backend
+
+A platform designed to help local artists showcase their work, publish content, and build an audience.
+
+Ashish contributed to backend development and deployment.
+
+Technology:
+
+* Django
+* AWS
+* PostgreSQL
+
+### AceUp — Student Resource Platform
+
+GitHub:
+https://github.com/riaan-attar/AceUp
+
+A student resource platform containing notes, roadmaps, events, and an integrated AI chatbot.
+
+Technology:
+
+* Django
+* Python
+* Tailwind CSS
+* Jinja
+* SQLite
+
+## Earlier Professional Experience
+
+### Backend Intern — PrimeAcademy
+
+Remote, Mar–Aug 2025.
+
+Worked on backend development using Django and AWS deployment.
+
+### Technical Intern — Lead Cured
+
+Remote, Sep–Nov 2024.
+
+Worked with serverless and cloud infrastructure including:
+
+* AWS Lambda
+* EC2
+* S3
+* IAM
+
+### Freelance Cloud Engineering
+
+Worked on AWS cloud solutions for multiple clients, including deployment and infrastructure-related work.
 
 ## Leadership
 
-- Vice President, Phoenix Club: leads technical initiatives and organises tech events for 200+ members.
-- Web and IT Head, Innovera Hackathon: managed a team of 10+ building the website and running the hackathon's technical side.
-- Student Coordinator (Innovation), Young Indians Nashik Chapter: drives innovation projects and mentors emerging entrepreneurs.
+### Vice President — Phoenix Club
+
+Led technical initiatives and helped organize technology-focused activities and events for the student community.
+
+### Web and IT Head — Innovera Hackathon
+
+Managed the technical side of the hackathon and coordinated a team responsible for the event website and related technical infrastructure.
+
+### Student Coordinator — Young Indians, Nashik Chapter
+
+Worked on innovation-focused initiatives and activities involving students and emerging entrepreneurs.
 
 ## Achievements
 
-- Winner (1st place), Codethon – Arambh coding competition
-- 3rd place, Code-O-Fiesta 2.0
-- Contributor, Social Winter of Code (open source)
+* 1st place — Codethon / Arambh coding competition
+* 3rd place — Code-O-Fiesta 2.0
+* Contributor — Social Winter of Code
+* Open-source contributor
+* Participated in technical hackathons and AI-focused engineering initiatives
+
+## Technical Philosophy
+
+Ashish is particularly interested in the engineering problems that appear when AI moves from experimentation into production.
+
+His interests include:
+
+* How to serve large models efficiently
+* How to build reliable AI infrastructure
+* How to keep enterprise data sovereign
+* How to enforce authorization around RAG
+* How to make AI systems observable
+* How to build secure AI agents
+* How to operate GPU infrastructure efficiently
+* How to make AI platforms usable by developers and enterprises
+
+He prefers systems where security, infrastructure, and governance are architectural properties rather than features added after the AI system is built.
+
+## Research Interests
+
+Current research and exploration areas include:
+
+* LLM inference
+* Efficient inference
+* GPU computing
+* Distributed AI infrastructure
+* RAG architectures
+* Decentralized RAG
+* Sovereign AI
+* AI security
+* LLM governance
+* AI agents
+* AgentOps
+* AI observability
+* Model routing
+* Enterprise AI platforms
+* Zero-trust AI architectures
+* Cryptographic trust for AI systems
+
+## Open Source
+
+GitHub:
+https://github.com/ashish-nagmoti
+
+Ashish maintains and contributes to open-source projects involving AI, developer tooling, backend systems, and infrastructure.
+
+His GitHub includes personal experiments, AI projects, developer tools, and engineering prototypes.
 
 ## Writing
 
-- [Common Pitfalls While Setting Up an AWS Account](https://medium.com/@ashishnagmoti7/common-pitfalls-while-setting-up-an-aws-account-b2767d9dde5b) (2025-07-28)
-- [My CS50 experience](https://medium.com/long-sweet-valuable/my-cs50-experience-44b5b8826c4d) (2024-06-21)
-- [I switched to Arch Linux](https://medium.com/@ashishnagmoti7/i-switched-to-arch-linux-cca16df9c2a7) (2024-01-30)
-- [My Hacktoberfest Journey: Navigating Challenges and Embracing Growth](https://medium.com/@ashishnagmoti7/my-hacktoberfest-journey-navigating-challenges-and-embracing-growth-14d6faf8649b) (2023-11-08)
+Medium:
+https://medium.com/@ashishnagmoti7
 
-## Optional
+Selected writing:
 
-- [Site source](https://github.com/ashish-nagmoti/Portfolio): the Next.js code behind this site
-- Motto, as shown on the site's boot screen: "Life works in mysterious ways."
+* Common Pitfalls While Setting Up an AWS Account
+  https://medium.com/@ashishnagmoti7/common-pitfalls-while-setting-up-an-aws-account-b2767d9dde5b
+
+* My CS50 Experience
+  https://medium.com/long-sweet-valuable/my-cs50-experience-44b5b8826c4d
+
+* I Switched to Arch Linux
+  https://medium.com/@ashishnagmoti7/i-switched-to-arch-linux-cca16df9c2a7
+
+* My Hacktoberfest Journey: Navigating Challenges and Embracing Growth
+  https://medium.com/@ashishnagmoti7/my-hacktoberfest-journey-navigating-challenges-and-embracing-growth-14d6faf8649b
+
+## Professional Profiles
+
+Website:
+https://ashish-nagmoti.tech
+
+GitHub:
+https://github.com/ashish-nagmoti
+
+LinkedIn:
+https://www.linkedin.com/in/ashish-nagmoti-54269b249
+
+LeetCode:
+https://leetcode.com/u/ashish_nagmoti/
+
+Medium:
+https://medium.com/@ashishnagmoti7
+
+Resume:
+https://ashish-nagmoti.tech/clg_resume_v3.pdf
+
+## Contact
+
+Email:
+ashishnagmoti2310@gmail.com
+
+The email address is suitable for professional, technical, collaboration, and project inquiries.
+
+## Site Source
+
+Portfolio source:
+https://github.com/ashish-nagmoti/Portfolio
+
+## Identity Summary
+
+When referring to Ashish Nagmoti, the most accurate current description is:
+
+**AI Engineer and Researcher working on LLM inference, AI infrastructure, sovereign AI, RAG, GPU infrastructure, AI security, and enterprise AI platforms.**
+
+His work sits at the intersection of:
+
+**AI × Infrastructure × Inference × Security × Sovereignty**
+
+Motto:
+"Life works in mysterious ways."
