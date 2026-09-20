@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { IconBadge } from "@/components/os/icon-badge"
 import { NativeSection, NativeRow } from "@/components/os/native-list"
 import { cn } from "@/lib/utils"
-import { Code, Code2, Cloud, Database, Users, Award, Briefcase, Building2, Star, LayoutTemplate, Cpu, Brain } from "lucide-react"
+import { Code, Code2, Cloud, Database, Users, Award, Briefcase, Building2, History, LayoutTemplate, Cpu, Brain } from "lucide-react"
 
 const skills = {
   llm: ["LLM Inference", "vLLM", "KServe", "Hugging Face", "RAG", "Vector Search", "AI Agents", "LLM Routing"],
@@ -120,6 +120,58 @@ const experience = [
   },
 ]
 
+/**
+ * The overview, told the way macOS's Versions browser tells a file's story:
+ * newest snapshot on top marked Current, each one a changelog of what that
+ * stage added. Built from the same facts as the other sections.
+ */
+const HISTORY = [
+  {
+    version: "v3.0",
+    when: "Present",
+    current: true,
+    title: "AI Engineer & Researcher",
+    org: "ESDS Software Solution Ltd.",
+    changes: [
+      "LLM inference and model serving on GPU infrastructure",
+      "Kubernetes AI workloads, RAG, AI agents and AgentOps",
+      "Sovereign AI research — SovereignRAG, CloudForge Hackathon 2026",
+    ],
+  },
+  {
+    version: "v2.1",
+    when: "Mar – Aug 2025",
+    title: "Backend Intern",
+    org: "PrimeAcademy · Remote",
+    changes: ["Django backend with AWS deployment"],
+  },
+  {
+    version: "v2.0",
+    when: "Sep – Nov 2024",
+    title: "Technical Intern",
+    org: "Lead Cured · Remote",
+    changes: ["Serverless APIs on AWS Lambda, EC2, S3 and IAM"],
+  },
+  {
+    version: "v1.5",
+    when: "2024",
+    title: "Side projects, freelance, leadership",
+    org: "StoryMail · KalaShala · AceUp",
+    changes: [
+      "Shipped an AI email platform, an artists' platform and a student hub",
+      "AWS cloud work for 3+ freelance clients",
+      "Vice President, Phoenix Club · Web & IT Head, Innovera Hackathon",
+    ],
+  },
+  {
+    version: "v1.0",
+    when: "Class of 2026",
+    title: "B.Tech, Artificial Intelligence & Data Science",
+    org: "K.K. Wagh Institute of Engineering Education and Research · 9.1 CGPA",
+    changes: ["Winner, Codethon – Arambh · 3rd place, Code-O-Fiesta 2.0", "Contributor, Social Winter of Code"],
+  },
+]
+
 // A single accent runs through everything that's just "more of the same"
 // content about one person (leadership, side projects, achievements,
 // experience) — real macOS apps reserve color variation for things with an
@@ -128,7 +180,7 @@ const experience = [
 const PROFILE_ACCENT = "from-violet-400 to-indigo-600"
 
 const SECTIONS = [
-  { id: "stats", label: "Quick Stats", icon: Star },
+  { id: "stats", label: "Overview", icon: History },
   { id: "profiles", label: "Coding Profiles", icon: Code2 },
   { id: "skills", label: "Skills", icon: Database },
   { id: "leadership", label: "Leadership", icon: Users },
@@ -195,21 +247,59 @@ export function AboutApp() {
           >
             {active === "stats" && (
               <div className="space-y-6">
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  AI Engineer and Researcher at ESDS Software Solution Ltd., working on production AI systems:
-                  LLM inference and model serving, GPU infrastructure, Kubernetes-based AI workloads, RAG
-                  architectures, AI agents, and sovereign AI — where enterprise data stays with the team that
-                  owns it while AI systems still collaborate. B.Tech in Artificial Intelligence and Data Science
-                  from K.K. Wagh Institute of Engineering Education and Research, 9.1 CGPA. I care most about the
-                  engineering gap between running a model successfully and operating it reliably at enterprise
-                  scale.
-                </p>
-                <NativeSection label="Quick Stats">
-                  <NativeRow title="Role" trailing={<span className="text-sm font-medium">AI Engineer &amp; Researcher</span>} />
-                  <NativeRow title="Company" trailing={<span className="text-sm font-medium">ESDS Software Solution</span>} />
-                  <NativeRow title="Focus" trailing={<span className="text-sm font-medium">LLM Inference + AI Infra</span>} />
-                  <NativeRow title="Research" trailing={<span className="text-sm font-medium">Sovereign AI, RAG, GPUs</span>} />
-                </NativeSection>
+                <div>
+                  <p className="text-base font-semibold leading-snug text-foreground">
+                    AI Engineer &amp; Researcher at ESDS — LLM inference, GPU infrastructure, RAG and sovereign AI.
+                  </p>
+                  <p className="mt-1.5 text-sm text-muted-foreground">
+                    The interesting problems start after the model runs: operating it reliably, securely and at
+                    enterprise scale.
+                  </p>
+                </div>
+
+                {/* Version history, Versions-browser style: newest on top, marked Current */}
+                <div>
+                  <div className="mb-3 flex items-baseline justify-between">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Version History</p>
+                    <p className="text-[11px] tabular-nums text-muted-foreground">{HISTORY.length} versions</p>
+                  </div>
+                  <ol className="relative ml-2 border-l border-black/10 dark:border-white/15">
+                    {HISTORY.map((v) => (
+                      <li key={v.version} className="relative pb-6 pl-6 last:pb-0">
+                        {/* Rail marker; the current version gets a filled, glowing dot */}
+                        <span
+                          className={cn(
+                            "absolute -left-[5px] top-1.5 h-[9px] w-[9px] rounded-full border-2",
+                            v.current
+                              ? "border-primary bg-primary shadow-[0_0_0_3px_hsl(var(--primary)/0.2)]"
+                              : "border-black/25 bg-background dark:border-white/30",
+                          )}
+                        />
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <span className="rounded-md bg-black/[0.06] px-1.5 py-0.5 font-mono text-[11px] font-medium text-foreground/80 dark:bg-white/10">
+                            {v.version}
+                          </span>
+                          {v.current && (
+                            <span className="rounded-md bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                              Current
+                            </span>
+                          )}
+                          <span className="text-[11px] tabular-nums text-muted-foreground">{v.when}</span>
+                        </div>
+                        <p className="mt-1 text-sm font-semibold leading-snug text-foreground">{v.title}</p>
+                        <p className="text-xs text-muted-foreground">{v.org}</p>
+                        <ul className="mt-1.5 space-y-0.5">
+                          {v.changes.map((c) => (
+                            <li key={c} className="flex gap-2 text-xs leading-snug text-foreground/80">
+                              <span className="select-none font-mono text-emerald-600 dark:text-emerald-400">+</span>
+                              <span>{c}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
               </div>
             )}
 

@@ -167,7 +167,7 @@ function LocationWidget() {
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
           <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
         </span>
-        <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400">AI Engineer @ ESDS</span>
+        <span className="whitespace-nowrap text-[10px] font-medium text-emerald-600 dark:text-emerald-400">At ESDS</span>
       </div>
     </Widget>
   )
