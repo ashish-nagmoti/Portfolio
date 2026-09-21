@@ -103,6 +103,7 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
   return (
     <div className="fixed bottom-2 inset-x-0 z-[9000] flex justify-center pointer-events-none px-2">
       <motion.div
+        data-tour="dock"
         onMouseMove={(e) => mouseX.set(e.clientX)}
         onMouseLeave={() => mouseX.set(Infinity)}
         initial={{ y: 40, opacity: 0 }}

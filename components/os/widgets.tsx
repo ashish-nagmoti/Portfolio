@@ -343,7 +343,13 @@ export function DesktopWidgets({
         <StackWidget onOpenApp={onOpenApp} />
       </motion.div>
 
-      <motion.div variants={containerVariants} initial="hidden" animate="visible" className={cn(COLUMN, "right-4 pr-1")}>
+      <motion.div
+        data-tour="widgets"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className={cn(COLUMN, "right-4 pr-1")}
+      >
         <CalendarWidget />
         <LocationWidget />
         <StatsWidget onOpenApp={onOpenApp} />

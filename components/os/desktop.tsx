@@ -1,13 +1,13 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { X } from "lucide-react"
+import { AnimatePresence } from "framer-motion"
 import { useIsMobile } from "@/components/ui/use-mobile"
 import { APPS, RESUME_ICON } from "./app-registry"
 import { Window, type OriginRect } from "./window"
 import { Dock } from "./dock"
 import { DesktopWidgets, clearWidgetLayout } from "./widgets"
+import { Tour, TOUR_DONE_KEY } from "./tour"
 import { MenuBar } from "./menubar"
 import { StatusBar } from "./ios/status-bar"
 import { Spotlight } from "./spotlight"
@@ -73,7 +73,7 @@ export function Desktop({ initialApp }: DesktopProps) {
         ]
       : [],
   )
-  const [showHint, setShowHint] = useState(false)
+  const [tourOpen, setTourOpen] = useState(false)
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null)
   const [spotlightOpen, setSpotlightOpen] = useState(false)
   const [wallpaperIdx, setWallpaperIdx] = useState(0)
@@ -81,10 +81,11 @@ export function Desktop({ initialApp }: DesktopProps) {
   const [bounceToken, setBounceToken] = useState(0)
   const [pendingOrigin, setPendingOrigin] = useState<OriginRect | null>(null)
 
+  // First visit: offer the guided tour once the desktop has settled in.
   useEffect(() => {
     if (typeof window === "undefined") return
-    if (!localStorage.getItem("os-welcome-seen")) {
-      const t = setTimeout(() => setShowHint(true), 1000)
+    if (!localStorage.getItem(TOUR_DONE_KEY)) {
+      const t = setTimeout(() => setTourOpen(true), 1200)
       return () => clearTimeout(t)
     }
   }, [])
@@ -94,9 +95,9 @@ export function Desktop({ initialApp }: DesktopProps) {
     if (saved) setWallpaperIdx(Number(saved) % WALLPAPERS.length)
   }, [])
 
-  const dismissHint = () => {
-    setShowHint(false)
-    localStorage.setItem("os-welcome-seen", "1")
+  const endTour = () => {
+    setTourOpen(false)
+    localStorage.setItem(TOUR_DONE_KEY, "1")
   }
 
   const cycleWallpaper = () => {
@@ -244,6 +245,7 @@ export function Desktop({ initialApp }: DesktopProps) {
           onOpenSpotlight={() => setSpotlightOpen(true)}
           onRestart={restart}
           onResetWidgets={resetWidgetLayout}
+          onStartTour={() => setTourOpen(true)}
           onCloseFocused={closeFocused}
           onDownloadResume={downloadResume}
           onShowDesktop={showDesktop}
@@ -278,31 +280,8 @@ export function Desktop({ initialApp }: DesktopProps) {
         ))}
       </AnimatePresence>
 
-      {/* First-visit hint */}
-      <AnimatePresence>
-        {showHint && !mobileAppOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.96 }}
-            className="fixed bottom-24 right-4 z-[9500] max-w-xs rounded-2xl bg-white/85 dark:bg-[#2a2a30]/95 backdrop-blur-2xl shadow-2xl border border-black/5 dark:border-white/10 p-5"
-          >
-            <button
-              onClick={dismissHint}
-              className="absolute top-3 right-3 p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-              aria-label="Dismiss"
-            >
-              <X className="h-3.5 w-3.5" />
-            </button>
-            <p className="text-sm font-semibold mb-1">Welcome to ashish-os 🖥️</p>
-            <p className="text-sm text-muted-foreground">
-              {isMobile
-                ? "Tap an icon to open it. Swipe up on the handle at the bottom of an app to close it."
-                : "Click a dock icon to open an app. Drag windows by the title bar, resize from the corner, press ⌘K to search, ⌘Tab to switch windows, or right-click the desktop."}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Guided tour: first visit, and Help → Take the Tour */}
+      <Tour open={tourOpen && !isMobile} onClose={endTour} onOpenApp={openApp} />
 
       <AnimatePresence>
         {contextMenu && (

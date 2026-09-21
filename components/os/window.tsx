@@ -169,6 +169,7 @@ export function Window({
       transition={{ type: "spring", stiffness: 380, damping: 32 }}
       style={{ position: "absolute", pointerEvents: minimized ? "none" : "auto", ...style }}
       aria-hidden={minimized}
+      data-tour={isFocused ? "window" : undefined}
       className={cn(
         "rounded-xl bg-card flex flex-col overflow-hidden border",
         isFocused ? "shadow-2xl border-black/10 dark:border-white/10" : "shadow-lg border-black/5 dark:border-white/5",

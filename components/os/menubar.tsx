@@ -19,6 +19,8 @@ interface MenuBarProps {
   onRestart: () => void
   /** Puts every desktop widget back in its default slot. */
   onResetWidgets: () => void
+  /** Replays the guided tour. */
+  onStartTour: () => void
   onCloseFocused: () => void
   onDownloadResume: () => void
   onShowDesktop: () => void
@@ -65,6 +67,7 @@ export function MenuBar({
   onOpenSpotlight,
   onRestart,
   onResetWidgets,
+  onStartTour,
   onCloseFocused,
   onDownloadResume,
   onShowDesktop,
@@ -144,6 +147,7 @@ export function MenuBar({
       key: "help",
       label: "Help",
       items: [
+        { label: "Take the Tour", action: run(onStartTour) },
         { label: "About This OS", action: run(() => onOpenApp("about")) },
         { label: "⌘K — Search", action: () => {} },
         { label: "Esc — Close focused window", action: () => {} },
@@ -154,7 +158,10 @@ export function MenuBar({
   ]
 
   return (
-    <div className="fixed top-0 inset-x-0 z-[9800] h-8 flex items-center justify-between px-3 bg-white/70 dark:bg-black/40 backdrop-blur-xl border-b border-black/5 dark:border-white/10 text-[13px] font-medium select-none">
+    <div
+      data-tour="menubar"
+      className="fixed top-0 inset-x-0 z-[9800] h-8 flex items-center justify-between px-3 bg-white/70 dark:bg-black/40 backdrop-blur-xl border-b border-black/5 dark:border-white/10 text-[13px] font-medium select-none"
+    >
       <div className="flex items-center gap-4">
         <div className="relative">
           <button
@@ -244,7 +251,7 @@ export function MenuBar({
         >
           <Bot className="h-3.5 w-3.5" />
         </a>
-        <button onClick={onOpenSpotlight} aria-label="Search" className="hover:text-foreground transition-colors">
+        <button data-tour="spotlight" onClick={onOpenSpotlight} aria-label="Search" className="hover:text-foreground transition-colors">
           <Search className="h-3.5 w-3.5" />
         </button>
         <button
