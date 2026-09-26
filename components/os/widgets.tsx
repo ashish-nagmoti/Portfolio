@@ -173,6 +173,126 @@ function LocationWidget() {
   )
 }
 
+/* ---------------------------------------------------------------------------
+ * GitHub contribution graph
+ *
+ * GitHub only exposes contribution counts through its GraphQL API, which needs
+ * a token — and a token can't ship in client-side code. So this reads a public,
+ * CORS-enabled mirror of the same data. That's a third-party dependency: if it
+ * is unreachable the widget falls back to a cached copy, and failing that to an
+ * empty grid rather than an error.
+ * ------------------------------------------------------------------------- */
+
+const GH_USER = "ashish-nagmoti"
+const GH_API = `https://github-contributions-api.jogruber.de/v4/${GH_USER}?y=last`
+const GH_CACHE_KEY = "os-gh-contributions"
+const GH_CACHE_TTL = 6 * 60 * 60 * 1000 // 6h: contributions don't change often
+
+type ContribDay = { date: string; count: number; level: number }
+type Contributions = { total: number; days: ContribDay[] }
+
+// GitHub's own scale, with a softer empty cell so it sits on a translucent card.
+const LEVEL_FILL = [
+  "bg-[#ebedf0] dark:bg-white/[0.13]",
+  "bg-[#9be9a8] dark:bg-[#0e4429]",
+  "bg-[#40c463] dark:bg-[#006d32]",
+  "bg-[#30a14e] dark:bg-[#26a641]",
+  "bg-[#216e39] dark:bg-[#39d353]",
+]
+
+function readContribCache(): Contributions | null {
+  try {
+    const raw = localStorage.getItem(GH_CACHE_KEY)
+    if (!raw) return null
+    const { at, data } = JSON.parse(raw)
+    return Date.now() - at < GH_CACHE_TTL ? data : null
+  } catch {
+    return null
+  }
+}
+
+const fmtDay = (iso: string) =>
+  new Date(iso + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })
+
+function ContributionsWidget() {
+  const [data, setData] = useState<Contributions | null>(null)
+  const [failed, setFailed] = useState(false)
+
+  useEffect(() => {
+    let alive = true
+    const cached = readContribCache()
+    if (cached) setData(cached)
+
+    fetch(GH_API)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((json) => {
+        if (!alive) return
+        const next: Contributions = { total: json.total?.lastYear ?? 0, days: json.contributions ?? [] }
+        setData(next)
+        try {
+          localStorage.setItem(GH_CACHE_KEY, JSON.stringify({ at: Date.now(), data: next }))
+        } catch {
+          /* private mode: just don't cache */
+        }
+      })
+      .catch(() => {
+        // A stale cache still beats an empty grid.
+        if (alive && !cached) setFailed(true)
+      })
+
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  // 53 columns of 7 days; render placeholders until the data lands so the
+  // widget doesn't change height.
+  const days: (ContribDay | null)[] = data?.days.length ? data.days : Array(371).fill(null)
+  const weeks: (ContribDay | null)[][] = []
+  for (let i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7))
+
+  return (
+    <Widget id="contributions" className="col-span-2">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Github className="h-3.5 w-3.5 text-foreground" />
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Contributions</p>
+        </div>
+        {data && <p className="text-[11px] font-semibold tabular-nums text-foreground">{data.total}</p>}
+      </div>
+
+      {/* 53 columns at 3px + 1px gaps = 211px, which fits the 232px the widget
+          has inside its padding. Wider cells or gaps overflow. */}
+      <div className="mt-2.5 flex justify-between gap-[1px]" aria-hidden>
+        {weeks.map((week, wi) => (
+          <div key={wi} className="flex flex-col gap-[1px]">
+            {week.map((day, di) => (
+              <span
+                key={day?.date ?? `${wi}-${di}`}
+                title={day ? `${day.count} on ${fmtDay(day.date)}` : undefined}
+                className={cn("h-[3px] w-[3px] rounded-[1px]", LEVEL_FILL[day?.level ?? 0])}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-2 flex items-center justify-between">
+        <p className="text-[10px] text-muted-foreground">
+          {failed ? "Graph unavailable" : data ? "past year" : "loading…"}
+        </p>
+        <div className="flex items-center gap-[3px]">
+          <span className="text-[9px] text-muted-foreground">Less</span>
+          {LEVEL_FILL.map((fill, i) => (
+            <span key={i} className={cn("h-[6px] w-[6px] rounded-[1px]", fill)} />
+          ))}
+          <span className="text-[9px] text-muted-foreground">More</span>
+        </div>
+      </div>
+    </Widget>
+  )
+}
+
 const STATS = [
   { icon: Trophy, label: "LeetCode", value: "100+", sub: "solved", tint: "text-amber-500" },
   { icon: Github, label: "GitHub", value: "45+", sub: "repos", tint: "text-foreground" },
@@ -353,6 +473,7 @@ export function DesktopWidgets({
         <CalendarWidget />
         <LocationWidget />
         <StatsWidget onOpenApp={onOpenApp} />
+        <ContributionsWidget />
         <ProjectWidget onOpenApp={onOpenApp} />
       </motion.div>
     </DragBoundsContext.Provider>
