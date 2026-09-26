@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode,
 import { motion, useMotionValue } from "framer-motion"
 import { MapPin, Trophy, Github, FolderGit2, Hammer, BookOpen, Youtube, Quote } from "lucide-react"
 import type { AppId } from "./types"
+import { GitHubCard } from "./github-card"
 import { cn } from "@/lib/utils"
 
 const containerVariants = {
@@ -217,6 +218,7 @@ const fmtDay = (iso: string) =>
 function ContributionsWidget() {
   const [data, setData] = useState<Contributions | null>(null)
   const [failed, setFailed] = useState(false)
+  const [cardOpen, setCardOpen] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -251,8 +253,8 @@ function ContributionsWidget() {
   const weeks: (ContribDay | null)[][] = []
   for (let i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7))
 
-  return (
-    <Widget id="contributions" className="col-span-2">
+  const widget = (
+    <Widget id="contributions" className="col-span-2" onClick={() => setCardOpen(true)} label="Show GitHub profile">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Github className="h-3.5 w-3.5 text-foreground" />
@@ -290,6 +292,21 @@ function ContributionsWidget() {
         </div>
       </div>
     </Widget>
+  )
+
+  // The card is a sibling, not a child: the widget renders as a <button>, and
+  // a dialog can't live inside one. It's fixed-positioned, so it doesn't
+  // disturb the widget grid.
+  return (
+    <>
+      {widget}
+      <GitHubCard
+        open={cardOpen}
+        onClose={() => setCardOpen(false)}
+        user={GH_USER}
+        contributions={data?.total}
+      />
+    </>
   )
 }
 
