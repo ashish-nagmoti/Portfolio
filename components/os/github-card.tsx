@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 import { AnimatePresence, motion } from "framer-motion"
 import { Github, ExternalLink, X } from "lucide-react"
 
@@ -45,7 +46,10 @@ export function GitHubCard({
   contributions?: number
 }) {
   const [profile, setProfile] = useState<GitHubProfile | null>(null)
+  const [mounted, setMounted] = useState(false)
   const url = `https://github.com/${user}`
+
+  useEffect(() => setMounted(true), [])
 
   useEffect(() => {
     if (!open) return
@@ -88,7 +92,11 @@ export function GitHubCard({
       ]
     : []
 
-  return (
+  if (!mounted) return null
+
+  // Portalled to <body>: a transformed ancestor (a centred widget row, say)
+  // would otherwise re-root this fixed overlay and stop it covering the screen.
+  return createPortal(
     <AnimatePresence>
       {open && (
         <div className="fixed inset-0 z-[9850] flex items-center justify-center p-4">
@@ -166,6 +174,7 @@ export function GitHubCard({
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   )
 }

@@ -254,7 +254,12 @@ function ContributionsWidget() {
   for (let i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7))
 
   const widget = (
-    <Widget id="contributions" className="col-span-2" onClick={() => setCardOpen(true)} label="Show GitHub profile">
+    <Widget
+      id="contributions"
+      className="pointer-events-auto w-[330px] shrink-0"
+      onClick={() => setCardOpen(true)}
+      label="Show GitHub profile"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Github className="h-3.5 w-3.5 text-foreground" />
@@ -263,8 +268,8 @@ function ContributionsWidget() {
         {data && <p className="text-[11px] font-semibold tabular-nums text-foreground">{data.total}</p>}
       </div>
 
-      {/* 53 columns at 3px + 1px gaps = 211px, which fits the 232px the widget
-          has inside its padding. Wider cells or gaps overflow. */}
+      {/* 53 columns at 4px + 1px gaps = 264px, inside the 298px this widget has
+          within its padding. Wider cells or gaps overflow. */}
       <div className="mt-2.5 flex justify-between gap-[1px]" aria-hidden>
         {weeks.map((week, wi) => (
           <div key={wi} className="flex flex-col gap-[1px]">
@@ -272,7 +277,7 @@ function ContributionsWidget() {
               <span
                 key={day?.date ?? `${wi}-${di}`}
                 title={day ? `${day.count} on ${fmtDay(day.date)}` : undefined}
-                className={cn("h-[3px] w-[3px] rounded-[1px]", LEVEL_FILL[day?.level ?? 0])}
+                className={cn("h-[4px] w-[4px] rounded-[1px]", LEVEL_FILL[day?.level ?? 0])}
               />
             ))}
           </div>
@@ -437,7 +442,7 @@ function StackWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
 /** The line the OS boots with, kept on the desktop. */
 function MantraWidget() {
   return (
-    <Widget id="mantra" className="col-span-2">
+    <Widget id="mantra" className="pointer-events-auto w-[286px] shrink-0">
       <div className="flex items-center gap-2">
         <Quote className="h-3.5 w-3.5 text-amber-500" />
         <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Mantra</p>
@@ -455,10 +460,16 @@ const COLUMN = "absolute top-11 z-0 grid w-[268px] auto-rows-min grid-cols-2 gap
 
 /**
  * The desktop's widgets, in place of app icons — every app is still reachable
- * from the Dock and Spotlight. Split across both edges so the desktop isn't
- * lopsided; the left column drops out on narrower screens, where an open
- * window would sit on top of it anyway. Each widget can be dragged anywhere
- * within `dragBoundsRef` and remembers where it was left.
+ * from the Dock and Spotlight.
+ *
+ * Three zones rather than two top-hugging columns, which left the middle and
+ * bottom of the desktop empty: a column down each edge, plus a band sitting
+ * just above the Dock that fills the centre. Windows will cover parts of this
+ * on open, exactly as they do in macOS. The left column and the centre band
+ * drop out on narrower screens, where there isn't room for them.
+ *
+ * Each widget can be dragged anywhere within `dragBoundsRef` and remembers
+ * where it was left.
  */
 export function DesktopWidgets({
   onOpenApp,
@@ -476,8 +487,19 @@ export function DesktopWidgets({
         className={cn(COLUMN, "left-4 pl-1 max-lg:hidden")}
       >
         <CurrentlyWidget onOpenApp={onOpenApp} />
-        <MantraWidget />
         <StackWidget onOpenApp={onOpenApp} />
+      </motion.div>
+
+      {/* Centre band, above the Dock. `justify-center` rather than a
+          translate: a transform here would re-root any fixed-position child. */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="pointer-events-none absolute inset-x-0 bottom-24 z-0 flex justify-center gap-3 px-4 max-xl:hidden [@media(max-height:620px)]:hidden"
+      >
+        <MantraWidget />
+        <ContributionsWidget />
       </motion.div>
 
       <motion.div
@@ -490,7 +512,6 @@ export function DesktopWidgets({
         <CalendarWidget />
         <LocationWidget />
         <StatsWidget onOpenApp={onOpenApp} />
-        <ContributionsWidget />
         <ProjectWidget onOpenApp={onOpenApp} />
       </motion.div>
     </DragBoundsContext.Provider>
