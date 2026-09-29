@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.svg', // Replace with actual PNG when converted
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Ashish Nagmoti — AI Engineer & Researcher',

@@ -13,7 +13,7 @@ export default function JsonLd() {
         '@type': 'Person',
         name: 'Ashish Nagmoti',
         url: 'https://ashish-nagmoti.tech',
-        image: 'https://ashish-nagmoti.tech/profile-image.jpg', // Update with your actual profile image
+        image: 'https://ashish-nagmoti.tech/og-image.png',
         jobTitle: 'AI Engineer & Researcher',
         worksFor: {
           '@type': 'Organization',

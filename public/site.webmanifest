@@ -1,5 +1,5 @@
 {
-  "name": "Ashish Nagmoti Portfolio",
+  "name": "Ashish Nagmoti — AI Engineer & Researcher",
   "short_name": "Ashish Nagmoti",
   "icons": [
     {
@@ -13,7 +13,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#111111",
-  "background_color": "#111111",
-  "display": "standalone"
+  "theme_color": "#0d0d12",
+  "background_color": "#0d0d12",
+  "display": "standalone",
+  "start_url": "/"
 }
