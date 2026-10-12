@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
-import { TerminalSquare, User, SunMoon, RotateCcw, Image } from "lucide-react"
+import { TerminalWindow as TerminalSquare, User, CircleHalf as SunMoon, ArrowCounterClockwise as RotateCcw, Image } from "@phosphor-icons/react"
 import type { AppId } from "./types"
 
 interface OSContextMenuProps {

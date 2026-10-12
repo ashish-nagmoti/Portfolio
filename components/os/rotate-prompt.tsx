@@ -1,11 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Smartphone } from "lucide-react"
-
+import { DeviceMobile as Smartphone } from "@phosphor-icons/react"
 export function RotatePrompt() {
   return (
-    <div className="fixed inset-0 z-[20000] flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-clay-indigo/25 via-background to-clay-sky/25 px-8 text-center">
+    <div className="fixed inset-0 z-[20000] flex flex-col items-center justify-center gap-6 bg-gradient-to-br from-[#0a84ff]/20 via-background to-[#5ac8fa]/20 px-8 text-center">
       <motion.div
         animate={{ rotate: [0, 0, -90, -90, 0, 0] }}
         transition={{ duration: 2.6, times: [0, 0.15, 0.4, 0.75, 0.9, 1], repeat: Infinity, ease: "easeInOut" }}

@@ -4,19 +4,8 @@ import type React from "react"
 
 import { useState, useEffect, useRef, useCallback, type KeyboardEvent } from "react"
 import { motion } from "framer-motion"
-import {
-  HelpCircle,
-  Cpu,
-  User,
-  Code2,
-  FolderGit2,
-  Mail,
-  UserCircle2,
-  Eraser,
-  AlertCircle,
-  type LucideIcon,
-} from "lucide-react"
-
+import { Question as HelpCircle, Cpu, User, CodeSimple as Code2, FolderSimple as FolderGit2, EnvelopeSimple as Mail, UserCircle as UserCircle2, Eraser, WarningCircle as AlertCircle } from "@phosphor-icons/react"
+import type { Icon as IconType } from "@phosphor-icons/react"
 interface TerminalLine {
   type: "command" | "output" | "error"
   content: string
@@ -199,13 +188,13 @@ Cloud & Data:
 Type 'interests' in terminal or visit /interests page to see the full curated list!`,
 }
 
-const QUICK_COMMANDS: { cmd: string; label: string; icon: LucideIcon; className: string }[] = [
+const QUICK_COMMANDS: { cmd: string; label: string; icon: IconType; className: string }[] = [
   { cmd: "help", label: "help", icon: HelpCircle, className: "bg-white/10 text-slate-200" },
   { cmd: "neofetch", label: "neofetch", icon: Cpu, className: "bg-emerald-400/15 text-emerald-300" },
-  { cmd: "about", label: "about", icon: User, className: "bg-violet-400/15 text-violet-300" },
+  { cmd: "about", label: "about", icon: User, className: "bg-blue-400/15 text-blue-300" },
   { cmd: "skills", label: "skills", icon: Code2, className: "bg-sky-400/15 text-sky-300" },
   { cmd: "projects", label: "projects", icon: FolderGit2, className: "bg-sky-400/15 text-sky-300" },
-  { cmd: "contact", label: "contact", icon: Mail, className: "bg-pink-400/15 text-pink-300" },
+  { cmd: "contact", label: "contact", icon: Mail, className: "bg-orange-400/15 text-orange-300" },
   { cmd: "whoami", label: "whoami", icon: UserCircle2, className: "bg-amber-400/15 text-amber-300" },
   { cmd: "clear", label: "clear", icon: Eraser, className: "bg-rose-400/15 text-rose-300" },
 ]
@@ -217,7 +206,7 @@ function PromptTag() {
       <span className="text-slate-500">@</span>
       <span className="text-sky-400">portfolio</span>
       <span className="text-slate-500 mx-1">~</span>
-      <span className="text-violet-400">$</span>
+      <span className="text-slate-300">$</span>
     </span>
   )
 }
@@ -322,7 +311,7 @@ export function Terminal() {
 
   return (
     <div className="relative h-full bg-gradient-to-b from-[#0e0c16] to-[#181622] text-slate-200 font-mono text-[13px] sm:text-sm overflow-hidden flex flex-col">
-      <div className="pointer-events-none absolute -top-24 right-0 h-64 w-64 rounded-full bg-violet-500/10 blur-[80px]" />
+      <div className="pointer-events-none absolute -top-24 right-0 h-64 w-64 rounded-full bg-blue-500/10 blur-[80px]" />
       <div className="pointer-events-none absolute bottom-0 left-0 h-56 w-56 rounded-full bg-emerald-500/10 blur-[80px]" />
 
       <div
@@ -331,7 +320,7 @@ export function Terminal() {
         onClick={() => inputRef.current?.focus()}
       >
         <div className="mb-4 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
-          <p className="font-semibold bg-gradient-to-r from-emerald-300 via-sky-300 to-violet-300 bg-clip-text text-transparent">
+          <p className="font-semibold bg-gradient-to-r from-emerald-300 via-sky-300 to-blue-300 bg-clip-text text-transparent">
             Welcome to Ashish&apos;s Terminal
           </p>
           <p className="mt-1 text-xs text-slate-400 sm:text-sm">Type a command, or tap one below to explore.</p>

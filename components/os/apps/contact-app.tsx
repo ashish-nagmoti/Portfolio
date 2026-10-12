@@ -4,10 +4,9 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { IconBadge } from "@/components/os/icon-badge"
+import { IconBadge, SYSTEM } from "@/components/os/icon-badge"
 import { NativeSection, NativeRow } from "@/components/os/native-list"
-import { Mail, Linkedin, Github, Globe, ExternalLink, Copy, Check } from "lucide-react"
-
+import { EnvelopeSimple as Mail, LinkedinLogo as Linkedin, GithubLogo as Github, Globe, ArrowSquareOut as ExternalLink, Copy, Check } from "@phosphor-icons/react"
 const contactMethods = [
   {
     icon: Mail,
@@ -16,7 +15,7 @@ const contactMethods = [
     href: "mailto:ashishnagmoti2310@gmail.com",
     description: "Best for project inquiries and detailed discussions",
     primary: true,
-    gradient: "from-violet-400 to-indigo-600",
+    gradient: SYSTEM.blue,
   },
   {
     icon: Linkedin,
@@ -25,7 +24,7 @@ const contactMethods = [
     href: "https://www.linkedin.com/in/ashish-nagmoti-54269b249",
     description: "Professional networking and career opportunities",
     primary: true,
-    gradient: "from-sky-500 to-blue-700",
+    gradient: "bg-gradient-to-b from-[#2d8fe0] to-[#0a66c2]",
   },
   {
     icon: Github,
@@ -34,7 +33,7 @@ const contactMethods = [
     href: "https://github.com/ashish-nagmoti",
     description: "Check out my code and open source contributions",
     primary: false,
-    gradient: "from-zinc-700 to-zinc-900",
+    gradient: SYSTEM.black,
   },
   {
     icon: Globe,
@@ -43,7 +42,7 @@ const contactMethods = [
     href: "https://medium.com/@ashishnagmoti7",
     description: "My technical blog on Medium",
     primary: false,
-    gradient: "from-slate-600 to-slate-800",
+    gradient: SYSTEM.graphite,
   },
 ]
 
@@ -140,7 +139,7 @@ export function ContactApp() {
       </div>
 
       <motion.div variants={itemVariants} className="text-center">
-        <div className="rounded-2xl border border-black/[0.06] bg-gradient-to-br from-clay-indigo/10 via-primary/5 to-clay-sky/10 p-6 dark:border-white/[0.08] md:p-8">
+        <div className="rounded-2xl border border-black/[0.06] bg-card p-6 dark:border-white/[0.08] md:p-8">
           <h3 className="text-lg font-bold mb-3">Ready to Start Your Project?</h3>
           <p className="text-muted-foreground mb-5 text-sm max-w-2xl mx-auto">
             Whether you need a scalable backend system, cloud migration, or AI integration, I'm here to help bring

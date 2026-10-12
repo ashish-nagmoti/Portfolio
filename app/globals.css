@@ -3,69 +3,70 @@
 @tailwind utilities;
 
 @layer base {
+  /* macOS system palette. Neutrals are near-zero-saturation greys (Apple's
+     #F5F5F7 / #1D1D1F family) and the accent is system blue (#007AFF light,
+     #0A84FF dark). The previous lavender-tinted neutrals and violet primary
+     made every surface read faintly purple. */
   :root {
-    /* Soft lavender-white base — surfaces sit a touch lighter than the page
-       so depth reads from shadow, not from a color jump. */
-    --background: 240 40% 96%;
-    --foreground: 240 25% 16%;
+    --background: 240 11% 96%;
+    --foreground: 240 4% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 240 25% 16%;
+    --card-foreground: 240 4% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 25% 16%;
-    --primary: 252 83% 66%;
+    --popover-foreground: 240 4% 12%;
+    --primary: 211 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 35% 91%;
-    --secondary-foreground: 240 25% 20%;
-    --muted: 240 35% 92%;
-    --muted-foreground: 240 12% 46%;
-    --accent: 199 89% 68%;
-    --accent-foreground: 240 30% 15%;
-    --destructive: 356 78% 65%;
+    --secondary: 240 6% 92%;
+    --secondary-foreground: 240 4% 16%;
+    --muted: 240 6% 93%;
+    --muted-foreground: 240 2% 44%;
+    --accent: 240 6% 92%;
+    --accent-foreground: 240 4% 12%;
+    --destructive: 3 100% 59%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 25% 88%;
-    --input: 240 25% 89%;
-    --ring: 252 83% 66%;
+    --border: 240 5% 85%;
+    --input: 240 5% 85%;
+    --ring: 211 100% 50%;
     --radius: 1.25rem;
-    --chart-1: 252 83% 66%;
-    --chart-2: 199 89% 68%;
-    --chart-3: 158 60% 58%;
-    --chart-4: 27 96% 70%;
-    --chart-5: 330 81% 74%;
+    --chart-1: 211 100% 50%;
+    --chart-2: 135 59% 49%;
+    --chart-3: 35 100% 52%;
+    --chart-4: 199 92% 56%;
+    --chart-5: 3 100% 59%;
 
-    /* Claymorphism shadow pair: a cool "dark" side and a bright "light" side.
-       Kept as raw rgb triplets + separate alpha so both layers can shift
-       independently between themes. */
+    /* Shadow pair. Kept as raw rgb triplets + separate alpha so both layers
+       can shift independently between themes. */
     --clay-light: 255 255 255;
-    --clay-dark: 163 163 199;
+    --clay-dark: 160 160 168;
     --clay-light-a: 0.75;
     --clay-dark-a: 0.4;
   }
 
   .dark {
-    --background: 240 28% 10%;
-    --foreground: 240 20% 92%;
-    --card: 240 24% 14%;
-    --card-foreground: 240 20% 92%;
-    --popover: 240 24% 14%;
-    --popover-foreground: 240 20% 92%;
-    --primary: 252 90% 74%;
-    --primary-foreground: 240 30% 10%;
-    --secondary: 240 20% 19%;
-    --secondary-foreground: 240 20% 92%;
-    --muted: 240 20% 18%;
-    --muted-foreground: 240 12% 65%;
-    --accent: 199 85% 66%;
-    --accent-foreground: 240 30% 10%;
-    --destructive: 356 70% 62%;
+    --background: 240 3% 11%;
+    --foreground: 240 11% 96%;
+    --card: 240 3% 15%;
+    --card-foreground: 240 11% 96%;
+    --popover: 240 3% 17%;
+    --popover-foreground: 240 11% 96%;
+    --primary: 211 100% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 2% 22%;
+    --secondary-foreground: 240 11% 96%;
+    --muted: 240 3% 18%;
+    --muted-foreground: 240 2% 61%;
+    --accent: 240 2% 22%;
+    --accent-foreground: 240 11% 96%;
+    --destructive: 3 100% 61%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 18% 22%;
-    --input: 240 18% 22%;
-    --ring: 252 90% 74%;
-    --chart-1: 252 90% 74%;
-    --chart-2: 199 85% 66%;
-    --chart-3: 158 55% 56%;
-    --chart-4: 27 90% 68%;
-    --chart-5: 330 75% 72%;
+    --border: 240 2% 22%;
+    --input: 240 2% 24%;
+    --ring: 211 100% 52%;
+    --chart-1: 211 100% 52%;
+    --chart-2: 135 64% 50%;
+    --chart-3: 35 100% 52%;
+    --chart-4: 199 94% 60%;
+    --chart-5: 3 100% 61%;
 
     --clay-light: 255 255 255;
     --clay-dark: 0 0 0;

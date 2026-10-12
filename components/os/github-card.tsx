@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 import { AnimatePresence, motion } from "framer-motion"
-import { Github, ExternalLink, X } from "lucide-react"
-
+import { GithubLogo as Github, ArrowSquareOut as ExternalLink, X } from "@phosphor-icons/react"
 const PROFILE_CACHE_KEY = "os-gh-profile"
 const PROFILE_TTL = 24 * 60 * 60 * 1000 // 24h: GitHub allows 60 unauthenticated calls/hour
 

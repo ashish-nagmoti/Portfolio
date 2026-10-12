@@ -2,8 +2,9 @@
 
 import { useRef, type PointerEvent as ReactPointerEvent } from "react"
 import { motion, useDragControls, AnimatePresence } from "framer-motion"
-import { X, Minus, Square } from "lucide-react"
+import { X, Minus, Square } from "@phosphor-icons/react"
 import { APPS } from "./app-registry"
+import { AppIcon } from "./app-icon"
 import { STATUS_BAR_HEIGHT } from "./ios/status-bar"
 import type { AppId } from "./types"
 import { cn } from "@/lib/utils"
@@ -85,9 +86,7 @@ export function Window({
             style={{ paddingTop: STATUS_BAR_HEIGHT - 12 }}
           >
             <div className="flex items-center gap-2 min-w-0">
-              <span className={cn("p-1.5 rounded-[22%] shrink-0", app.accent)}>
-                <app.icon className="h-4 w-4" />
-              </span>
+              <AppIcon app={app.id} className="h-7 w-7 shrink-0" />
               <span className="font-semibold truncate">{app.title}</span>
             </div>
             <button

@@ -4,14 +4,13 @@ import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { IconBadge } from "@/components/os/icon-badge"
+import { IconBadge, SYSTEM } from "@/components/os/icon-badge"
 import { cn } from "@/lib/utils"
-import { ExternalLink, Github, Brain, Globe, Code, LayoutGrid, List, Search, Folder, Sparkles, Boxes, Wrench, ShieldCheck } from "lucide-react"
-
+import { ArrowSquareOut as ExternalLink, GithubLogo as Github, Brain, Globe, Code, SquaresFour as LayoutGrid, List, MagnifyingGlass as Search, Folder, Sparkle as Sparkles, Cube as Boxes, Wrench, ShieldCheck } from "@phosphor-icons/react"
 const CATEGORY_GRADIENT: Record<string, string> = {
-  AI: "from-violet-400 to-fuchsia-600",
-  Web: "from-sky-400 to-blue-600",
-  Tools: "from-amber-400 to-orange-600",
+  AI: SYSTEM.blue,
+  Web: SYSTEM.teal,
+  Tools: SYSTEM.orange,
 }
 
 const projects = [
@@ -182,7 +181,7 @@ export function ProjectsApp() {
                 >
                   <IconBadge
                     icon={project.icon}
-                    gradient={CATEGORY_GRADIENT[project.category] ?? "from-violet-400 to-indigo-600"}
+                    gradient={CATEGORY_GRADIENT[project.category] ?? SYSTEM.graphite}
                     size="xl"
                   />
                   <span className="text-xs font-medium leading-tight">{project.title}</span>
@@ -209,7 +208,7 @@ export function ProjectsApp() {
                       <div className="flex items-center gap-2">
                         <IconBadge
                           icon={project.icon}
-                          gradient={CATEGORY_GRADIENT[project.category] ?? "from-violet-400 to-indigo-600"}
+                          gradient={CATEGORY_GRADIENT[project.category] ?? SYSTEM.graphite}
                           size="sm"
                         />
                         {project.title}
@@ -238,7 +237,7 @@ export function ProjectsApp() {
                 <DialogTitle className="flex items-center gap-2.5">
                   <IconBadge
                     icon={selected.icon}
-                    gradient={CATEGORY_GRADIENT[selected.category] ?? "from-violet-400 to-indigo-600"}
+                    gradient={CATEGORY_GRADIENT[selected.category] ?? SYSTEM.graphite}
                     size="sm"
                   />
                   {selected.title}

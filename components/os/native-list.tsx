@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { ChevronRight } from "lucide-react"
+import { CaretRight as ChevronRight } from "@phosphor-icons/react"
 import { cn } from "@/lib/utils"
 
 // macOS apps (System Settings, Contacts, Mail prefs) group related rows into

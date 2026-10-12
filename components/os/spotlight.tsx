@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Search } from "lucide-react"
+import { MagnifyingGlass as Search } from "@phosphor-icons/react"
 import { APPS, APP_ORDER } from "./app-registry"
+import { AppIcon } from "./app-icon"
 import type { AppId } from "./types"
 import { cn } from "@/lib/utils"
 
@@ -104,9 +105,7 @@ export function Spotlight({ open, onClose, onOpenApp }: SpotlightProps) {
                           i === activeIndex ? "bg-primary text-primary-foreground" : "hover:bg-black/5 dark:hover:bg-white/10",
                         )}
                       >
-                        <span className={cn("p-1.5 rounded-lg squircle", app.accent)}>
-                          <app.icon className={cn("h-4 w-4", app.iconClassName ?? "text-white")} strokeWidth={2.25} />
-                        </span>
+                        <AppIcon app={app.id} className="h-7 w-7 shrink-0" />
                         <span className="text-sm font-medium">{app.title}</span>
                       </button>
                     ))}

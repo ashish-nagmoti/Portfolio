@@ -3,11 +3,10 @@
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
-import { IconBadge } from "@/components/os/icon-badge"
+import { IconBadge, SYSTEM } from "@/components/os/icon-badge"
 import { NativeSection, NativeRow } from "@/components/os/native-list"
 import { cn } from "@/lib/utils"
-import { Code, Code2, Cloud, Database, Users, Award, Briefcase, Building2, History, LayoutTemplate, Cpu, Brain } from "lucide-react"
-
+import { Code, CodeSimple as Code2, Cloud, Database, Users, Medal as Award, Briefcase, Buildings as Building2, ClockCounterClockwise as History, Layout as LayoutTemplate, Cpu, Brain } from "@phosphor-icons/react"
 const skills = {
   llm: ["LLM Inference", "vLLM", "KServe", "Hugging Face", "RAG", "Vector Search", "AI Agents", "LLM Routing"],
   infra: ["Kubernetes", "NVIDIA GPUs", "CUDA", "Kubeflow", "Model Registries", "ML Pipelines", "AI Observability"],
@@ -18,12 +17,12 @@ const skills = {
 }
 
 const SKILL_META = {
-  llm: { icon: Brain, gradient: "from-fuchsia-400 to-pink-600", label: "Generative AI & LLMs" },
-  infra: { icon: Cpu, gradient: "from-amber-400 to-orange-600", label: "AI Infrastructure" },
-  backend: { icon: Code, gradient: "from-violet-400 to-indigo-600", label: "Backend" },
-  frontend: { icon: LayoutTemplate, gradient: "from-cyan-400 to-teal-600", label: "Frontend" },
-  cloud: { icon: Cloud, gradient: "from-sky-400 to-blue-600", label: "Cloud" },
-  databases: { icon: Database, gradient: "from-emerald-400 to-green-600", label: "Databases" },
+  llm: { icon: Brain, gradient: SYSTEM.blue, label: "Generative AI & LLMs" },
+  infra: { icon: Cpu, gradient: SYSTEM.orange, label: "AI Infrastructure" },
+  backend: { icon: Code, gradient: SYSTEM.green, label: "Backend" },
+  frontend: { icon: LayoutTemplate, gradient: SYSTEM.red, label: "Frontend" },
+  cloud: { icon: Cloud, gradient: SYSTEM.teal, label: "Cloud" },
+  databases: { icon: Database, gradient: SYSTEM.graphite, label: "Databases" },
 } as const
 
 const codingProfiles = [
@@ -33,7 +32,7 @@ const codingProfiles = [
     url: "https://leetcode.com/u/ashish_nagmoti/",
     stats: "100+ Problems Solved",
     description: "Regular practice in algorithms and data structures",
-    gradient: "from-orange-400 to-amber-600",
+    gradient: SYSTEM.orange,
   },
   {
     platform: "GitHub",
@@ -41,7 +40,7 @@ const codingProfiles = [
     url: "https://github.com/ashish-nagmoti",
     stats: "45+ Repositories",
     description: "Open source contributions and personal projects",
-    gradient: "from-zinc-700 to-zinc-900",
+    gradient: SYSTEM.black,
   },
 ]
 
@@ -201,7 +200,7 @@ const HISTORY = [
 // experience) — real macOS apps reserve color variation for things with an
 // actual distinct identity (a brand, a tech domain), not for repeated rows
 // of the same category.
-const PROFILE_ACCENT = "from-violet-400 to-indigo-600"
+const PROFILE_ACCENT = SYSTEM.blue
 
 const SECTIONS = [
   { id: "stats", label: "Overview", icon: History },
@@ -225,8 +224,9 @@ export function AboutApp() {
         <div className="flex items-center gap-3 border-b border-black/[0.06] p-4 dark:border-white/[0.08]">
           <span
             className={cn(
-              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-b text-sm font-semibold text-white shadow-md",
-              PROFILE_ACCENT,
+              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white shadow-md",
+              // Contacts-style graphite monogram, matching the Dock icon.
+              "bg-gradient-to-b from-[#aeaeb2] to-[#636366]",
             )}
           >
             AN

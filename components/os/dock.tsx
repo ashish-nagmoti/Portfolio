@@ -11,6 +11,7 @@ import {
   type MotionValue,
 } from "framer-motion"
 import { APPS, APP_ORDER, RESUME_ICON } from "./app-registry"
+import { AppIcon } from "./app-icon"
 import type { AppId, OpenWindow } from "./types"
 import { cn } from "@/lib/utils"
 
@@ -124,15 +125,7 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
               isOpen={openWindows.some((w) => w.id === id)}
               bounceToken={bounceId === id ? bounceToken : undefined}
             >
-              <span className="relative w-full h-full rounded-[22%] shadow-md">
-                <span className={cn("squircle absolute inset-0 flex items-center justify-center", app.accent)}>
-                  <span className="absolute inset-0 bg-gradient-to-b from-white/35 via-white/5 to-transparent" />
-                  <app.icon
-                    className={cn("relative h-1/2 w-1/2 drop-shadow-sm", app.iconClassName ?? "text-white")}
-                    strokeWidth={2.25}
-                  />
-                </span>
-              </span>
+              <AppIcon app={id} className="h-full w-full" />
             </DockIcon>
           )
         })}
@@ -140,12 +133,7 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
         <div className="w-px h-11 bg-black/10 dark:bg-white/15 self-center mx-0.5" />
 
         <DockIcon mouseX={mouseX} onClick={() => window.open(RESUME_ICON.href, "_blank")} label={RESUME_ICON.title} isOpen={false}>
-          <span className="relative w-full h-full rounded-[22%] shadow-md">
-            <span className={cn("squircle absolute inset-0 flex items-center justify-center", RESUME_ICON.accent)}>
-              <span className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/10 to-transparent" />
-              <RESUME_ICON.icon className={cn("relative h-1/2 w-1/2 drop-shadow-sm", RESUME_ICON.iconClassName)} strokeWidth={2.25} />
-            </span>
-          </span>
+          <AppIcon app="resume" className="h-full w-full" />
         </DockIcon>
       </motion.div>
     </div>

@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { Headphones, Trophy, Coffee, Globe, BookOpen, LinkIcon, Youtube, Play, Shuffle, Heart, type LucideIcon } from "lucide-react"
-
+import { Headphones, Trophy, Coffee, Globe, BookOpen, Link as LinkIcon, YoutubeLogo as Youtube, Play, Shuffle, Heart } from "@phosphor-icons/react"
+import type { Icon as IconType } from "@phosphor-icons/react"
 const interestItems = [
   {
     id: 1,
@@ -73,7 +73,7 @@ const interestItems = [
 
 const FILTERS = ["All", "blog", "video", "article"] as const
 
-const getIcon = (type: string): LucideIcon => {
+const getIcon = (type: string): IconType => {
   switch (type) {
     case "blog":
       return BookOpen
@@ -91,7 +91,7 @@ const getTypeGradient = (type: string) => {
     case "blog":
       return "from-sky-400 to-blue-600"
     case "video":
-      return "from-rose-400 to-rose-600"
+      return "from-red-500 to-red-700"
     case "article":
       return "from-emerald-400 to-green-600"
     default:
@@ -126,9 +126,9 @@ export function InterestsApp() {
     <div className="flex h-full min-h-0 flex-col bg-[#121212] text-white">
       <div className="min-h-0 flex-1 overflow-y-auto">
         {/* Hero, "Liked Songs" style */}
-        <div className="bg-gradient-to-b from-indigo-700 via-indigo-800/60 to-[#121212] px-6 pb-6 pt-10">
+        <div className="bg-gradient-to-b from-[#1f6b3c] via-[#174d2c]/60 to-[#121212] px-6 pb-6 pt-10">
           <div className="flex items-end gap-5">
-            <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded bg-gradient-to-br from-indigo-400 to-purple-800 shadow-2xl sm:h-32 sm:w-32">
+            <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded bg-gradient-to-br from-[#1ed760] to-[#11713a] shadow-2xl sm:h-32 sm:w-32">
               <Heart className="h-12 w-12 fill-white text-white sm:h-14 sm:w-14" />
             </div>
             <div className="min-w-0">

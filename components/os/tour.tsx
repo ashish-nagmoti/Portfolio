@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { Paperclip, ChevronLeft, ChevronRight, X } from "lucide-react"
+import { Paperclip, CaretLeft as ChevronLeft, CaretRight as ChevronRight, X } from "@phosphor-icons/react"
 import type { AppId } from "./types"
 import { cn } from "@/lib/utils"
 
@@ -211,7 +211,7 @@ export function Tour({ open, onClose, onOpenApp }: TourProps) {
               className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-b from-amber-300 to-orange-500 shadow-lg ring-2 ring-white/60"
               aria-hidden
             >
-              <Paperclip className="h-6 w-6 text-white drop-shadow" strokeWidth={2.5} />
+              <Paperclip className="h-6 w-6 text-white drop-shadow" />
             </motion.div>
 
             <div className="relative min-w-0 flex-1 rounded-2xl border border-black/5 bg-white/95 p-4 text-foreground shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-[#2a2a30]/95">

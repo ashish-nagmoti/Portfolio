@@ -1,8 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { SignalHigh, Wifi, BatteryFull } from "lucide-react"
-
+import { CellSignalFull as SignalHigh, WifiHigh as Wifi, BatteryFull } from "@phosphor-icons/react"
 export const STATUS_BAR_HEIGHT = 44
 
 export function StatusBar() {

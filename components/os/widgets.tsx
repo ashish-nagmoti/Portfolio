@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type RefObject } from "react"
 import { motion, useMotionValue } from "framer-motion"
-import { MapPin, Trophy, Github, FolderGit2, Hammer, BookOpen, Youtube, Quote } from "lucide-react"
+import { MapPin, Trophy, GithubLogo as Github, FolderSimple as FolderGit2, Hammer, BookOpen, YoutubeLogo as Youtube, Quotes as Quote } from "@phosphor-icons/react"
 import type { AppId } from "./types"
 import { GitHubCard } from "./github-card"
 import { cn } from "@/lib/utils"
@@ -367,7 +367,7 @@ const CURRENTLY = [
     label: "Building",
     value: "Enterprise AI platform @ ESDS",
     icon: Hammer,
-    tint: "text-violet-500",
+    tint: "text-blue-500",
     app: "about" as AppId,
   },
   {
@@ -381,7 +381,7 @@ const CURRENTLY = [
     label: "Watching",
     value: "Production-Ready APIs",
     icon: Youtube,
-    tint: "text-rose-500",
+    tint: "text-red-500",
     app: "interests" as AppId,
   },
 ]

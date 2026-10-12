@@ -3,7 +3,7 @@
 import { useEffect, useState, type ComponentType } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTheme } from "next-themes"
-import { Wifi, BatteryFull, Search, Sun, Moon, Command, Check, Copy, Bot } from "lucide-react"
+import { WifiHigh as Wifi, BatteryFull, MagnifyingGlass as Search, Sun, Moon, Command, Check, Copy, Robot as Bot } from "@phosphor-icons/react"
 import { APPS } from "./app-registry"
 import type { AppId, OpenWindow } from "./types"
 import { cn } from "@/lib/utils"
