@@ -7,6 +7,7 @@ import { APPS, RESUME_ICON } from "./app-registry"
 import { Window, type OriginRect } from "./window"
 import { Dock } from "./dock"
 import { DesktopWidgets, clearWidgetLayout } from "./widgets"
+import { DesktopAvatar } from "./desktop-avatar"
 import { Tour, TOUR_DONE_KEY } from "./tour"
 import { MenuBar } from "./menubar"
 import { StatusBar } from "./ios/status-bar"
@@ -277,6 +278,7 @@ export function Desktop({ initialApp }: DesktopProps) {
       {isMobile && <StatusBar />}
 
       {/* Desktop widgets (apps launch from the Dock / Spotlight) */}
+      <DesktopAvatar onOpenApp={openApp} />
       <DesktopWidgets key={widgetLayoutKey} onOpenApp={openApp} dragBoundsRef={desktopRef} />
 
       {/* Windows */}
