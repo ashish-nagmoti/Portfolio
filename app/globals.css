@@ -182,3 +182,70 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+
+/* A Medium story rendered inside the Blog (Notes) app. The HTML comes from
+   Medium's feed, sanitized in app/api/medium/route.ts. */
+.note-body {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: hsl(var(--foreground) / 0.88);
+}
+.note-body > * + * { margin-top: 0.95em; }
+.note-body h1, .note-body h2, .note-body h3 {
+  margin-top: 1.7em;
+  font-size: 1.22em;
+  font-weight: 700;
+  line-height: 1.3;
+  color: hsl(var(--foreground));
+}
+.note-body h4 {
+  margin-top: 1.4em;
+  font-size: 1.05em;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+.note-body strong, .note-body b { font-weight: 600; color: hsl(var(--foreground)); }
+.note-body a {
+  color: #b38900;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+.dark .note-body a { color: #ffd60a; }
+.note-body figure { margin: 1.6em 0; }
+.note-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+.note-body figcaption {
+  margin-top: 0.5em;
+  text-align: center;
+  font-size: 12px;
+  color: hsl(var(--muted-foreground));
+}
+.note-body ul { list-style: disc; padding-left: 1.4em; }
+.note-body ol { list-style: decimal; padding-left: 1.4em; }
+.note-body li + li { margin-top: 0.3em; }
+.note-body li > ul, .note-body li > ol { margin-top: 0.3em; }
+.note-body blockquote {
+  border-left: 3px solid #ffd60a;
+  padding-left: 1em;
+  font-style: italic;
+  color: hsl(var(--muted-foreground));
+}
+.note-body pre {
+  overflow-x: auto;
+  border-radius: 8px;
+  background: hsl(var(--muted));
+  padding: 12px 14px;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+.note-body code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.9em;
+}
+.note-body hr { margin: 2em 0; border: 0; border-top: 1px solid hsl(var(--border)); }
