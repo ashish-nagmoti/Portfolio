@@ -8,6 +8,7 @@ import { Window, type OriginRect } from "./window"
 import { Dock } from "./dock"
 import { DesktopWidgets, clearWidgetLayout } from "./widgets"
 import { Tour, TOUR_DONE_KEY } from "./tour"
+import { WALLPAPERS, WallpaperPicker } from "./wallpapers"
 import { MenuBar } from "./menubar"
 import { StatusBar } from "./ios/status-bar"
 import { Spotlight } from "./spotlight"
@@ -19,32 +20,6 @@ import { cn } from "@/lib/utils"
 interface DesktopProps {
   initialApp?: AppId
 }
-
-// macOS-style wallpapers in Apple's system colours, cycled from the desktop
-// right-click menu. `base` is the backdrop; `blobs` are the three soft glows
-// drifting over it (top-left, right, bottom).
-const WALLPAPERS = [
-  {
-    name: "Sequoia",
-    base: "from-[#d6e6fb] via-[#eef3fa] to-[#c9dcf5] dark:from-[#0b1a33] dark:via-[#0a1222] dark:to-[#04070d]",
-    blobs: ["#0a84ff", "#5ac8fa", "#1e3a8a"],
-  },
-  {
-    name: "Sonoma",
-    base: "from-[#d9f1e4] via-[#eef6f1] to-[#d3ecf3] dark:from-[#06231a] dark:via-[#071815] dark:to-[#030b0a]",
-    blobs: ["#30d158", "#64d2ff", "#0f766e"],
-  },
-  {
-    name: "Ventura",
-    base: "from-[#fde8d2] via-[#fbf1e7] to-[#fbe0cf] dark:from-[#2a1406] dark:via-[#1a0d05] dark:to-[#0b0603]",
-    blobs: ["#ff9f0a", "#ff453a", "#ffd60a"],
-  },
-  {
-    name: "Graphite",
-    base: "from-[#e6e6ea] via-[#f2f2f4] to-[#dcdce1] dark:from-[#1c1c1e] dark:via-[#141416] dark:to-[#0a0a0b]",
-    blobs: ["#8e8e93", "#48484a", "#636366"],
-  },
-]
 
 // Default window sizes are calibrated for a real laptop screen. A landscape
 // phone (~375-430px tall) is far shorter, so clamp to what's actually
@@ -96,6 +71,7 @@ export function Desktop({ initialApp }: DesktopProps) {
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null)
   const [spotlightOpen, setSpotlightOpen] = useState(false)
   const [wallpaperIdx, setWallpaperIdx] = useState(0)
+  const [pickerOpen, setPickerOpen] = useState(false)
   const [bounceId, setBounceId] = useState<AppId | null>(null)
   const [bounceToken, setBounceToken] = useState(0)
   const [pendingOrigin, setPendingOrigin] = useState<OriginRect | null>(null)
@@ -119,12 +95,9 @@ export function Desktop({ initialApp }: DesktopProps) {
     localStorage.setItem(TOUR_DONE_KEY, "1")
   }
 
-  const cycleWallpaper = () => {
-    setWallpaperIdx((i) => {
-      const next = (i + 1) % WALLPAPERS.length
-      localStorage.setItem("os-wallpaper", String(next))
-      return next
-    })
+  const selectWallpaper = (i: number) => {
+    setWallpaperIdx(i)
+    localStorage.setItem("os-wallpaper", String(i))
   }
 
   const downloadResume = () => {
@@ -244,20 +217,7 @@ export function Desktop({ initialApp }: DesktopProps) {
     >
       <SquircleDefs />
       {/* Wallpaper */}
-      <div className={cn("pointer-events-none absolute inset-0 overflow-hidden bg-gradient-to-br", WALLPAPERS[wallpaperIdx].base)}>
-        <div
-          className="clay-blob absolute -top-32 -left-20 h-[32rem] w-[32rem] rounded-full opacity-30 blur-[100px] dark:opacity-40"
-          style={{ backgroundColor: WALLPAPERS[wallpaperIdx].blobs[0] }}
-        />
-        <div
-          className="clay-blob absolute top-1/4 -right-24 h-[28rem] w-[28rem] rounded-full opacity-25 blur-[100px] dark:opacity-35"
-          style={{ backgroundColor: WALLPAPERS[wallpaperIdx].blobs[1], animationDelay: "3s" }}
-        />
-        <div
-          className="clay-blob absolute bottom-[-6rem] left-1/3 h-[26rem] w-[26rem] rounded-full opacity-20 blur-[100px] dark:opacity-30"
-          style={{ backgroundColor: WALLPAPERS[wallpaperIdx].blobs[2], animationDelay: "6s" }}
-        />
-      </div>
+      <div className={cn("pointer-events-none absolute inset-0 bg-cover bg-center", WALLPAPERS[wallpaperIdx].className)} />
 
       {!isMobile && (
         <MenuBar
@@ -268,6 +228,7 @@ export function Desktop({ initialApp }: DesktopProps) {
           onRestart={restart}
           onResetWidgets={resetWidgetLayout}
           onStartTour={() => setTourOpen(true)}
+          onChangeWallpaper={() => setPickerOpen(true)}
           onCloseFocused={closeFocused}
           onDownloadResume={downloadResume}
           onShowDesktop={showDesktop}
@@ -305,6 +266,13 @@ export function Desktop({ initialApp }: DesktopProps) {
       {/* Guided tour: first visit, and Help → Take the Tour */}
       <Tour open={tourOpen && !isMobile} onClose={endTour} onOpenApp={openApp} />
 
+      <WallpaperPicker
+        open={pickerOpen}
+        current={wallpaperIdx}
+        onSelect={selectWallpaper}
+        onClose={() => setPickerOpen(false)}
+      />
+
       <AnimatePresence>
         {contextMenu && (
           <OSContextMenu
@@ -312,7 +280,7 @@ export function Desktop({ initialApp }: DesktopProps) {
             y={contextMenu.y}
             onOpenApp={openApp}
             onRefresh={() => setOpenWindows([])}
-            onChangeWallpaper={cycleWallpaper}
+            onChangeWallpaper={() => setPickerOpen(true)}
             onClose={() => setContextMenu(null)}
           />
         )}

@@ -21,7 +21,7 @@ export function OSContextMenu({ x, y, onOpenApp, onRefresh, onChangeWallpaper, o
     { icon: TerminalSquare, label: "Open Terminal", action: () => onOpenApp("terminal") },
     { icon: User, label: "About this OS", action: () => onOpenApp("about") },
     { icon: SunMoon, label: "Toggle Theme", action: () => setTheme(theme === "light" ? "dark" : "light") },
-    { icon: Image, label: "Change Wallpaper", action: onChangeWallpaper },
+    { icon: Image, label: "Change Wallpaper…", action: onChangeWallpaper },
     { icon: RotateCcw, label: "Refresh Desktop", action: onRefresh },
   ]
 

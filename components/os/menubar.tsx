@@ -21,6 +21,8 @@ interface MenuBarProps {
   onResetWidgets: () => void
   /** Replays the guided tour. */
   onStartTour: () => void
+  /** Opens the wallpaper picker. */
+  onChangeWallpaper: () => void
   onCloseFocused: () => void
   onDownloadResume: () => void
   onShowDesktop: () => void
@@ -68,6 +70,7 @@ export function MenuBar({
   onRestart,
   onResetWidgets,
   onStartTour,
+  onChangeWallpaper,
   onCloseFocused,
   onDownloadResume,
   onShowDesktop,
@@ -136,6 +139,7 @@ export function MenuBar({
       label: "View",
       items: [
         { label: "Show Desktop", action: run(onShowDesktop) },
+        { label: "Change Wallpaper…", action: run(onChangeWallpaper) },
         {
           label: theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode",
           icon: theme === "light" ? Moon : Sun,
