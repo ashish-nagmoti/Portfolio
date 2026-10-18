@@ -3,7 +3,9 @@
 import { motion } from "framer-motion"
 import { useTheme } from "next-themes"
 import { TerminalWindow as TerminalSquare, User, CircleHalf as SunMoon, ArrowCounterClockwise as RotateCcw, Image } from "@phosphor-icons/react"
+import { MENU_PANEL, MENU_ROW } from "./menubar"
 import type { AppId } from "./types"
+import { cn } from "@/lib/utils"
 
 interface OSContextMenuProps {
   x: number
@@ -19,36 +21,50 @@ export function OSContextMenu({ x, y, onOpenApp, onRefresh, onChangeWallpaper, o
 
   const items = [
     { icon: TerminalSquare, label: "Open Terminal", action: () => onOpenApp("terminal") },
-    { icon: User, label: "About this OS", action: () => onOpenApp("about") },
-    { icon: SunMoon, label: "Toggle Theme", action: () => setTheme(theme === "light" ? "dark" : "light") },
+    { icon: User, label: "About This OS", action: () => onOpenApp("about") },
+    "-",
     { icon: Image, label: "Change Wallpaper…", action: onChangeWallpaper },
-    { icon: RotateCcw, label: "Refresh Desktop", action: onRefresh },
-  ]
+    { icon: SunMoon, label: "Toggle Appearance", action: () => setTheme(theme === "light" ? "dark" : "light") },
+    "-",
+    { icon: RotateCcw, label: "Close All Windows", action: onRefresh },
+  ] as const
+
+  // Open toward the inside of the screen when clicked near an edge
+  const W = 220
+  const H = 190
+  const left = typeof window !== "undefined" ? Math.min(x, window.innerWidth - W - 8) : x
+  const top = typeof window !== "undefined" ? Math.min(y, window.innerHeight - H - 8) : y
 
   return (
     <>
       <div className="fixed inset-0 z-[9990]" onClick={onClose} onContextMenu={(e) => { e.preventDefault(); onClose() }} />
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        transition={{ duration: 0.12 }}
-        style={{ top: y, left: x }}
-        className="fixed z-[9991] w-52 rounded-xl bg-white/90 dark:bg-[#2a2a30]/95 backdrop-blur-2xl shadow-2xl border border-black/5 dark:border-white/10 p-1.5"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0, transition: { duration: 0.08 } }}
+        transition={{ duration: 0.1 }}
+        style={{ top, left, width: W }}
+        role="menu"
+        className={cn("fixed z-[9991]", MENU_PANEL)}
       >
-        {items.map((item) => (
-          <button
-            key={item.label}
-            onClick={() => {
-              item.action()
-              onClose()
-            }}
-            className="group flex w-full items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors text-left text-sm"
-          >
-            <item.icon className="h-4 w-4 text-muted-foreground group-hover:text-primary-foreground" />
-            {item.label}
-          </button>
-        ))}
+        {items.map((item, i) =>
+          item === "-" ? (
+            <div key={`sep-${i}`} className="mx-2.5 my-[5px] h-px bg-black/10 dark:bg-white/10" />
+          ) : (
+            <button
+              key={item.label}
+              role="menuitem"
+              onClick={() => {
+                item.action()
+                onClose()
+              }}
+              className={MENU_ROW}
+            >
+              <item.icon className="h-3.5 w-3.5 shrink-0 opacity-70 group-hover:opacity-100" />
+              {item.label}
+            </button>
+          ),
+        )}
       </motion.div>
     </>
   )

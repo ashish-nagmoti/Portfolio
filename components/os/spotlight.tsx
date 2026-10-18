@@ -67,7 +67,7 @@ export function Spotlight({ open, onClose, onOpenApp }: SpotlightProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9990] bg-black/20 backdrop-blur-sm"
+            className="fixed inset-0 z-[9990] bg-black/[0.04]"
             onClick={onClose}
           />
           <div className="fixed inset-0 z-[9991] flex justify-center pt-[18%] px-4 pointer-events-none">
@@ -81,37 +81,41 @@ export function Spotlight({ open, onClose, onOpenApp }: SpotlightProps) {
               aria-modal="true"
               aria-label="Spotlight search"
             >
-              <div className="rounded-2xl bg-white/85 dark:bg-[#2a2a30]/95 backdrop-blur-2xl shadow-2xl border border-black/5 dark:border-white/10 overflow-hidden">
-                <div className="flex items-center gap-3 px-4 py-3.5 border-b border-black/5 dark:border-white/10">
-                  <Search className="h-5 w-5 text-muted-foreground shrink-0" />
+              <div className="overflow-hidden rounded-[26px] border border-black/[0.08] bg-[#f6f6f6]/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_24px_60px_-12px_rgba(0,0,0,0.35)] backdrop-blur-3xl backdrop-saturate-150 dark:border-white/[0.12] dark:bg-[#262628]/80 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_24px_70px_-10px_rgba(0,0,0,0.7)]">
+                <div className={cn("flex items-center gap-3 px-5 py-3.5", (results.length > 0 || query) && "border-b border-black/[0.07] dark:border-white/[0.08]")}>
+                  <Search weight="bold" className="h-5 w-5 shrink-0 text-foreground/45" />
                   <input
                     ref={inputRef}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyDown}
                     placeholder="Spotlight Search"
-                    className="flex-1 bg-transparent outline-none text-lg"
+                    className="flex-1 bg-transparent text-[22px] font-light tracking-[-0.01em] outline-none placeholder:text-foreground/35 focus-visible:outline-none"
                   />
                 </div>
                 {results.length > 0 && (
-                  <div className="max-h-72 overflow-y-auto p-2">
+                  <div className="max-h-72 overflow-y-auto px-2 pb-2 pt-1.5">
+                    <p className="px-3 pb-1 pt-1 text-[11px] font-semibold text-foreground/40">Applications</p>
                     {results.map((app, i) => (
                       <button
                         key={app.id}
                         onClick={() => openResult(app.id)}
                         onMouseEnter={() => setActiveIndex(i)}
                         className={cn(
-                          "flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors",
-                          i === activeIndex ? "bg-primary text-primary-foreground" : "hover:bg-black/5 dark:hover:bg-white/10",
+                          "flex w-full items-center gap-3 rounded-[10px] px-3 py-1.5 text-left",
+                          i === activeIndex ? "bg-primary text-white" : "hover:bg-black/5 dark:hover:bg-white/10",
                         )}
                       >
                         <AppIcon app={app.id} className="h-7 w-7 shrink-0" />
-                        <span className="text-sm font-medium">{app.title}</span>
+                        <span className="flex-1 text-[14px] font-medium">{app.title}</span>
+                        {i === activeIndex && <span className="text-[11px] text-white/75">Open ↩</span>}
                       </button>
                     ))}
                   </div>
                 )}
-                {results.length === 0 && <div className="p-6 text-center text-sm text-muted-foreground">No results</div>}
+                {results.length === 0 && query && (
+                  <div className="p-6 text-center text-sm text-muted-foreground">No results for “{query}”</div>
+                )}
               </div>
             </motion.div>
           </div>

@@ -159,6 +159,8 @@ export function Desktop({ initialApp }: DesktopProps) {
   }
   const resizeApp = (id: AppId, size: { width: number; height: number }) =>
     setOpenWindows((prev) => prev.map((w) => (w.id === id ? { ...w, size } : w)))
+  const moveApp = (id: AppId, pos: { x: number; y: number }) =>
+    setOpenWindows((prev) => prev.map((w) => (w.id === id ? { ...w, pos } : w)))
 
   const closeFocused = () => {
     setOpenWindows((prev) => {
@@ -259,6 +261,7 @@ export function Desktop({ initialApp }: DesktopProps) {
             onToggleMaximize={() => toggleMaximize(w.id)}
             onFocus={() => focusApp(w.id)}
             onResize={(size) => resizeApp(w.id, size)}
+            onMove={(pos) => moveApp(w.id, pos)}
           />
         ))}
       </AnimatePresence>

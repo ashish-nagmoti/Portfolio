@@ -4,7 +4,9 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 
-const inter = Inter({ subsets: ["latin"] })
+// Exposed as a variable: Macs render the real system font (SF Pro) and
+// everyone else falls back to Inter. See `body` in globals.css.
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 export const metadata: Metadata = {
   title: "Ashish Nagmoti | AI Engineer & Researcher",
@@ -87,7 +89,7 @@ export default function RootLayout({
       {/* Icons and the manifest come from the `metadata` export above —
           duplicating them here previously also pointed at a favicon.ico that
           was never generated. */}
-      <body className={inter.className}>
+      <body className={inter.variable}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>

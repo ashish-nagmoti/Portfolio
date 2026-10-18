@@ -1,8 +1,8 @@
 "use client"
 
-import { useRef, type PointerEvent as ReactPointerEvent } from "react"
-import { motion, useDragControls, AnimatePresence } from "framer-motion"
-import { X, Minus, Square } from "@phosphor-icons/react"
+import { useLayoutEffect, useRef, type PointerEvent as ReactPointerEvent } from "react"
+import { motion, useDragControls, useMotionValue, AnimatePresence } from "framer-motion"
+import { X } from "@phosphor-icons/react"
 import { APPS } from "./app-registry"
 import { AppIcon } from "./app-icon"
 import { STATUS_BAR_HEIGHT } from "./ios/status-bar"
@@ -11,6 +11,51 @@ import { cn } from "@/lib/utils"
 
 const MIN_WIDTH = 340
 const MIN_HEIGHT = 280
+
+// The three title-bar buttons, drawn the way macOS draws them: a coloured
+// disc with a slightly darker rim, glyphs that appear together when the
+// pointer is over any of them, and plain grey discs on a background window.
+const LIGHTS = {
+  close: { fill: "#ff5f57", rim: "#e0443e", glyph: "M3.5 3.5l5 5M8.5 3.5l-5 5", label: "Close" },
+  minimize: { fill: "#febc2e", rim: "#dea123", glyph: "M3 6h6", label: "Minimize" },
+  zoom: { fill: "#28c840", rim: "#1aab29", glyph: "", label: "Zoom" },
+} as const
+
+function TrafficLight({ kind, active, onClick }: { kind: keyof typeof LIGHTS; active: boolean; onClick: () => void }) {
+  const l = LIGHTS[kind]
+  return (
+    <button
+      onClick={onClick}
+      onPointerDown={(e) => e.stopPropagation()}
+      onDoubleClick={(e) => e.stopPropagation()}
+      aria-label={l.label}
+      className="relative h-3 w-3 rounded-full focus-visible:outline-offset-1"
+      style={
+        active
+          ? { background: l.fill, boxShadow: `inset 0 0 0 0.5px ${l.rim}` }
+          : undefined
+      }
+    >
+      {!active && (
+        <span className="absolute inset-0 rounded-full bg-black/[0.13] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.08)] group-hover/lights:hidden dark:bg-white/[0.16]" />
+      )}
+      {/* On hover every light shows its colour and glyph, even on a background window */}
+      <span
+        className="absolute inset-0 hidden rounded-full group-hover/lights:block"
+        style={{ background: l.fill, boxShadow: `inset 0 0 0 0.5px ${l.rim}` }}
+      >
+        <svg viewBox="0 0 12 12" className="h-3 w-3" aria-hidden>
+          {kind === "zoom" ? (
+            // Two opposing corner arrows, the full-screen glyph
+            <path d="M3.4 3.4h3.7L3.4 7.1zM8.6 8.6H4.9l3.7-3.7z" fill="rgba(0,0,0,0.55)" />
+          ) : (
+            <path d={l.glyph} stroke="rgba(0,0,0,0.55)" strokeWidth={1.25} strokeLinecap="round" fill="none" />
+          )}
+        </svg>
+      </span>
+    </button>
+  )
+}
 
 export interface OriginRect {
   top: number
@@ -34,6 +79,7 @@ interface WindowProps {
   onToggleMaximize: () => void
   onFocus: () => void
   onResize: (size: { width: number; height: number }) => void
+  onMove: (pos: { x: number; y: number }) => void
 }
 
 export function Window({
@@ -51,12 +97,36 @@ export function Window({
   onToggleMaximize,
   onFocus,
   onResize,
+  onMove,
 }: WindowProps) {
   const app = APPS[appId]
   const dragControls = useDragControls()
   const Content = app.Content
   const sizeRef = useRef(size)
   sizeRef.current = size
+
+  // Dragging moves the window with a transform. When a drag ends the offset
+  // is folded into `pos` and the transform reset in the same frame, so zoom,
+  // the minimize animation and resize limits all work from where it really is.
+  const dragX = useMotionValue(0)
+  const dragY = useMotionValue(0)
+  useLayoutEffect(() => {
+    dragX.set(0)
+    dragY.set(0)
+  }, [pos.x, pos.y, dragX, dragY])
+  const endDrag = () => {
+    const vw = window.innerWidth
+    const vh = window.innerHeight
+    // Keep at least part of the title bar reachable
+    const x = Math.min(Math.max(pos.x + dragX.get(), 80 - sizeRef.current.width), vw - 80)
+    const y = Math.min(Math.max(pos.y + dragY.get(), 32), vh - 60)
+    const next = { x: Math.round(x), y: Math.round(y) }
+    if (next.x === pos.x && next.y === pos.y) {
+      // Clamped straight back to where it started: no re-render to reset on
+      dragX.set(0)
+      dragY.set(0)
+    } else onMove(next)
+  }
 
   if (isMobile) {
     const vw = typeof window !== "undefined" ? window.innerWidth : 390
@@ -157,6 +227,7 @@ export function Window({
       dragListener={false}
       dragControls={dragControls}
       dragMomentum={false}
+      onDragEnd={endDrag}
       onPointerDown={onFocus}
       initial={{ opacity: 0, scale: 0.92, x: 0, y: 0 }}
       animate={
@@ -166,54 +237,40 @@ export function Window({
       }
       exit={{ opacity: 0, scale: 0.94, transition: { duration: 0.12 } }}
       transition={{ type: "spring", stiffness: 380, damping: 32 }}
-      style={{ position: "absolute", pointerEvents: minimized ? "none" : "auto", ...style }}
+      style={{ position: "absolute", x: dragX, y: dragY, pointerEvents: minimized ? "none" : "auto", ...style }}
       aria-hidden={minimized}
       data-tour={isFocused ? "window" : undefined}
       className={cn(
-        "rounded-xl bg-card flex flex-col overflow-hidden border",
-        isFocused ? "shadow-2xl border-black/10 dark:border-white/10" : "shadow-lg border-black/5 dark:border-white/5",
+        "flex flex-col overflow-hidden rounded-[13px] bg-card ring-1 transition-shadow duration-300",
+        isFocused
+          ? "shadow-[0_0_0_0.5px_rgba(0,0,0,0.12),0_30px_80px_-10px_rgba(0,0,0,0.42),0_10px_24px_-6px_rgba(0,0,0,0.22)] ring-black/[0.12] dark:shadow-[0_30px_90px_-6px_rgba(0,0,0,0.7),0_12px_28px_-6px_rgba(0,0,0,0.5)] dark:ring-white/[0.13]"
+          : "shadow-[0_16px_40px_-12px_rgba(0,0,0,0.28),0_4px_12px_-4px_rgba(0,0,0,0.14)] ring-black/[0.08] dark:shadow-[0_16px_44px_-10px_rgba(0,0,0,0.55)] dark:ring-white/[0.08]",
       )}
     >
+      {/* Dark-mode windows catch a hairline of light along the top edge */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-px bg-gradient-to-r from-transparent via-white/20 to-transparent dark:block" />
       <div
         onPointerDown={(e) => !maximized && dragControls.start(e)}
+        // Double-clicking a title bar zooms the window, as on macOS
+        onDoubleClick={onToggleMaximize}
         className={cn(
-          "relative flex items-center justify-center h-9 px-3.5 shrink-0 bg-white/80 dark:bg-[#2b2b30]/90 backdrop-blur-xl border-b border-black/5 dark:border-white/10",
-          !maximized && "cursor-move",
+          "relative flex h-[38px] shrink-0 select-none items-center justify-center border-b px-3.5 backdrop-blur-xl transition-colors duration-200",
+          isFocused
+            ? "border-black/[0.08] bg-[#f6f6f6]/90 dark:border-black/40 dark:bg-[#323236]/90"
+            : "border-black/[0.06] bg-[#ececec]/90 dark:border-black/30 dark:bg-[#2a2a2d]/90",
         )}
       >
         <div className="absolute left-3.5 flex gap-2 group/lights">
-          <button
-            onClick={onClose}
-            className={cn(
-              "w-3 h-3 rounded-full flex items-center justify-center transition-colors",
-              isFocused ? "bg-[#ff5f57]" : "bg-foreground/20",
-            )}
-            aria-label="Close"
-          >
-            <X className="h-1.5 w-1.5 text-black/50 opacity-0 group-hover/lights:opacity-100" />
-          </button>
-          <button
-            onClick={onMinimize}
-            className={cn(
-              "w-3 h-3 rounded-full flex items-center justify-center transition-colors",
-              isFocused ? "bg-[#febc2e]" : "bg-foreground/20",
-            )}
-            aria-label="Minimize"
-          >
-            <Minus className="h-1.5 w-1.5 text-black/50 opacity-0 group-hover/lights:opacity-100" />
-          </button>
-          <button
-            onClick={onToggleMaximize}
-            className={cn(
-              "w-3 h-3 rounded-full flex items-center justify-center transition-colors",
-              isFocused ? "bg-[#28c840]" : "bg-foreground/20",
-            )}
-            aria-label="Maximize"
-          >
-            <Square className="h-1.5 w-1.5 text-black/50 opacity-0 group-hover/lights:opacity-100" />
-          </button>
+          <TrafficLight kind="close" active={isFocused} onClick={onClose} />
+          <TrafficLight kind="minimize" active={isFocused} onClick={onMinimize} />
+          <TrafficLight kind="zoom" active={isFocused} onClick={onToggleMaximize} />
         </div>
-        <span className={cn("text-[13px] font-medium select-none", isFocused ? "text-foreground/80" : "text-foreground/40")}>
+        <span
+          className={cn(
+            "pointer-events-none max-w-[60%] truncate text-[13px] font-semibold tracking-[-0.01em] transition-colors",
+            isFocused ? "text-foreground/85" : "text-foreground/35",
+          )}
+        >
           {app.title}
         </span>
       </div>

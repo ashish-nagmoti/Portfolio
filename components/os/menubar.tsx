@@ -36,31 +36,49 @@ interface MenuItem {
   disabled?: boolean
 }
 
-function Dropdown({ items, disabledHint }: { items: MenuItem[]; disabledHint?: string }) {
+/** A menu row, or "-" for a separator line. */
+type MenuEntry = MenuItem | "-"
+
+/** Shared look for every pull-down and context menu on the desktop. */
+export const MENU_PANEL =
+  "rounded-[11px] border border-black/[0.08] bg-[#f4f4f4]/[0.93] p-[5px] text-[13px] shadow-[0_12px_36px_-6px_rgba(0,0,0,0.3),0_2px_6px_rgba(0,0,0,0.12)] backdrop-blur-2xl backdrop-saturate-150 dark:border-white/[0.12] dark:bg-[#28282b]/[0.92] dark:shadow-[0_14px_40px_-4px_rgba(0,0,0,0.6)]"
+export const MENU_ROW =
+  "group flex h-[24px] w-full items-center gap-2 rounded-[5px] px-2.5 text-left text-foreground/90 hover:bg-primary hover:text-white disabled:pointer-events-none disabled:text-foreground/30"
+
+function Dropdown({ items, disabledHint }: { items: MenuEntry[]; disabledHint?: string }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: -6 }}
+      initial={{ opacity: 0, y: -3 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -6 }}
-      transition={{ duration: 0.12 }}
-      className="absolute top-full left-0 mt-1.5 w-60 rounded-xl bg-white/90 dark:bg-[#2a2a30]/95 backdrop-blur-xl shadow-2xl border border-black/5 dark:border-white/10 py-1.5 z-10"
+      exit={{ opacity: 0, transition: { duration: 0.08 } }}
+      transition={{ duration: 0.1 }}
+      role="menu"
+      className={cn("absolute left-0 top-full z-10 mt-[5px] min-w-[230px] font-normal", MENU_PANEL)}
     >
-      {items.map((item) => (
-        <button
-          key={item.label}
-          onClick={item.action}
-          disabled={item.disabled}
-          className="flex w-full items-center gap-2.5 px-3 py-1.5 hover:bg-primary hover:text-primary-foreground transition-colors text-left disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-inherit"
-        >
-          {item.icon && <item.icon className="h-3.5 w-3.5 shrink-0" />}
-          <span className="flex-1">{item.label}</span>
-          {item.shortcut && <span className="text-xs opacity-50">{item.shortcut}</span>}
-        </button>
-      ))}
-      {disabledHint && <p className="px-3 py-1.5 text-xs opacity-40">{disabledHint}</p>}
+      {items.map((item, i) =>
+        item === "-" ? (
+          <div key={`sep-${i}`} className="mx-2.5 my-[5px] h-px bg-black/10 dark:bg-white/10" />
+        ) : (
+          <button key={item.label} role="menuitem" onClick={item.action} disabled={item.disabled} className={MENU_ROW}>
+            {item.icon && <item.icon className="h-3.5 w-3.5 shrink-0 opacity-80" />}
+            <span className="flex-1 truncate">{item.label}</span>
+            {item.shortcut && (
+              <span className="pl-6 text-foreground/40 group-hover:text-white/80 group-disabled:text-foreground/20">{item.shortcut}</span>
+            )}
+          </button>
+        ),
+      )}
+      {disabledHint && <p className="px-2.5 py-1 text-foreground/35">{disabledHint}</p>}
     </motion.div>
   )
 }
+
+/** Informational rows (keyboard hints) that do nothing when chosen. */
+const noop = () => {}
+
+// Menu titles get a rounded highlight while their menu is open, as on macOS.
+const BAR_BUTTON = "flex h-[22px] items-center rounded-[5px] px-2.5 text-foreground/90"
+const BAR_BUTTON_OPEN = "bg-black/10 dark:bg-white/15"
 
 export function MenuBar({
   focusedApp,
@@ -111,15 +129,32 @@ export function MenuBar({
     })
   }
 
-  const menus: { key: MenuKey; label: string; items: MenuItem[] }[] = [
+  // Esc dismisses an open menu (before the desktop treats it as "close window")
+  useEffect(() => {
+    if (!openMenu) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return
+      e.stopImmediatePropagation()
+      setOpenMenu(null)
+    }
+    window.addEventListener("keydown", onKey, true)
+    return () => window.removeEventListener("keydown", onKey, true)
+  }, [openMenu])
+
+  // Like macOS: once one menu is open, moving across the bar opens the others.
+  const hoverOpen = (key: MenuKey) => () => setOpenMenu((v) => (v && v !== key ? key : v))
+
+  const menus: { key: MenuKey; label: string; items: MenuEntry[] }[] = [
     {
       key: "file",
       label: "File",
       items: [
         { label: "Spotlight Search…", shortcut: "⌘K", action: run(onOpenSpotlight) },
+        "-",
         { label: "Download Resume", action: run(onDownloadResume) },
         { label: "Open llms.txt", action: run(() => window.open("/llms.txt", "_blank", "noopener")) },
         { label: "Open robots.txt", action: run(() => window.open("/robots.txt", "_blank", "noopener")) },
+        "-",
         { label: "Close Window", shortcut: "Esc", action: run(onCloseFocused), disabled: !focusedApp },
       ],
     },
@@ -140,6 +175,7 @@ export function MenuBar({
       items: [
         { label: "Show Desktop", action: run(onShowDesktop) },
         { label: "Change Wallpaper…", action: run(onChangeWallpaper) },
+        "-",
         {
           label: theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode",
           icon: theme === "light" ? Moon : Sun,
@@ -153,10 +189,11 @@ export function MenuBar({
       items: [
         { label: "Take the Tour", action: run(onStartTour) },
         { label: "About This OS", action: run(() => onOpenApp("about")) },
-        { label: "⌘K — Search", action: () => {} },
-        { label: "Esc — Close focused window", action: () => {} },
-        { label: "⌘Tab — Switch windows", action: () => {} },
-        { label: "Right-click — Desktop menu", action: () => {} },
+        "-",
+        { label: "Search", shortcut: "⌘K", action: noop },
+        { label: "Close Focused Window", shortcut: "Esc", action: noop },
+        { label: "Switch Windows", shortcut: "⌘Tab", action: noop },
+        { label: "Desktop Menu", shortcut: "Right-click", action: noop },
       ],
     },
   ]
@@ -164,13 +201,15 @@ export function MenuBar({
   return (
     <div
       data-tour="menubar"
-      className="fixed top-0 inset-x-0 z-[9800] h-8 flex items-center justify-between px-3 bg-white/70 dark:bg-black/40 backdrop-blur-xl border-b border-black/5 dark:border-white/10 text-[13px] font-medium select-none"
+      className="fixed inset-x-0 top-0 z-[9800] flex h-8 select-none items-center justify-between bg-white/45 px-2.5 text-[13px] font-medium shadow-[0_0.5px_0_rgba(0,0,0,0.08)] backdrop-blur-2xl backdrop-saturate-150 dark:bg-black/30 dark:shadow-[0_0.5px_0_rgba(255,255,255,0.06)]"
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center">
         <div className="relative">
           <button
             onClick={() => toggle("apple")}
-            className={cn("flex items-center px-2 h-6 rounded", openMenu === "apple" ? "bg-primary/20" : "hover:bg-black/5 dark:hover:bg-white/10")}
+            onMouseEnter={hoverOpen("apple")}
+            aria-label="System menu"
+            className={cn(BAR_BUTTON, openMenu === "apple" && BAR_BUTTON_OPEN)}
           >
             <Command className="h-3.5 w-3.5" />
           </button>
@@ -181,8 +220,10 @@ export function MenuBar({
                 <Dropdown
                   items={[
                     { label: "About This OS", action: run(() => onOpenApp("about")) },
+                    "-",
                     { label: "Reset Widget Layout", action: run(onResetWidgets) },
-                    { label: "Restart Desktop", action: run(onRestart) },
+                    "-",
+                    { label: "Restart Desktop…", action: run(onRestart) },
                   ]}
                 />
               </>
@@ -190,14 +231,15 @@ export function MenuBar({
           </AnimatePresence>
         </div>
 
-        <span className="font-bold">{appTitle}</span>
+        <span className="px-2.5 font-bold">{appTitle}</span>
 
-        <div className="hidden sm:flex items-center gap-4 text-foreground/70">
+        <div className="hidden items-center sm:flex">
           {menus.map((menu) => (
             <div key={menu.key} className="relative">
               <button
                 onClick={() => toggle(menu.key)}
-                className={cn("hover:text-foreground transition-colors", openMenu === menu.key && "text-foreground")}
+                onMouseEnter={hoverOpen(menu.key)}
+                className={cn(BAR_BUTTON, openMenu === menu.key && BAR_BUTTON_OPEN)}
               >
                 {menu.label}
               </button>
@@ -215,7 +257,8 @@ export function MenuBar({
           <div className="relative">
             <button
               onClick={() => toggle("window")}
-              className={cn("hover:text-foreground transition-colors", openMenu === "window" && "text-foreground")}
+              onMouseEnter={hoverOpen("window")}
+              className={cn(BAR_BUTTON, openMenu === "window" && BAR_BUTTON_OPEN)}
             >
               Window
             </button>
@@ -241,7 +284,7 @@ export function MenuBar({
         </div>
       </div>
 
-      <div className="flex items-center gap-3.5 text-foreground/80">
+      <div className="flex items-center gap-3.5 pr-1 text-foreground/85">
         <Wifi className="h-3.5 w-3.5" />
         <BatteryFull className="h-4 w-4" />
         {/* Plain-text version of the site for AI agents (llmstxt.org) */}

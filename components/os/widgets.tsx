@@ -19,7 +19,8 @@ const itemVariants = {
 }
 
 const SURFACE =
-  "rounded-[22px] border border-white/50 bg-white/55 shadow-xl backdrop-blur-2xl dark:border-white/10 dark:bg-black/35"
+  // Glass: a lit top edge (inset highlight), soft lift shadow, and a saturated blur of the wallpaper
+  "rounded-[22px] border border-white/45 bg-white/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_12px_32px_-10px_rgba(0,0,0,0.28)] backdrop-blur-2xl backdrop-saturate-[1.8] dark:border-white/[0.09] dark:bg-black/30 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.09),0_14px_36px_-10px_rgba(0,0,0,0.55)]"
 
 // Where each widget has been dragged to, as an offset from its slot in the
 // column, keyed by widget id. Kept in localStorage so a layout survives reloads.
