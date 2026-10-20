@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useTheme } from "next-themes"
 import { WifiHigh as Wifi, BatteryFull, MagnifyingGlass as Search, Sun, Moon, Command, Check, Copy, Robot as Bot } from "@phosphor-icons/react"
 import { APPS } from "./app-registry"
+import { ControlCenterGlyph } from "./control-center"
 import type { AppId, OpenWindow } from "./types"
 import { cn } from "@/lib/utils"
 
@@ -26,6 +27,8 @@ interface MenuBarProps {
   onCloseFocused: () => void
   onDownloadResume: () => void
   onShowDesktop: () => void
+  controlCenterOpen: boolean
+  onToggleControlCenter: () => void
 }
 
 interface MenuItem {
@@ -92,6 +95,8 @@ export function MenuBar({
   onCloseFocused,
   onDownloadResume,
   onShowDesktop,
+  controlCenterOpen,
+  onToggleControlCenter,
 }: MenuBarProps) {
   const { theme, setTheme } = useTheme()
   const [time, setTime] = useState<string | null>(null)
@@ -302,11 +307,19 @@ export function MenuBar({
           <Search className="h-3.5 w-3.5" />
         </button>
         <button
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-          aria-label="Toggle theme"
-          className="hover:text-foreground transition-colors"
+          data-tour="control-center"
+          onClick={() => {
+            closeMenus()
+            onToggleControlCenter()
+          }}
+          aria-label="Control Center"
+          aria-expanded={controlCenterOpen}
+          className={cn(
+            "-mx-1.5 flex h-[22px] items-center rounded-[5px] px-1.5 transition-colors hover:text-foreground",
+            controlCenterOpen && "bg-black/10 text-foreground dark:bg-white/15",
+          )}
         >
-          {theme === "light" ? <Moon className="h-3.5 w-3.5" /> : <Sun className="h-3.5 w-3.5" />}
+          <ControlCenterGlyph className="h-[15px] w-[15px]" />
         </button>
         {time && <span className="tabular-nums">{time}</span>}
       </div>

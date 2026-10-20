@@ -9,6 +9,7 @@ import { Dock } from "./dock"
 import { DesktopWidgets, clearWidgetLayout } from "./widgets"
 import { Tour, TOUR_DONE_KEY } from "./tour"
 import { WALLPAPERS, WallpaperPicker } from "./wallpapers"
+import { ControlCenter } from "./control-center"
 import { MenuBar } from "./menubar"
 import { StatusBar } from "./ios/status-bar"
 import { Spotlight } from "./spotlight"
@@ -72,6 +73,10 @@ export function Desktop({ initialApp }: DesktopProps) {
   const [spotlightOpen, setSpotlightOpen] = useState(false)
   const [wallpaperIdx, setWallpaperIdx] = useState(0)
   const [pickerOpen, setPickerOpen] = useState(false)
+  const [controlCenterOpen, setControlCenterOpen] = useState(false)
+  // Control Center: Focus hides the widgets; Display dims the whole screen (30–100%)
+  const [focusMode, setFocusMode] = useState(false)
+  const [brightness, setBrightness] = useState(100)
   const [bounceId, setBounceId] = useState<AppId | null>(null)
   const [bounceToken, setBounceToken] = useState(0)
   const [pendingOrigin, setPendingOrigin] = useState<OriginRect | null>(null)
@@ -88,7 +93,20 @@ export function Desktop({ initialApp }: DesktopProps) {
   useEffect(() => {
     const saved = typeof window !== "undefined" ? localStorage.getItem("os-wallpaper") : null
     if (saved) setWallpaperIdx(Number(saved) % WALLPAPERS.length)
+    setFocusMode(localStorage.getItem("os-focus") === "1")
+    const b = Number(localStorage.getItem("os-brightness"))
+    if (b >= 30 && b <= 100) setBrightness(b)
   }, [])
+
+  const toggleFocus = () =>
+    setFocusMode((on) => {
+      localStorage.setItem("os-focus", on ? "0" : "1")
+      return !on
+    })
+  const changeBrightness = (v: number) => {
+    setBrightness(v)
+    localStorage.setItem("os-brightness", String(v))
+  }
 
   const endTour = () => {
     setTourOpen(false)
@@ -234,13 +252,15 @@ export function Desktop({ initialApp }: DesktopProps) {
           onCloseFocused={closeFocused}
           onDownloadResume={downloadResume}
           onShowDesktop={showDesktop}
+          controlCenterOpen={controlCenterOpen}
+          onToggleControlCenter={() => setControlCenterOpen((v) => !v)}
         />
       )}
 
       {isMobile && <StatusBar />}
 
       {/* Desktop widgets (apps launch from the Dock / Spotlight) */}
-      <DesktopWidgets key={widgetLayoutKey} onOpenApp={openApp} dragBoundsRef={desktopRef} />
+      {!focusMode && <DesktopWidgets key={widgetLayoutKey} onOpenApp={openApp} dragBoundsRef={desktopRef} />}
 
       {/* Windows */}
       <AnimatePresence>
@@ -276,6 +296,19 @@ export function Desktop({ initialApp }: DesktopProps) {
         onClose={() => setPickerOpen(false)}
       />
 
+      <ControlCenter
+        open={controlCenterOpen}
+        onClose={() => setControlCenterOpen(false)}
+        focus={focusMode}
+        onToggleFocus={toggleFocus}
+        brightness={brightness}
+        onBrightness={changeBrightness}
+        onChangeWallpaper={() => setPickerOpen(true)}
+        onDownloadResume={downloadResume}
+        onOpenSpotlight={() => setSpotlightOpen(true)}
+        onResetWidgets={resetWidgetLayout}
+      />
+
       <AnimatePresence>
         {contextMenu && (
           <OSContextMenu
@@ -290,6 +323,15 @@ export function Desktop({ initialApp }: DesktopProps) {
       </AnimatePresence>
 
       <Spotlight open={spotlightOpen} onClose={() => setSpotlightOpen(false)} onOpenApp={openApp} />
+
+      {/* Display brightness: a dimming layer over everything, never catching clicks */}
+      {brightness < 100 && (
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-[99999] bg-black"
+          style={{ opacity: ((100 - brightness) / 100) * 0.85 }}
+        />
+      )}
 
       {!isMobile && !mobileAppOpen && <Dock openWindows={openWindows} onOpen={openApp} bounceId={bounceId} bounceToken={bounceToken} />}
     </div>

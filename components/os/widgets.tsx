@@ -6,6 +6,7 @@ import { MapPin, Trophy, GithubLogo as Github, FolderSimple as FolderGit2, Hamme
 import type { AppId } from "./types"
 import { GitHubCard } from "./github-card"
 import { cn } from "@/lib/utils"
+import { NowPlayingBody, useNowPlaying } from "./now-playing"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -448,6 +449,23 @@ function MantraWidget() {
   )
 }
 
+/** What's playing on Spotify / Last.fm. Absent until a track is known. */
+function NowPlayingWidget() {
+  const np = useNowPlaying()
+  if (!np?.configured || !np.track) return null
+  const url = np.track.url
+  return (
+    <Widget
+      id="now-playing"
+      className="col-span-2"
+      onClick={url ? () => window.open(url, "_blank", "noopener,noreferrer") : undefined}
+      label={`${np.isPlaying ? "Now playing" : "Last played"}: ${np.track.title} by ${np.track.artist}. Open in a new tab`}
+    >
+      <NowPlayingBody />
+    </Widget>
+  )
+}
+
 // A widget column: narrow, pinned below the menu bar. Hidden on short
 // viewports (a landscape phone), which lack the room to show a widget without
 // clipping it. Overflow stays visible so a dragged widget isn't clipped at the
@@ -479,6 +497,7 @@ export function DesktopWidgets({
         <CurrentlyWidget onOpenApp={onOpenApp} />
         <MantraWidget />
         <StackWidget onOpenApp={onOpenApp} />
+        <NowPlayingWidget />
       </motion.div>
 
       <motion.div
