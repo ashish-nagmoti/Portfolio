@@ -1,5 +1,5 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -7,6 +7,16 @@ import { ThemeProvider } from "@/components/theme-provider"
 // Exposed as a variable: Macs render the real system font (SF Pro) and
 // everyone else falls back to Inter. See `body` in globals.css.
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+
+// Draw under the notch / home bar (the layout pads itself with the safe-area
+// insets) and tint the browser's own bars to match the theme.
+export const viewport: Viewport = {
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f4f4f6" },
+    { media: "(prefers-color-scheme: dark)", color: "#1c1c1e" },
+  ],
+}
 
 export const metadata: Metadata = {
   title: "Ashish Nagmoti | AI Engineer & Researcher",

@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { IconBadge, SYSTEM } from "@/components/os/icon-badge"
 import { NativeSection, NativeRow } from "@/components/os/native-list"
+import { useCompact } from "@/components/os/window-context"
 import { cn } from "@/lib/utils"
 import { Code, CodeSimple as Code2, Cloud, Database, Users, Medal as Award, Briefcase, Buildings as Building2, ClockCounterClockwise as History, Layout as LayoutTemplate, Cpu, Brain } from "@phosphor-icons/react"
 const skills = {
@@ -216,10 +217,31 @@ type SectionId = (typeof SECTIONS)[number]["id"]
 
 export function AboutApp() {
   const [active, setActive] = useState<SectionId>("stats")
+  const compact = useCompact()
 
   return (
-    <div className="flex h-full">
-      {/* Sidebar, Contacts.app / System Settings style */}
+    <div className={cn("flex h-full", compact && "flex-col")}>
+      {compact ? (
+        // Narrow (a phone): the sections become a swipeable row of tabs
+        <div className="no-scrollbar flex shrink-0 gap-2 overflow-x-auto border-b border-black/[0.06] px-4 py-2.5 dark:border-white/[0.08]">
+          {SECTIONS.map((section) => (
+            <button
+              key={section.id}
+              onClick={() => setActive(section.id)}
+              className={cn(
+                "flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors",
+                active === section.id
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-black/[0.05] text-foreground/80 dark:bg-white/[0.08]",
+              )}
+            >
+              <section.icon className="h-3.5 w-3.5" />
+              {section.label}
+            </button>
+          ))}
+        </div>
+      ) : (
+      /* Sidebar, Contacts.app / System Settings style */
       <div className="flex w-[210px] shrink-0 flex-col border-r border-black/[0.06] dark:border-white/[0.08]">
         <div className="flex items-center gap-3 border-b border-black/[0.06] p-4 dark:border-white/[0.08]">
           <span
@@ -257,6 +279,7 @@ export function AboutApp() {
           })}
         </nav>
       </div>
+      )}
 
       {/* Detail pane */}
       <div className="flex-1 overflow-y-auto">
@@ -267,7 +290,7 @@ export function AboutApp() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.15 }}
-            className="p-6"
+            className={compact ? "p-4" : "p-6"}
           >
             {active === "stats" && (
               <div className="space-y-6">

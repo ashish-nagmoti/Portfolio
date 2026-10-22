@@ -277,3 +277,10 @@
   font-size: 0.9em;
 }
 .note-body hr { margin: 2em 0; border: 0; border-top: 1px solid hsl(var(--border)); }
+
+/* Touch screens: no grey flash on tap, and inputs at 16px so iOS Safari
+   doesn't zoom the page when one is focused. */
+@media (pointer: coarse) {
+  * { -webkit-tap-highlight-color: transparent; }
+  input, textarea, select { font-size: max(16px, 1em); }
+}

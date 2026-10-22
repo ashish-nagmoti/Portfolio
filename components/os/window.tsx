@@ -1,11 +1,10 @@
 "use client"
 
 import { useLayoutEffect, useRef, type PointerEvent as ReactPointerEvent } from "react"
-import { motion, useDragControls, useMotionValue, AnimatePresence } from "framer-motion"
-import { X } from "@phosphor-icons/react"
+import { motion, useDragControls, useMotionValue } from "framer-motion"
+import { CaretLeft } from "@phosphor-icons/react"
 import { APPS } from "./app-registry"
-import { AppIcon } from "./app-icon"
-import { STATUS_BAR_HEIGHT } from "./ios/status-bar"
+import { CompactContext } from "./window-context"
 import type { AppId } from "./types"
 import { cn } from "@/lib/utils"
 
@@ -104,6 +103,8 @@ export function Window({
   const Content = app.Content
   const sizeRef = useRef(size)
   sizeRef.current = size
+  // Phone: the icon this window opened from, fixed at mount (the prop moves on with later opens)
+  const mobileOriginRef = useRef(originRect)
 
   // Dragging moves the window with a transform. When a drag ends the offset
   // is folded into `pos` and the transform reset in the same frame, so zoom,
@@ -129,60 +130,47 @@ export function Window({
   }
 
   if (isMobile) {
-    const vw = typeof window !== "undefined" ? window.innerWidth : 390
-    const vh = typeof window !== "undefined" ? window.innerHeight : 844
-    const origin = originRect ?? { top: vh - 90, left: vw / 2 - 28, width: 56, height: 56 }
+    // Phone: the app fills the screen, growing out of the icon that was tapped
+    // (a clip-path reveal, so the content never re-lays out mid-animation) and
+    // shrinking back into it on close.
+    const vw = window.innerWidth
+    const vh = window.innerHeight
+    const o = mobileOriginRef.current ?? { top: vh * 0.4, left: vw * 0.4, width: vw * 0.2, height: vw * 0.2 }
+    const fromIcon = `inset(${o.top}px ${vw - o.left - o.width}px ${vh - o.top - o.height}px ${o.left}px round 15px)`
+    const ease = [0.32, 0.72, 0, 1] as const
+    const shortTitle = app.title.replace(/\.(txt|app)$|\/$/, "")
 
     return (
-      <AnimatePresence>
-        <motion.div
-          key={appId}
-          initial={{
-            top: origin.top,
-            left: origin.left,
-            width: origin.width,
-            height: origin.height,
-            borderRadius: 22,
-            opacity: 0.4,
-          }}
-          animate={{ top: 0, left: 0, width: vw, height: vh, borderRadius: 0, opacity: 1 }}
-          exit={{ top: origin.top, left: origin.left, width: origin.width, height: origin.height, borderRadius: 22, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 32 }}
-          style={{ position: "fixed", zIndex }}
-          className="bg-background flex flex-col overflow-hidden"
-        >
-          <div
-            className="flex items-center justify-between px-4 pb-3 bg-card shadow-sm border-b border-black/5 dark:border-white/10 shrink-0"
-            style={{ paddingTop: STATUS_BAR_HEIGHT - 12 }}
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <AppIcon app={app.id} className="h-7 w-7 shrink-0" />
-              <span className="font-semibold truncate">{app.title}</span>
-            </div>
+      <motion.div
+        initial={{ clipPath: fromIcon, opacity: 0.6 }}
+        animate={{ clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1 }}
+        exit={{ clipPath: fromIcon, opacity: 0, transition: { duration: 0.3, ease } }}
+        transition={{ duration: 0.45, ease }}
+        style={{ position: "fixed", inset: 0, zIndex }}
+        role="dialog"
+        aria-label={shortTitle}
+        className="flex flex-col bg-background"
+      >
+        {/* iOS navigation bar */}
+        <div className="relative z-10 shrink-0 border-b border-black/[0.08] bg-background/85 pt-[env(safe-area-inset-top)] backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.08]">
+          <div className="relative flex h-11 items-center justify-center px-2">
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-secondary transition-colors shrink-0"
-              aria-label="Close"
+              className="absolute left-1 flex h-11 items-center gap-0.5 rounded-lg pl-1 pr-3 text-[17px] text-primary active:opacity-50"
+              aria-label="Back to Home"
             >
-              <X className="h-5 w-5" />
+              <CaretLeft weight="bold" className="h-[22px] w-[22px]" />
+              Home
             </button>
+            <span className="max-w-[55%] truncate text-[17px] font-semibold">{shortTitle}</span>
           </div>
-          <div className="flex-1 overflow-y-auto overscroll-contain bg-background">
+        </div>
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-background pb-[env(safe-area-inset-bottom)] [-webkit-overflow-scrolling:touch]">
+          <CompactContext.Provider value={true}>
             <Content />
-          </div>
-          <motion.button
-            onClick={onClose}
-            drag="y"
-            dragConstraints={{ top: -50, bottom: 0 }}
-            dragElastic={{ top: 0.4, bottom: 0 }}
-            onDragEnd={(_, info) => {
-              if (info.offset.y < -28 || info.velocity.y < -400) onClose()
-            }}
-            aria-label="Close (swipe up for home)"
-            className="absolute bottom-1.5 inset-x-0 mx-auto w-32 h-1.5 rounded-full bg-foreground/30 touch-none"
-          />
-        </motion.div>
-      </AnimatePresence>
+          </CompactContext.Provider>
+        </div>
+      </motion.div>
     )
   }
 
@@ -275,7 +263,9 @@ export function Window({
         </span>
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-background">
-        <Content />
+        <CompactContext.Provider value={!maximized && size.width < 560}>
+          <Content />
+        </CompactContext.Provider>
       </div>
       {!maximized && (
         <div

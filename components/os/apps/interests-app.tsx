@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { useCompact } from "@/components/os/window-context"
 import { Headphones, Trophy, Coffee, Globe, BookOpen, Link as LinkIcon, YoutubeLogo as Youtube, Play, Shuffle, Heart } from "@phosphor-icons/react"
 import type { Icon as IconType } from "@phosphor-icons/react"
 const interestItems = [
@@ -118,6 +119,7 @@ const TYPE_META = [
 
 export function InterestsApp() {
   const [filter, setFilter] = useState<string>("All")
+  const compact = useCompact()
 
   const filteredItems = filter === "All" ? interestItems : interestItems.filter((item) => item.type === filter)
   const typeCounts = TYPE_META.map((t) => ({ ...t, count: interestItems.filter((i) => i.type === t.type).length }))
@@ -126,14 +128,14 @@ export function InterestsApp() {
     <div className="flex h-full min-h-0 flex-col bg-[#121212] text-white">
       <div className="min-h-0 flex-1 overflow-y-auto">
         {/* Hero, "Liked Songs" style */}
-        <div className="bg-gradient-to-b from-[#1f6b3c] via-[#174d2c]/60 to-[#121212] px-6 pb-6 pt-10">
+        <div className={cn("bg-gradient-to-b from-[#1f6b3c] via-[#174d2c]/60 to-[#121212] px-6 pb-6", compact ? "pt-6" : "pt-10")}>
           <div className="flex items-end gap-5">
-            <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded bg-gradient-to-br from-[#1ed760] to-[#11713a] shadow-2xl sm:h-32 sm:w-32">
+            <div className={cn("flex shrink-0 items-center justify-center rounded bg-gradient-to-br from-[#1ed760] to-[#11713a] shadow-2xl", compact ? "h-24 w-24" : "h-28 w-28 sm:h-32 sm:w-32")}>
               <Heart className="h-12 w-12 fill-white text-white sm:h-14 sm:w-14" />
             </div>
             <div className="min-w-0">
               <p className="text-xs font-semibold">Playlist</p>
-              <h1 className="mt-1 truncate text-3xl font-black tracking-tight sm:text-5xl">Liked Interests</h1>
+              <h1 className={cn("mt-1 font-black leading-[1.05] tracking-tight", compact ? "text-[26px]" : "truncate text-3xl sm:text-5xl")}>Liked Interests</h1>
               <p className="mt-3 text-sm text-white/70">Ashish Nagmoti &middot; {interestItems.length} saved</p>
             </div>
           </div>
@@ -171,12 +173,13 @@ export function InterestsApp() {
 
         {/* Track list */}
         <div className="px-2 pb-6 sm:px-6">
-          <table className="w-full text-sm">
+          {/* Fixed layout so long titles truncate instead of pushing the table wider than the window */}
+          <table className="w-full table-fixed text-sm">
             <thead>
               <tr className="border-b border-white/10 text-left text-xs text-[#a7a7a7]">
                 <th className="w-10 py-2 pl-3 font-normal">#</th>
                 <th className="py-2 pr-3 font-normal">Title</th>
-                <th className="hidden py-2 pr-3 font-normal sm:table-cell">Date added</th>
+                <th className={cn("hidden w-32 py-2 pr-3 font-normal", !compact && "sm:table-cell")}>Date added</th>
                 <th className="w-10 py-2 pr-3 font-normal">
                   <Heart className="ml-auto h-4 w-4" />
                 </th>
@@ -212,7 +215,7 @@ export function InterestsApp() {
                         </div>
                       </a>
                     </td>
-                    <td className="hidden whitespace-nowrap py-2 pr-3 text-xs text-[#a7a7a7] sm:table-cell">{fmtDate(item.dateAdded)}</td>
+                    <td className={cn("hidden whitespace-nowrap py-2 pr-3 text-xs text-[#a7a7a7]", !compact && "sm:table-cell")}>{fmtDate(item.dateAdded)}</td>
                     <td className="w-10 py-2 pr-3">
                       <Heart className="ml-auto h-4 w-4 fill-[#1DB954] text-[#1DB954]" />
                     </td>

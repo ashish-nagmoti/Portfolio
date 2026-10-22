@@ -18,7 +18,7 @@ const itemVariants = {
   visible: { opacity: 1, scale: 1 },
 }
 
-const SURFACE =
+export const SURFACE =
   // Glass: a lit top edge (inset highlight), soft lift shadow, and a saturated blur of the wallpaper
   "rounded-[22px] border border-white/45 bg-white/50 shadow-[inset_0_1px_0_rgba(255,255,255,0.7),0_12px_32px_-10px_rgba(0,0,0,0.28)] backdrop-blur-2xl backdrop-saturate-[1.8] dark:border-white/[0.09] dark:bg-black/30 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.09),0_14px_36px_-10px_rgba(0,0,0,0.55)]"
 
@@ -185,16 +185,16 @@ function LocationWidget() {
  * empty grid rather than an error.
  * ------------------------------------------------------------------------- */
 
-const GH_USER = "ashish-nagmoti"
+export const GH_USER = "ashish-nagmoti"
 const GH_API = `https://github-contributions-api.jogruber.de/v4/${GH_USER}?y=last`
 const GH_CACHE_KEY = "os-gh-contributions"
 const GH_CACHE_TTL = 6 * 60 * 60 * 1000 // 6h: contributions don't change often
 
-type ContribDay = { date: string; count: number; level: number }
+export type ContribDay = { date: string; count: number; level: number }
 type Contributions = { total: number; days: ContribDay[] }
 
 // GitHub's own scale, with a softer empty cell so it sits on a translucent card.
-const LEVEL_FILL = [
+export const LEVEL_FILL = [
   "bg-[#ebedf0] dark:bg-white/[0.13]",
   "bg-[#9be9a8] dark:bg-[#0e4429]",
   "bg-[#40c463] dark:bg-[#006d32]",
@@ -216,10 +216,10 @@ function readContribCache(): Contributions | null {
 const fmtDay = (iso: string) =>
   new Date(iso + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })
 
-function ContributionsWidget() {
+/** The past year of contributions, from cache first and then the network. Also used by the phone home screen. */
+export function useContributions() {
   const [data, setData] = useState<Contributions | null>(null)
   const [failed, setFailed] = useState(false)
-  const [cardOpen, setCardOpen] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -248,11 +248,18 @@ function ContributionsWidget() {
     }
   }, [])
 
-  // 53 columns of 7 days; render placeholders until the data lands so the
-  // widget doesn't change height.
+  // 53 columns of 7 days; placeholders until the data lands so the graph
+  // doesn't change height.
   const days: (ContribDay | null)[] = data?.days.length ? data.days : Array(371).fill(null)
   const weeks: (ContribDay | null)[][] = []
   for (let i = 0; i < days.length; i += 7) weeks.push(days.slice(i, i + 7))
+
+  return { data, failed, weeks }
+}
+
+function ContributionsWidget() {
+  const { data, failed, weeks } = useContributions()
+  const [cardOpen, setCardOpen] = useState(false)
 
   const widget = (
     <Widget id="contributions" className="col-span-2" onClick={() => setCardOpen(true)} label="Show GitHub profile">

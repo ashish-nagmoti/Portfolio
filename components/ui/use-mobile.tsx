@@ -29,12 +29,9 @@ export function usePhoneOrientation() {
   return state
 }
 
-// The OS shell only ever mounts the desktop UI once a phone is rotated to
-// landscape (portrait phones see a rotate prompt instead), so "mobile" here
-// means "phone held upright" — everywhere this is still true, the compact
-// iOS-style layout applies; everywhere it's false, the full desktop UI
-// renders, including on a landscape phone.
+// A phone in either orientation gets the iOS-style home screen; tablets and
+// computers get the desktop. (Sideways, a phone is only ~390px tall: too
+// short for menu bar + windows + dock.)
 export function useIsMobile() {
-  const { isPhone, isPortrait } = usePhoneOrientation()
-  return isPhone && isPortrait
+  return usePhoneOrientation().isPhone
 }

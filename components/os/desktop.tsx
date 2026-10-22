@@ -11,7 +11,7 @@ import { Tour, TOUR_DONE_KEY } from "./tour"
 import { WALLPAPERS, WallpaperPicker } from "./wallpapers"
 import { ControlCenter } from "./control-center"
 import { MenuBar } from "./menubar"
-import { StatusBar } from "./ios/status-bar"
+import { HomeScreen } from "./ios/home-screen"
 import { Spotlight } from "./spotlight"
 import { OSContextMenu } from "./context-menu"
 import { SquircleDefs } from "./squircle-defs"
@@ -144,6 +144,13 @@ export function Desktop({ initialApp }: DesktopProps) {
 
   const openApp = (id: AppId, rect?: DOMRect) => {
     setPendingOrigin(rect ? { top: rect.top, left: rect.left, width: rect.width, height: rect.height } : null)
+    // Phone: an open app is a history entry, so the system back gesture or
+    // button returns Home instead of leaving the site (see the popstate effect).
+    if (isMobile) {
+      const anyOpen = openWindows.some((w) => !w.minimized)
+      if (anyOpen) window.history.replaceState({ osApp: id }, "")
+      else window.history.pushState({ osApp: id }, "")
+    }
     const existing = openWindows.find((w) => w.id === id)
     zRef.current += 1
     const z = zRef.current
@@ -160,14 +167,27 @@ export function Desktop({ initialApp }: DesktopProps) {
     ])
   }
 
-  const mobileAppOpen = isMobile && openWindows.some((w) => !w.minimized)
   const focusedApp = useMemo(() => {
     const visible = openWindows.filter((w) => !w.minimized)
     if (visible.length === 0) return null
     return visible.reduce((a, b) => (b.zIndex > a.zIndex ? b : a)).id
   }, [openWindows])
 
-  const closeApp = (id: AppId) => setOpenWindows((prev) => prev.filter((w) => w.id !== id))
+  const closeApp = (id: AppId) => {
+    // Phone: step back past the entry the app pushed; popstate then closes it
+    if (isMobile && window.history.state?.osApp) {
+      window.history.back()
+      return
+    }
+    setOpenWindows((prev) => prev.filter((w) => w.id !== id))
+  }
+
+  useEffect(() => {
+    if (!isMobile) return
+    const onPop = () => setOpenWindows([])
+    window.addEventListener("popstate", onPop)
+    return () => window.removeEventListener("popstate", onPop)
+  }, [isMobile])
   const minimizeApp = (id: AppId) => setOpenWindows((prev) => prev.map((w) => (w.id === id ? { ...w, minimized: true } : w)))
   const toggleMaximize = (id: AppId) =>
     setOpenWindows((prev) => prev.map((w) => (w.id === id ? { ...w, maximized: !w.maximized } : w)))
@@ -257,10 +277,12 @@ export function Desktop({ initialApp }: DesktopProps) {
         />
       )}
 
-      {isMobile && <StatusBar />}
-
-      {/* Desktop widgets (apps launch from the Dock / Spotlight) */}
-      {!focusMode && <DesktopWidgets key={widgetLayoutKey} onOpenApp={openApp} dragBoundsRef={desktopRef} />}
+      {/* Phone: an iOS-style home screen. Desktop: widgets (apps launch from the Dock / Spotlight) */}
+      {isMobile ? (
+        <HomeScreen onOpenApp={openApp} onOpenControlCenter={() => setControlCenterOpen(true)} focus={focusMode} />
+      ) : (
+        !focusMode && <DesktopWidgets key={widgetLayoutKey} onOpenApp={openApp} dragBoundsRef={desktopRef} />
+      )}
 
       {/* Windows */}
       <AnimatePresence>
@@ -307,6 +329,7 @@ export function Desktop({ initialApp }: DesktopProps) {
         onDownloadResume={downloadResume}
         onOpenSpotlight={() => setSpotlightOpen(true)}
         onResetWidgets={resetWidgetLayout}
+        isMobile={isMobile}
       />
 
       <AnimatePresence>
@@ -333,7 +356,7 @@ export function Desktop({ initialApp }: DesktopProps) {
         />
       )}
 
-      {!isMobile && !mobileAppOpen && <Dock openWindows={openWindows} onOpen={openApp} bounceId={bounceId} bounceToken={bounceToken} />}
+      {!isMobile && <Dock openWindows={openWindows} onOpen={openApp} bounceId={bounceId} bounceToken={bounceToken} />}
     </div>
   )
 }

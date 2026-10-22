@@ -1,12 +1,16 @@
 "use client"
 
 import { useState } from "react"
+import { createPortal } from "react-dom"
+import { AnimatePresence, motion } from "framer-motion"
+import { useIsMobile } from "@/components/ui/use-mobile"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { IconBadge, SYSTEM } from "@/components/os/icon-badge"
 import { cn } from "@/lib/utils"
-import { ArrowSquareOut as ExternalLink, GithubLogo as Github, Brain, Globe, Code, SquaresFour as LayoutGrid, List, MagnifyingGlass as Search, Folder, Sparkle as Sparkles, Cube as Boxes, Wrench, ShieldCheck } from "@phosphor-icons/react"
+import { useCompact } from "@/components/os/window-context"
+import { ArrowSquareOut as ExternalLink, GithubLogo as Github, Brain, Globe, Code, SquaresFour as LayoutGrid, List, MagnifyingGlass as Search, Folder, Sparkle as Sparkles, Cube as Boxes, Wrench, ShieldCheck, CaretRight } from "@phosphor-icons/react"
 const CATEGORY_GRADIENT: Record<string, string> = {
   AI: SYSTEM.blue,
   Web: SYSTEM.teal,
@@ -106,6 +110,8 @@ export function ProjectsApp() {
   const [filter, setFilter] = useState<string>("all")
   const [query, setQuery] = useState("")
   const [selected, setSelected] = useState<(typeof projects)[number] | null>(null)
+  const compact = useCompact()
+  const phone = useIsMobile()
 
   const filtered = projects.filter(
     (p) => (filter === "all" || p.category === filter) && p.title.toLowerCase().includes(query.toLowerCase()),
@@ -115,8 +121,9 @@ export function ProjectsApp() {
     <div className="flex h-full flex-col">
       {/* Toolbar, Finder style */}
       <div className="flex shrink-0 items-center gap-3 border-b border-black/[0.06] px-4 py-2.5 dark:border-white/[0.08]">
-        <span className="text-sm font-semibold">Projects</span>
-        <div className="flex-1" />
+        {!compact && <span className="text-sm font-semibold">Projects</span>}
+        {!compact && <div className="flex-1" />}
+        {!compact && (
         <div className="flex items-center rounded-lg border border-black/[0.08] p-0.5 dark:border-white/[0.1]">
           <button
             onClick={() => setView("grid")}
@@ -133,20 +140,43 @@ export function ProjectsApp() {
             <List className="h-3.5 w-3.5" />
           </button>
         </div>
-        <div className="relative">
+        )}
+        <div className={cn("relative", compact && "flex-1")}>
           <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search"
-            className="h-7 w-36 rounded-md border border-black/[0.08] bg-background pl-8 pr-2 text-xs outline-none focus:ring-1 focus:ring-primary dark:border-white/[0.1]"
+            className={cn(
+              "rounded-md border border-black/[0.08] bg-background pl-8 pr-2 outline-none focus:ring-1 focus:ring-primary dark:border-white/[0.1]",
+              compact ? "h-9 w-full rounded-[10px] border-0 bg-black/[0.05] text-[16px] dark:bg-white/[0.08]" : "h-7 w-36 text-xs",
+            )}
           />
         </div>
       </div>
 
+      {compact && (
+        // Narrow: the Favorites sidebar becomes a row of filter chips
+        <div className="no-scrollbar flex shrink-0 gap-2 overflow-x-auto px-4 pb-1 pt-3">
+          {FAVORITES.map((fav) => (
+            <button
+              key={fav.id}
+              onClick={() => setFilter(fav.id)}
+              className={cn(
+                "flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors",
+                filter === fav.id ? "bg-primary text-primary-foreground" : "bg-black/[0.05] text-foreground/80 dark:bg-white/[0.08]",
+              )}
+            >
+              <fav.icon className="h-3.5 w-3.5" />
+              {fav.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <div className="w-[150px] shrink-0 space-y-0.5 overflow-y-auto border-r border-black/[0.06] p-2 dark:border-white/[0.08]">
+        <div className={cn(compact && "hidden", "w-[150px] shrink-0 space-y-0.5 overflow-y-auto border-r border-black/[0.06] p-2 dark:border-white/[0.08]")}>
           <p className="px-2 pb-1.5 pt-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">Favorites</p>
           {FAVORITES.map((fav) => {
             const isActive = filter === fav.id
@@ -171,7 +201,25 @@ export function ProjectsApp() {
           {filtered.length === 0 && (
             <p className="p-6 text-center text-sm text-muted-foreground">No projects match &quot;{query}&quot;.</p>
           )}
-          {view === "grid" ? (
+          {compact ? (
+            // Narrow: an iOS grouped list, which fits long project names better than an icon grid
+            <div className="overflow-hidden rounded-xl border border-black/[0.06] bg-card dark:border-white/[0.08]">
+              {filtered.map((project) => (
+                <button
+                  key={project.id}
+                  onClick={() => setSelected(project)}
+                  className="flex w-full items-center gap-3 border-b border-black/[0.06] px-3.5 py-3 text-left last:border-b-0 active:bg-black/[0.04] dark:border-white/[0.08] dark:active:bg-white/[0.06]"
+                >
+                  <IconBadge icon={project.icon} gradient={CATEGORY_GRADIENT[project.category] ?? SYSTEM.graphite} size="md" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[15px] font-semibold leading-tight">{project.title.split(" – ")[0]}</span>
+                    <span className="mt-0.5 line-clamp-2 block text-[13px] leading-snug text-muted-foreground">{project.description}</span>
+                  </span>
+                  <CaretRight className="h-4 w-4 shrink-0 text-muted-foreground/50" />
+                </button>
+              ))}
+            </div>
+          ) : view === "grid" ? (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               {filtered.map((project) => (
                 <button
@@ -225,59 +273,108 @@ export function ProjectsApp() {
       </div>
 
       {/* Status bar */}
-      <div className="shrink-0 border-t border-black/[0.06] px-4 py-1.5 text-xs text-muted-foreground dark:border-white/[0.08]">
+      <div className={cn(compact && "hidden", "shrink-0 border-t border-black/[0.06] px-4 py-1.5 text-xs text-muted-foreground dark:border-white/[0.08]")}>
         {filtered.length} item{filtered.length !== 1 ? "s" : ""}
       </div>
 
-      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
-        <DialogContent className="max-w-2xl">
-          {selected && (
-            <>
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2.5">
-                  <IconBadge
-                    icon={selected.icon}
-                    gradient={CATEGORY_GRADIENT[selected.category] ?? SYSTEM.graphite}
-                    size="sm"
-                  />
-                  {selected.title}
-                </DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <p className="text-muted-foreground">{selected.longDescription}</p>
-                <div>
-                  <h4 className="font-semibold mb-2">Technologies Used:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selected.tech.map((tech) => (
-                      <Badge key={tech} variant="secondary">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  {selected.github && (
-                    <Button asChild>
-                      <a href={selected.github} target="_blank" rel="noopener noreferrer">
-                        <Github className="h-4 w-4 mr-2" />
-                        GitHub
-                      </a>
-                    </Button>
-                  )}
-                  {selected.demo && selected.demo !== "#" && (
-                    <Button variant="outline" asChild>
-                      <a href={selected.demo} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        Live Demo
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </>
+      {phone ? (
+        // Phone: an iOS bottom sheet, dragged down (or tapped outside) to dismiss
+        createPortal(
+          <AnimatePresence>
+            {selected && (
+              <>
+                <motion.div
+                  key="scrim"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setSelected(null)}
+                  className="fixed inset-0 z-[9900] bg-black/45"
+                />
+                <motion.div
+                  key="sheet"
+                  role="dialog"
+                  aria-label={selected.title}
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  exit={{ y: "100%" }}
+                  transition={{ type: "spring", stiffness: 340, damping: 34 }}
+                  drag="y"
+                  dragConstraints={{ top: 0, bottom: 0 }}
+                  dragElastic={{ top: 0, bottom: 0.7 }}
+                  onDragEnd={(_, info) => {
+                    if (info.offset.y > 90 || info.velocity.y > 500) setSelected(null)
+                  }}
+                  className="fixed inset-x-0 bottom-0 z-[9901] max-h-[88dvh] overflow-y-auto rounded-t-[22px] bg-card px-5 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-2.5 shadow-[0_-10px_40px_rgba(0,0,0,0.3)]"
+                >
+                  <div className="mx-auto mb-4 h-[5px] w-10 rounded-full bg-foreground/20" aria-hidden />
+                  <ProjectDetail project={selected} />
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>,
+          document.body,
+        )
+      ) : (
+        <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
+          <DialogContent className="max-w-2xl">
+            {selected && (
+              <>
+                <DialogHeader>
+                  <DialogTitle className="sr-only">{selected.title}</DialogTitle>
+                </DialogHeader>
+                <ProjectDetail project={selected} />
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  )
+}
+
+/** A project's full description, tech and links: the body of the dialog and of the phone sheet. */
+function ProjectDetail({ project }: { project: (typeof projects)[number] }) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-3">
+        <IconBadge icon={project.icon} gradient={CATEGORY_GRADIENT[project.category] ?? SYSTEM.graphite} size="md" />
+        <div className="min-w-0">
+          <p className="text-[17px] font-semibold leading-tight">{project.title}</p>
+          <p className="text-[12px] text-muted-foreground">{project.date}</p>
+        </div>
+      </div>
+      <p className="text-[15px] leading-relaxed text-muted-foreground">{project.longDescription}</p>
+      <div>
+        <h4 className="mb-2 font-semibold">Technologies Used</h4>
+        <div className="flex flex-wrap gap-2">
+          {project.tech.map((tech) => (
+            <Badge key={tech} variant="secondary">
+              {tech}
+            </Badge>
+          ))}
+        </div>
+      </div>
+      {(project.github || (project.demo && project.demo !== "#")) && (
+        <div className="flex gap-2">
+          {project.github && (
+            <Button asChild>
+              <a href={project.github} target="_blank" rel="noopener noreferrer">
+                <Github className="mr-2 h-4 w-4" />
+                GitHub
+              </a>
+            </Button>
           )}
-        </DialogContent>
-      </Dialog>
+          {project.demo && project.demo !== "#" && (
+            <Button variant="outline" asChild>
+              <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="mr-2 h-4 w-4" />
+                Live Demo
+              </a>
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

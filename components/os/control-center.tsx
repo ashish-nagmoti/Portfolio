@@ -15,6 +15,7 @@ import {
   FilePdf,
   MagnifyingGlass,
   SquaresFour,
+  Export,
 } from "@phosphor-icons/react"
 import { cn } from "@/lib/utils"
 
@@ -148,6 +149,8 @@ interface ControlCenterProps {
   onDownloadResume: () => void
   onOpenSpotlight: () => void
   onResetWidgets: () => void
+  /** Phone: drops below the home screen's button and leaves out desktop-only controls. */
+  isMobile?: boolean
 }
 
 /** macOS Control Center, re-imagined for a portfolio: quick links, appearance, focus, display. */
@@ -162,6 +165,7 @@ export function ControlCenter({
   onDownloadResume,
   onOpenSpotlight,
   onResetWidgets,
+  isMobile,
 }: ControlCenterProps) {
   const { resolvedTheme, setTheme } = useTheme()
   const dark = resolvedTheme === "dark"
@@ -185,6 +189,11 @@ export function ControlCenter({
       setTimeout(() => setCopied(false), 1500)
     })
   }
+  const share = () => {
+    const url = window.location.origin
+    if (navigator.share) navigator.share({ title: "Ashish Nagmoti — AI Engineer & Researcher", url }).catch(() => {})
+    else navigator.clipboard?.writeText(url)
+  }
   const then = (fn: () => void) => () => {
     fn()
     onClose()
@@ -203,7 +212,12 @@ export function ControlCenter({
             style={{ transformOrigin: "top right" }}
             role="dialog"
             aria-label="Control Center"
-            className="fixed right-2 top-[38px] z-[9811] w-[320px] select-none rounded-[24px] border border-black/[0.08] bg-[#ececec]/75 p-2.5 text-foreground shadow-[0_18px_50px_-8px_rgba(0,0,0,0.35)] backdrop-blur-3xl backdrop-saturate-150 dark:border-white/[0.12] dark:bg-[#1e1e20]/75 dark:shadow-[0_20px_60px_-6px_rgba(0,0,0,0.7)]"
+            className={cn(
+              "fixed z-[9811] select-none rounded-[24px] border border-black/[0.08] bg-[#ececec]/75 p-2.5 text-foreground shadow-[0_18px_50px_-8px_rgba(0,0,0,0.35)] backdrop-blur-3xl backdrop-saturate-150 dark:border-white/[0.12] dark:bg-[#1e1e20]/75 dark:shadow-[0_20px_60px_-6px_rgba(0,0,0,0.7)]",
+              isMobile
+                ? "right-3 top-[calc(env(safe-area-inset-top)+60px)] w-[min(340px,calc(100vw-24px))]"
+                : "right-2 top-[38px] w-[320px]",
+            )}
           >
             <div className="grid grid-cols-4 gap-2.5">
               {/* Reach Ashish: the Wi-Fi / Bluetooth / AirDrop block */}
@@ -255,7 +269,12 @@ export function ControlCenter({
               <Tile icon={<ImageIcon weight="fill" className="h-5 w-5" />} label="Wallpaper" onClick={then(onChangeWallpaper)} />
               <Tile icon={<FilePdf weight="fill" className="h-5 w-5" />} label="Resume" onClick={then(onDownloadResume)} />
               <Tile icon={<MagnifyingGlass weight="bold" className="h-5 w-5" />} label="Search" onClick={then(onOpenSpotlight)} />
-              <Tile icon={<SquaresFour weight="fill" className="h-5 w-5" />} label="Reset" title="Reset widget layout" onClick={then(onResetWidgets)} />
+              {isMobile ? (
+                // Phones have a native share sheet; the home screen has no layout to reset
+                <Tile icon={<Export weight="bold" className="h-5 w-5" />} label="Share" title="Share this site" onClick={then(share)} />
+              ) : (
+                <Tile icon={<SquaresFour weight="fill" className="h-5 w-5" />} label="Reset" title="Reset widget layout" onClick={then(onResetWidgets)} />
+              )}
             </div>
           </motion.div>
         </>

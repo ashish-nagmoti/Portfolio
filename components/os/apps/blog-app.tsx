@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { ArrowSquareOut, Folder, MagnifyingGlass, NotePencil, PushPin } from "@phosphor-icons/react"
+import { ArrowSquareOut, CaretLeft, Folder, MagnifyingGlass, NotePencil, PushPin } from "@phosphor-icons/react"
 import type { MediumFeed } from "@/lib/medium"
 import { cn } from "@/lib/utils"
+import { useCompact } from "@/components/os/window-context"
 
 type Note = {
   id: string
@@ -109,6 +110,9 @@ export function BlogApp() {
   const [folder, setFolder] = useState(ALL)
   const [query, setQuery] = useState("")
   const [selectedId, setSelectedId] = useState(FALLBACK[0].id)
+  // Narrow (a phone): one pane at a time, list then note, like Notes on iPhone
+  const compact = useCompact()
+  const [reading, setReading] = useState(false)
 
   useEffect(() => {
     let alive = true
@@ -174,7 +178,7 @@ export function BlogApp() {
   return (
     <div className="flex h-full text-[13px]">
       {/* Folders */}
-      <aside className="hidden w-[176px] shrink-0 flex-col gap-0.5 overflow-y-auto border-r border-black/[0.08] bg-[#f1f1f2] p-2 dark:border-white/[0.08] dark:bg-[#252527] sm:flex">
+      <aside className={cn(compact ? "hidden" : "hidden sm:flex", "w-[176px] shrink-0 flex-col gap-0.5 overflow-y-auto border-r border-black/[0.08] bg-[#f1f1f2] p-2 dark:border-white/[0.08] dark:bg-[#252527]")}>
         <p className="px-2 pb-1 pt-2 text-[11px] font-semibold text-muted-foreground">iCloud</p>
         {folders.map((f) => (
           <button
@@ -193,8 +197,34 @@ export function BlogApp() {
       </aside>
 
       {/* Note list */}
-      <section className="flex w-[250px] shrink-0 flex-col border-r border-black/[0.08] bg-background/40 dark:border-white/[0.08]">
-        <div className="flex items-center justify-between px-4 pb-2 pt-3">
+      <section
+        className={cn(
+          "flex shrink-0 flex-col",
+          compact
+            ? reading
+              ? "hidden"
+              : "w-full"
+            : "w-[250px] border-r border-black/[0.08] bg-background/40 dark:border-white/[0.08]",
+        )}
+      >
+        {compact && (
+          // Folders as chips: the folder sidebar doesn't fit beside the list
+          <div className="no-scrollbar flex shrink-0 gap-2 overflow-x-auto px-4 pt-3">
+            {folders.map((f) => (
+              <button
+                key={f}
+                onClick={() => setFolder(f)}
+                className={cn(
+                  "shrink-0 whitespace-nowrap rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors",
+                  folder === f ? "bg-[#ffd60a] text-black" : "bg-black/[0.05] text-foreground/80 dark:bg-white/[0.08]",
+                )}
+              >
+                {f} <span className="opacity-60">{count(f)}</span>
+              </button>
+            ))}
+          </div>
+        )}
+        <div className={cn("flex items-center justify-between px-4 pb-2 pt-3", compact && "hidden")}>
           <div className="min-w-0">
             <p className="truncate text-[15px] font-bold">{folder}</p>
             <p className="text-[11px] text-muted-foreground">
@@ -204,14 +234,14 @@ export function BlogApp() {
           <NotePencil className={cn("h-5 w-5 shrink-0", YELLOW_TEXT)} aria-hidden />
         </div>
         <div className="px-3 pb-2">
-          <label className="flex items-center gap-1.5 rounded-md bg-black/[0.05] px-2 py-1 dark:bg-white/[0.08]">
+          <label className={cn("flex items-center gap-1.5 rounded-md bg-black/[0.05] px-2 py-1 dark:bg-white/[0.08]", compact && "mt-3 rounded-[10px] px-2.5 py-2")}>
             <MagnifyingGlass className="h-3.5 w-3.5 text-muted-foreground" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search"
               aria-label="Search notes"
-              className="w-full bg-transparent text-[12px] outline-none placeholder:text-muted-foreground"
+              className={cn("w-full bg-transparent outline-none placeholder:text-muted-foreground", compact ? "text-[16px]" : "text-[12px]")}
             />
           </label>
         </div>
@@ -224,19 +254,24 @@ export function BlogApp() {
                 {g.label}
               </p>
               {g.items.map((n) => {
-                const active = selected?.id === n.id
+                // A phone list has no "current" row; highlighting is for the split view
+                const active = !compact && selected?.id === n.id
                 return (
                   <button
                     key={n.id}
-                    onClick={() => setSelectedId(n.id)}
+                    onClick={() => {
+                      setSelectedId(n.id)
+                      if (compact) setReading(true)
+                    }}
                     className={cn(
                       "block w-full rounded-lg px-2.5 py-2 text-left transition-colors",
+                      compact && "py-3 active:bg-black/[0.05] dark:active:bg-white/[0.06]",
                       active
                         ? "bg-[#ffd60a] text-black dark:bg-[#8a6c00] dark:text-white"
                         : "hover:bg-black/[0.04] dark:hover:bg-white/[0.05]",
                     )}
                   >
-                    <p className="truncate font-semibold">{n.title}</p>
+                    <p className={cn("truncate font-semibold", compact && "text-[15px]")}>{n.title}</p>
                     <p className={cn("truncate text-[12px]", active ? "text-black/70 dark:text-white/75" : "text-muted-foreground")}>
                       <span className="mr-1.5 tabular-nums">{n.date ? shortDate(n.date) : n.readTime}</span>
                       {n.excerpt}
@@ -251,11 +286,21 @@ export function BlogApp() {
       </section>
 
       {/* Note */}
-      <article className="flex min-w-0 flex-1 flex-col bg-card">
-        <div className="flex h-11 shrink-0 items-center justify-between gap-2 border-b border-black/[0.06] px-4 dark:border-white/[0.06]">
+      <article className={cn("flex min-w-0 flex-1 flex-col bg-card", compact && !reading && "hidden")}>
+        <div className={cn("flex h-11 shrink-0 items-center justify-between gap-2 border-b border-black/[0.06] dark:border-white/[0.06]", compact ? "px-2" : "px-4")}>
+          {compact ? (
+            <button
+              onClick={() => setReading(false)}
+              className={cn("flex items-center gap-0.5 rounded-md px-1 py-1 text-[16px] active:opacity-50", YELLOW_TEXT)}
+            >
+              <CaretLeft weight="bold" className="h-5 w-5" />
+              Notes
+            </button>
+          ) : (
           <span className="truncate text-[11px] text-muted-foreground">
             {source === "loading" ? "Loading from Medium…" : source === "live" ? "From Medium" : "Offline copy"}
           </span>
+          )}
           {selected?.url && (
             <a
               href={selected.url}
@@ -273,7 +318,7 @@ export function BlogApp() {
         </div>
 
         {selected ? (
-          <div key={selected.id} className="flex-1 overflow-y-auto px-8 py-6">
+          <div key={selected.id} className={cn("flex-1 overflow-y-auto", compact ? "px-5 py-5" : "px-8 py-6")}>
             <p className="text-center text-[11px] text-muted-foreground">
               {selected.date ? longDate(selected.date) : "Draft"}
               {selected.date ? ` · ${selected.readTime}` : ""}
