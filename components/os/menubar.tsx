@@ -3,7 +3,7 @@
 import { useEffect, useState, type ComponentType } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTheme } from "next-themes"
-import { WifiHigh as Wifi, BatteryFull, MagnifyingGlass as Search, Sun, Moon, Command, Check, Copy, Robot as Bot } from "@phosphor-icons/react"
+import { MagnifyingGlass as Search, Sun, Moon, Command, Check, Copy } from "@phosphor-icons/react"
 import { APPS } from "./app-registry"
 import { ControlCenterGlyph } from "./control-center"
 import type { AppId, OpenWindow } from "./types"
@@ -290,19 +290,6 @@ export function MenuBar({
       </div>
 
       <div className="flex items-center gap-3.5 pr-1 text-foreground/85">
-        <Wifi className="h-3.5 w-3.5" />
-        <BatteryFull className="h-4 w-4" />
-        {/* Plain-text version of the site for AI agents (llmstxt.org) */}
-        <a
-          href="/llms.txt"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="View llms.txt, a plain-text version of this site for AI agents"
-          title="llms.txt — for AI agents"
-          className="hover:text-foreground transition-colors"
-        >
-          <Bot className="h-3.5 w-3.5" />
-        </a>
         <button data-tour="spotlight" onClick={onOpenSpotlight} aria-label="Search" className="hover:text-foreground transition-colors">
           <Search className="h-3.5 w-3.5" />
         </button>
