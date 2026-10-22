@@ -15,9 +15,7 @@ import {
   FilePdf,
   MagnifyingGlass,
   SquaresFour,
-  ArrowUpRight,
 } from "@phosphor-icons/react"
-import { useNowPlaying, AlbumArt, NowPlayingLabel } from "./now-playing"
 import { cn } from "@/lib/utils"
 
 const EMAIL = "ashishnagmoti2310@gmail.com"
@@ -139,28 +137,6 @@ function BrightnessSlider({ value, onChange }: { value: number; onChange: (v: nu
   )
 }
 
-function NowPlayingModule() {
-  const np = useNowPlaying()
-  if (!np?.configured || !np.track) return null
-  const { track, isPlaying } = np
-  return (
-    <a
-      href={track.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={cn(MODULE, "col-span-4 flex items-center gap-3 p-2.5 pr-3.5")}
-    >
-      <AlbumArt src={track.art} className="h-11 w-11 rounded-lg" />
-      <span className="min-w-0 flex-1">
-        <NowPlayingLabel playing={isPlaying} />
-        <span className="mt-0.5 block truncate text-[12.5px] font-semibold leading-tight">{track.title}</span>
-        <span className="block truncate text-[11px] leading-tight text-muted-foreground">{track.artist}</span>
-      </span>
-      <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-    </a>
-  )
-}
-
 interface ControlCenterProps {
   open: boolean
   onClose: () => void
@@ -174,7 +150,7 @@ interface ControlCenterProps {
   onResetWidgets: () => void
 }
 
-/** macOS Control Center, re-imagined for a portfolio: quick links, appearance, focus, display, music. */
+/** macOS Control Center, re-imagined for a portfolio: quick links, appearance, focus, display. */
 export function ControlCenter({
   open,
   onClose,
@@ -275,8 +251,6 @@ export function ControlCenter({
               <div className="col-span-4">
                 <BrightnessSlider value={brightness} onChange={onBrightness} />
               </div>
-
-              <NowPlayingModule />
 
               <Tile icon={<ImageIcon weight="fill" className="h-5 w-5" />} label="Wallpaper" onClick={then(onChangeWallpaper)} />
               <Tile icon={<FilePdf weight="fill" className="h-5 w-5" />} label="Resume" onClick={then(onDownloadResume)} />

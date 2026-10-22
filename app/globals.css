@@ -277,12 +277,3 @@
   font-size: 0.9em;
 }
 .note-body hr { margin: 2em 0; border: 0; border-top: 1px solid hsl(var(--border)); }
-
-/* Now Playing equalizer bars */
-@keyframes eq {
-  0%, 100% { transform: scaleY(0.3); }
-  50% { transform: scaleY(1); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .animate-\[eq_0\.9s_ease-in-out_infinite\] { animation: none; transform: scaleY(0.6); }
-}
