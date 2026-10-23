@@ -18,6 +18,7 @@ import {
   Export,
 } from "@phosphor-icons/react"
 import { cn } from "@/lib/utils"
+import { showToast } from "./ios/island"
 
 const EMAIL = "ashishnagmoti2310@gmail.com"
 
@@ -185,6 +186,7 @@ export function ControlCenter({
 
   const copyEmail = () => {
     navigator.clipboard?.writeText(EMAIL).then(() => {
+      showToast("Email copied", <Check weight="bold" className="h-4 w-4 text-[#30d158]" />)
       setCopied(true)
       setTimeout(() => setCopied(false), 1500)
     })
@@ -192,7 +194,7 @@ export function ControlCenter({
   const share = () => {
     const url = window.location.origin
     if (navigator.share) navigator.share({ title: "Ashish Nagmoti — AI Engineer & Researcher", url }).catch(() => {})
-    else navigator.clipboard?.writeText(url)
+    else navigator.clipboard?.writeText(url).then(() => showToast("Link copied", <Check weight="bold" className="h-4 w-4 text-[#30d158]" />))
   }
   const then = (fn: () => void) => () => {
     fn()
@@ -239,7 +241,7 @@ export function ControlCenter({
                 <RowButton
                   icon={copied ? <Check weight="bold" className="h-4 w-4" /> : <EnvelopeSimple weight="fill" className="h-4 w-4" />}
                   label="Email"
-                  sub={copied ? "Copied to clipboard" : "Copy address"}
+                  sub={copied ? "Copied" : "Copy address"}
                   active={copied}
                   onClick={copyEmail}
                 />

@@ -1,7 +1,7 @@
 "use client"
 
-import { useLayoutEffect, useRef, type PointerEvent as ReactPointerEvent } from "react"
-import { motion, useDragControls, useMotionValue } from "framer-motion"
+import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react"
+import { motion, useDragControls, useMotionValue, useTransform } from "framer-motion"
 import { CaretLeft } from "@phosphor-icons/react"
 import { APPS } from "./app-registry"
 import { CompactContext } from "./window-context"
@@ -105,6 +105,24 @@ export function Window({
   sizeRef.current = size
   // Phone: the icon this window opened from, fixed at mount (the prop moves on with later opens)
   const mobileOriginRef = useRef(originRect)
+  // Phone: how far the app's content has scrolled (whichever element inside
+  // it scrolls; scroll events don't bubble, so listen in the capture phase),
+  // driving the iOS large title as it collapses into the navigation bar.
+  const mobileBodyRef = useRef<HTMLDivElement>(null)
+  const contentScroll = useMotionValue(0)
+  useEffect(() => {
+    const el = mobileBodyRef.current
+    if (!isMobile || !el) return
+    const onScroll = (e: Event) => contentScroll.set((e.target as HTMLElement).scrollTop ?? 0)
+    el.addEventListener("scroll", onScroll, true)
+    return () => el.removeEventListener("scroll", onScroll, true)
+  }, [isMobile, contentScroll])
+  const largeTitleHeight = useTransform(contentScroll, [0, 52], [52, 0], { clamp: true })
+  const largeTitleOpacity = useTransform(contentScroll, [0, 32], [1, 0], { clamp: true })
+  const largeTitleScale = useTransform(contentScroll, [-80, 0], [1.08, 1], { clamp: true })
+  const barOpacity = useTransform(contentScroll, [30, 52], [0, 1], { clamp: true })
+  const swipeX = useMotionValue(0)
+  const [swipedAway, setSwipedAway] = useState(false)
 
   // Dragging moves the window with a transform. When a drag ends the offset
   // is folded into `pos` and the transform reset in the same frame, so zoom,
@@ -132,7 +150,7 @@ export function Window({
   if (isMobile) {
     // Phone: the app fills the screen, growing out of the icon that was tapped
     // (a clip-path reveal, so the content never re-lays out mid-animation) and
-    // shrinking back into it on close.
+    // shrinking back into it on close; or, after a swipe back, sliding away.
     const vw = window.innerWidth
     const vh = window.innerHeight
     const o = mobileOriginRef.current ?? { top: vh * 0.4, left: vw * 0.4, width: vw * 0.2, height: vw * 0.2 }
@@ -144,15 +162,45 @@ export function Window({
       <motion.div
         initial={{ clipPath: fromIcon, opacity: 0.6 }}
         animate={{ clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1 }}
-        exit={{ clipPath: fromIcon, opacity: 0, transition: { duration: 0.3, ease } }}
+        exit={
+          swipedAway
+            ? { x: vw, transition: { duration: 0.25, ease } }
+            : { clipPath: fromIcon, opacity: 0, transition: { duration: 0.3, ease } }
+        }
         transition={{ duration: 0.45, ease }}
-        style={{ position: "fixed", inset: 0, zIndex }}
+        drag="x"
+        dragListener={false}
+        dragControls={dragControls}
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={{ left: 0, right: 1 }}
+        dragMomentum={false}
+        onDragEnd={(_, info) => {
+          if (info.offset.x > vw * 0.3 || info.velocity.x > 500) {
+            setSwipedAway(true)
+            onClose()
+          }
+        }}
+        style={{ position: "fixed", inset: 0, zIndex, x: swipeX }}
         role="dialog"
         aria-label={shortTitle}
-        className="flex flex-col bg-background"
+        className="flex flex-col bg-background shadow-[-16px_0_40px_rgba(0,0,0,0.25)]"
       >
-        {/* iOS navigation bar */}
-        <div className="relative z-10 shrink-0 border-b border-black/[0.08] bg-background/85 pt-[env(safe-area-inset-top)] backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.08]">
+        {/* Swipe in from the left edge to go back, as in any iOS app */}
+        <div
+          aria-hidden
+          onPointerDown={(e) => {
+            e.preventDefault() // no text selection while swiping
+            dragControls.start(e)
+          }}
+          className="absolute inset-y-0 left-0 z-20 w-5 touch-none select-none"
+        />
+
+        {/* iOS navigation bar: the small title fades in once the large one scrolls away */}
+        <div className="relative z-10 shrink-0 pt-[env(safe-area-inset-top)]">
+          <motion.div
+            style={{ opacity: barOpacity }}
+            className="absolute inset-0 border-b border-black/[0.08] bg-background/85 backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.08]"
+          />
           <div className="relative flex h-11 items-center justify-center px-2">
             <button
               onClick={onClose}
@@ -162,10 +210,24 @@ export function Window({
               <CaretLeft weight="bold" className="h-[22px] w-[22px]" />
               Home
             </button>
-            <span className="max-w-[55%] truncate text-[17px] font-semibold">{shortTitle}</span>
+            <motion.span style={{ opacity: barOpacity }} className="max-w-[55%] truncate text-[17px] font-semibold">
+              {shortTitle}
+            </motion.span>
           </div>
         </div>
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-background pb-[env(safe-area-inset-bottom)] [-webkit-overflow-scrolling:touch]">
+        {/* Large title, collapsing as the app's content scrolls */}
+        <motion.div style={{ height: largeTitleHeight }} className="shrink-0 overflow-hidden px-4">
+          <motion.h1
+            style={{ opacity: largeTitleOpacity, scale: largeTitleScale }}
+            className="origin-left pb-1 pt-0.5 text-[34px] font-bold leading-[1.15] tracking-[-0.02em]"
+          >
+            {shortTitle}
+          </motion.h1>
+        </motion.div>
+        <div
+          ref={mobileBodyRef}
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-background pb-[env(safe-area-inset-bottom)] [-webkit-overflow-scrolling:touch]"
+        >
           <CompactContext.Provider value={true}>
             <Content />
           </CompactContext.Provider>

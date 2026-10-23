@@ -12,6 +12,7 @@ import { WALLPAPERS, WallpaperPicker } from "./wallpapers"
 import { ControlCenter } from "./control-center"
 import { MenuBar } from "./menubar"
 import { HomeScreen } from "./ios/home-screen"
+import { Island } from "./ios/island"
 import { Spotlight } from "./spotlight"
 import { OSContextMenu } from "./context-menu"
 import { SquircleDefs } from "./squircle-defs"
@@ -279,7 +280,12 @@ export function Desktop({ initialApp }: DesktopProps) {
 
       {/* Phone: an iOS-style home screen. Desktop: widgets (apps launch from the Dock / Spotlight) */}
       {isMobile ? (
-        <HomeScreen onOpenApp={openApp} onOpenControlCenter={() => setControlCenterOpen(true)} focus={focusMode} />
+        <HomeScreen
+          onOpenApp={openApp}
+          onOpenControlCenter={() => setControlCenterOpen(true)}
+          onOpenSearch={() => setSpotlightOpen(true)}
+          focus={focusMode}
+        />
       ) : (
         !focusMode && <DesktopWidgets key={widgetLayoutKey} onOpenApp={openApp} dragBoundsRef={desktopRef} />
       )}
@@ -345,7 +351,10 @@ export function Desktop({ initialApp }: DesktopProps) {
         )}
       </AnimatePresence>
 
-      <Spotlight open={spotlightOpen} onClose={() => setSpotlightOpen(false)} onOpenApp={openApp} />
+      <Spotlight open={spotlightOpen} onClose={() => setSpotlightOpen(false)} onOpenApp={openApp} isMobile={isMobile} />
+
+      {/* Confirmations ("Email copied"), Dynamic Island style; below the menu bar on desktop */}
+      <Island top={isMobile ? undefined : "40px"} />
 
       {/* Display brightness: a dimming layer over everything, never catching clicks */}
       {brightness < 100 && (
