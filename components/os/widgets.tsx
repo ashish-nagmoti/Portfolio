@@ -408,7 +408,7 @@ const STACK = siteContent.stack
 
 function StackWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
   return (
-    <Widget id="stack" className="col-span-2 [@media(max-height:800px)]:hidden" onClick={() => onOpenApp("about")} label="Open About for full skill list">
+    <Widget id="stack" className="col-span-2 [@media(max-height:880px)]:hidden" onClick={() => onOpenApp("about")} label="Open About for full skill list">
       <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Stack</p>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {STACK.map((t) => (
@@ -424,15 +424,24 @@ function StackWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
   )
 }
 
-/** The line the OS boots with, kept on the desktop. */
+/**
+ * The line the OS boots with, kept on the desktop. It outranks Stack for
+ * space: on shorter screens it drops its header to stay, and only the
+ * shortest hide it.
+ */
 function MantraWidget() {
   return (
-    <Widget id="mantra" className="col-span-2 [@media(max-height:840px)]:hidden">
-      <div className="flex items-center gap-2">
+    <Widget
+      id="mantra"
+      className="col-span-2 [@media(max-height:700px)]:hidden [@media(max-height:780px)]:[&>div]:py-3"
+    >
+      <div className="flex items-center gap-2 [@media(max-height:780px)]:hidden">
         <Quote className="h-3.5 w-3.5 text-amber-500" />
         <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Mantra</p>
       </div>
-      <p className="mt-2 text-[15px] font-medium italic leading-snug text-foreground">{siteContent.mantra}</p>
+      <p className="mt-2 text-[15px] font-medium italic leading-snug text-foreground [@media(max-height:780px)]:mt-0">
+        {siteContent.mantra}
+      </p>
     </Widget>
   )
 }
