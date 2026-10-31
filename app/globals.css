@@ -281,6 +281,9 @@
 /* Touch screens: no grey flash on tap, and inputs at 16px so iOS Safari
    doesn't zoom the page when one is focused. */
 @media (pointer: coarse) {
+  /* No pull-to-refresh or rubber-banding of the page itself: the home screen
+     uses pull-down for search, and the app shell should feel fixed in place */
+  html, body { overscroll-behavior: none; }
   * { -webkit-tap-highlight-color: transparent; }
   input, textarea, select { font-size: max(16px, 1em); }
 }

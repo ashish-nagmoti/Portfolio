@@ -2,75 +2,12 @@
 
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { siteContent } from "@/lib/site-content"
 import { useCompact } from "@/components/os/window-context"
 import { Headphones, Trophy, Coffee, Globe, BookOpen, Link as LinkIcon, YoutubeLogo as Youtube, Play, Shuffle, Heart } from "@phosphor-icons/react"
 import type { Icon as IconType } from "@phosphor-icons/react"
-const interestItems = [
-  {
-    id: 1,
-    type: "blog",
-    title: "Building Microservices with Python and Docker",
-    author: "Real Python",
-    url: "https://realpython.com/python-microservices-grpc/",
-    dateAdded: "2024-01-15",
-  },
-  {
-    id: 2,
-    type: "video",
-    title: "AWS re:Invent 2023 - Serverless at Scale",
-    author: "AWS Events",
-    url: "https://youtube.com/watch?v=example",
-    dateAdded: "2024-01-12",
-  },
-  {
-    id: 3,
-    type: "blog",
-    title: "The State of AI in 2024: LLMs and Beyond",
-    author: "Towards Data Science",
-    url: "https://towardsdatascience.com/ai-2024-trends",
-    dateAdded: "2024-01-10",
-  },
-  {
-    id: 4,
-    type: "video",
-    title: "System Design Interview: Design a Chat System",
-    author: "Tech Dummies",
-    url: "https://youtube.com/watch?v=example2",
-    dateAdded: "2024-01-08",
-  },
-  {
-    id: 5,
-    type: "article",
-    title: "FastAPI vs Django: Performance Comparison 2024",
-    author: "Python Weekly",
-    url: "https://pythonweekly.com/fastapi-django-comparison",
-    dateAdded: "2024-01-05",
-  },
-  {
-    id: 6,
-    type: "video",
-    title: "Building Production-Ready APIs with Python",
-    author: "ArjanCodes",
-    url: "https://youtube.com/watch?v=example3",
-    dateAdded: "2024-01-03",
-  },
-  {
-    id: 7,
-    type: "blog",
-    title: "Understanding Kubernetes Networking",
-    author: "CNCF Blog",
-    url: "https://cncf.io/blog/kubernetes-networking",
-    dateAdded: "2024-01-01",
-  },
-  {
-    id: 8,
-    type: "article",
-    title: "The Psychology of Code Reviews",
-    author: "Stack Overflow Blog",
-    url: "https://stackoverflow.blog/code-review-psychology",
-    dateAdded: "2023-12-28",
-  },
-]
+// Edited from /admin (content/site.json); newest first
+const interestItems = [...siteContent.interests].sort((a, b) => (a.dateAdded < b.dateAdded ? 1 : -1))
 
 const FILTERS = ["All", "blog", "video", "article"] as const
 

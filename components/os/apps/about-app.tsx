@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { IconBadge, SYSTEM } from "@/components/os/icon-badge"
 import { NativeSection, NativeRow } from "@/components/os/native-list"
 import { useCompact } from "@/components/os/window-context"
+import { siteContent } from "@/lib/site-content"
 import { cn } from "@/lib/utils"
 import { Code, CodeSimple as Code2, Cloud, Database, Users, Medal as Award, Briefcase, Buildings as Building2, ClockCounterClockwise as History, Layout as LayoutTemplate, Cpu, Brain } from "@phosphor-icons/react"
 const skills = {
@@ -31,7 +32,7 @@ const codingProfiles = [
     platform: "LeetCode",
     username: "ashish_nagmoti",
     url: "https://leetcode.com/u/ashish_nagmoti/",
-    stats: "100+ Problems Solved",
+    stats: `${siteContent.stats.leetcode} Problems Solved`,
     description: "Regular practice in algorithms and data structures",
     gradient: SYSTEM.orange,
   },
@@ -39,7 +40,7 @@ const codingProfiles = [
     platform: "GitHub",
     username: "ashish-nagmoti",
     url: "https://github.com/ashish-nagmoti",
-    stats: "45+ Repositories",
+    stats: `${siteContent.stats.repos} Repositories`,
     description: "Open source contributions and personal projects",
     gradient: SYSTEM.black,
   },

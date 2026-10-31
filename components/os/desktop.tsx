@@ -10,6 +10,7 @@ import { DesktopWidgets, clearWidgetLayout } from "./widgets"
 import { Tour, TOUR_DONE_KEY } from "./tour"
 import { WALLPAPERS, WallpaperPicker } from "./wallpapers"
 import { ControlCenter } from "./control-center"
+import { Flyby } from "./flyby"
 import { MenuBar } from "./menubar"
 import { HomeScreen } from "./ios/home-screen"
 import { Island } from "./ios/island"
@@ -249,7 +250,8 @@ export function Desktop({ initialApp }: DesktopProps) {
   return (
     <div
       ref={desktopRef}
-      className="relative min-h-screen h-screen w-full overflow-hidden"
+      // dvh, not vh: on Android Chrome 100vh runs under the address bar and would hide the dock
+      className="relative h-[100dvh] w-full overflow-hidden"
       onContextMenu={(e) => {
         if (isMobile) return
         e.preventDefault()
@@ -259,6 +261,9 @@ export function Desktop({ initialApp }: DesktopProps) {
       <SquircleDefs />
       {/* Wallpaper */}
       <div className={cn("pointer-events-none absolute inset-0 bg-cover bg-center", WALLPAPERS[wallpaperIdx].className)} />
+
+      {/* A wizard (and a golden ball) now and then; tappable on the desktop, scenery on a phone */}
+      <Flyby enabled={!focusMode} interactive={!isMobile} />
 
       {!isMobile && (
         <MenuBar

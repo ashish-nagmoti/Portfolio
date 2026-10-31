@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
+import { siteContent } from "@/lib/site-content"
 
 const BOOT_MS = 3400
-const QUOTE = "Life works in mysterious ways."
+// The mantra, editable from /admin
+const QUOTE = siteContent.mantra
 
 /**
  * An Avengers-style "A": a bold A inside a ring whose crossbar shoots out

@@ -19,6 +19,7 @@ import {
 } from "@phosphor-icons/react"
 import { cn } from "@/lib/utils"
 import { showToast } from "./ios/island"
+import { siteContent } from "@/lib/site-content"
 
 const EMAIL = "ashishnagmoti2310@gmail.com"
 
@@ -227,7 +228,7 @@ export function ControlCenter({
                 <RowButton
                   icon={<GithubLogo weight="fill" className="h-4 w-4" />}
                   label="GitHub"
-                  sub="45+ repos"
+                  sub={`${siteContent.stats.repos} repos`}
                   onClick={then(() => window.open("https://github.com/ashish-nagmoti", "_blank", "noopener,noreferrer"))}
                 />
                 <RowButton

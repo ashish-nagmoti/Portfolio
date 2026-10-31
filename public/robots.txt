@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/admin
 
 # Plain-text version of this site for AI agents (https://llmstxt.org)
 # https://ashish-nagmoti.tech/llms.txt

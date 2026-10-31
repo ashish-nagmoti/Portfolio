@@ -10,10 +10,11 @@ import {
   FilePdf,
   LinkedinLogo,
   MagnifyingGlass,
-  ShieldCheck,
   NotePencil,
   Clock,
+  PuzzlePiece,
 } from "@phosphor-icons/react"
+import { PuzzleBoard } from "../puzzle"
 import { APPS, RESUME_ICON } from "../app-registry"
 import { AppIcon, type AppIconKey } from "../app-icon"
 import { ControlCenterGlyph } from "../control-center"
@@ -22,6 +23,8 @@ import { SURFACE, GH_USER, LEVEL_FILL, useContributions } from "../widgets"
 import type { AppId } from "../types"
 import type { MediumFeed } from "@/lib/medium"
 import { cn } from "@/lib/utils"
+import { siteContent, CURRENTLY_LABEL } from "@/lib/site-content"
+import { CURRENTLY_META, FEATURED_ICON } from "../content-meta"
 
 /*
  * The phone layout: an iOS-style home screen in place of the desktop.
@@ -102,7 +105,7 @@ function ProfileCard({ onOpen }: { onOpen: () => void }) {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
             </span>
-            Open to collaboration
+            {siteContent.status}
           </span>
         </span>
       </motion.button>
@@ -146,7 +149,7 @@ function LocalTimeWidget() {
         Local time
       </span>
       <span>
-        <span className="flex items-baseline gap-1 text-[40px] font-light leading-none tracking-tight text-foreground tabular-nums">
+        <span className="flex items-baseline gap-1 text-[clamp(30px,10vw,40px)] font-light leading-none tracking-tight text-foreground tabular-nums">
           {time || " "}
           <span className="text-[15px] font-medium text-muted-foreground">{period}</span>
         </span>
@@ -163,14 +166,14 @@ function StatsWidget({ onOpen }: { onOpen: () => void }) {
       <div>
         <p className="flex items-center gap-1.5 text-[26px] font-bold leading-none text-foreground">
           <Trophy weight="fill" className="h-5 w-5 text-amber-500" />
-          100+
+          {siteContent.stats.leetcode}
         </p>
         <p className="mt-1 text-[12px] text-muted-foreground">LeetCode solved</p>
       </div>
       <div>
         <p className="flex items-center gap-1.5 text-[26px] font-bold leading-none text-foreground">
           <GithubLogo weight="fill" className="h-5 w-5" />
-          45+
+          {siteContent.stats.repos}
         </p>
         <p className="mt-1 text-[12px] text-muted-foreground">GitHub repos</p>
       </div>
@@ -212,23 +215,52 @@ function ContributionsWidget() {
 }
 
 function FeaturedWidget({ onOpen }: { onOpen: () => void }) {
+  const f = siteContent.featured
+  const Icon = FEATURED_ICON[f.icon]
   return (
-    <Tile className="col-span-4 gap-2.5" onClick={onOpen} label="Open Projects: KAVACH">
+    <Tile className="col-span-4 gap-2.5" onClick={onOpen} label={`Open Projects: ${f.name}`}>
       <span className={LABEL}>
         <Trophy weight="fill" className="h-3.5 w-3.5 text-amber-500" />
-        Featured · 1st place, Sharp Tank
+        Featured{f.badge ? ` · ${f.badge}` : ""}
       </span>
       <span className="flex items-center gap-3">
         <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[13px] bg-gradient-to-b from-[#3d9bff] to-[#0a6cff] text-white shadow-md">
-          <ShieldCheck weight="fill" className="h-7 w-7" />
+          <Icon weight="fill" className="h-7 w-7" />
         </span>
         <span className="min-w-0">
-          <span className="block text-[17px] font-bold leading-tight text-foreground">KAVACH</span>
-          <span className="block text-[13px] leading-snug text-muted-foreground">
-            LLM security &amp; governance for the enterprise, led as CEO &amp; CTO of Team Patronus.
-          </span>
+          <span className="block text-[17px] font-bold leading-tight text-foreground">{f.name}</span>
+          <span className="block text-[13px] leading-snug text-muted-foreground">{f.summary}</span>
         </span>
       </span>
+    </Tile>
+  )
+}
+
+/** What Ashish is on right now; edited from /admin. */
+function CurrentlyWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
+  if (siteContent.currently.length === 0) return null
+  return (
+    <Tile className="col-span-4 gap-1.5">
+      <span className={LABEL}>Currently</span>
+      {siteContent.currently.map((row, i) => {
+        const meta = CURRENTLY_META[row.kind]
+        return (
+          <motion.button
+            key={i}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => (row.url ? window.open(row.url, "_blank", "noopener,noreferrer") : onOpenApp(meta.app))}
+            className="flex w-full items-center gap-3 rounded-xl py-1.5 text-left"
+          >
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[9px] bg-black/[0.06] dark:bg-white/[0.1]">
+              <meta.icon weight="fill" className={cn("h-[18px] w-[18px]", meta.tint)} />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-[11px] font-medium uppercase tracking-wide text-muted-foreground">{CURRENTLY_LABEL[row.kind]}</span>
+              <span className="block truncate text-[15px] font-semibold leading-tight text-foreground">{row.value}</span>
+            </span>
+          </motion.button>
+        )
+      })}
     </Tile>
   )
 }
@@ -273,7 +305,7 @@ function MantraWidget() {
         <Quotes weight="fill" className="h-3.5 w-3.5 text-amber-500" />
         Mantra
       </span>
-      <p className="mt-2 text-[19px] font-medium italic leading-snug text-foreground">Life works in mysterious ways.</p>
+      <p className="mt-2 text-[19px] font-medium italic leading-snug text-foreground">{siteContent.mantra}</p>
     </Tile>
   )
 }
@@ -299,9 +331,11 @@ function HomeIcon({ app, onOpen, showLabel = true }: { app: AppIconKey; onOpen: 
 }
 
 // Each page scrolls on its own; the grid is padded clear of the notch and dock
-const PAGE = "h-full w-full shrink-0 snap-start snap-always overflow-y-auto overscroll-contain"
+// Content fades out as it scrolls under the date bar and the dock, instead of colliding with them
+const PAGE =
+  "h-full w-full shrink-0 snap-start snap-always overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-150px),transparent_calc(100%-96px))] landscape:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px))] [@media(max-height:780px)]:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-120px),transparent_calc(100%-90px))]"
 const GRID =
-  "mx-auto grid w-full max-w-[460px] auto-rows-min grid-cols-4 gap-x-[22px] gap-y-5 px-6 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+160px)] landscape:max-w-[820px] landscape:grid-cols-8 landscape:gap-x-5 landscape:pb-[calc(env(safe-area-inset-bottom)+64px)]"
+  "mx-auto grid w-full max-w-[460px] auto-rows-min grid-cols-4 gap-x-[22px] gap-y-5 px-6 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+160px)] [@media(max-height:780px)]:pb-[calc(env(safe-area-inset-bottom)+124px)] landscape:max-w-[820px] landscape:grid-cols-8 landscape:gap-x-5 landscape:pb-[calc(env(safe-area-inset-bottom)+64px)]"
 
 export function HomeScreen({
   onOpenApp,
@@ -372,7 +406,7 @@ export function HomeScreen({
             whileTap={{ scale: 0.9 }}
             onClick={onOpenSearch}
             aria-label="Search"
-            className={cn(SURFACE, "pointer-events-auto hidden h-9 w-9 items-center justify-center rounded-full text-foreground/85 landscape:flex")}
+            className={cn(SURFACE, "pointer-events-auto hidden h-9 w-9 items-center justify-center rounded-full text-foreground/85 landscape:flex [@media(max-height:780px)]:flex")}
           >
             <MagnifyingGlass weight="bold" className="h-4 w-4" />
           </motion.button>
@@ -439,8 +473,16 @@ export function HomeScreen({
               variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
               className={GRID}
             >
+              <CurrentlyWidget onOpenApp={onOpenApp} />
               <FeaturedWidget onOpen={() => onOpenApp("projects")} />
               <LatestPostWidget onOpen={() => onOpenApp("blog")} />
+              <Tile className="col-span-4 gap-3">
+                <span className={LABEL}>
+                  <PuzzlePiece weight="fill" className="h-3.5 w-3.5 text-violet-500" />
+                  Puzzle · slide the pieces
+                </span>
+                <PuzzleBoard size={168} compact />
+              </Tile>
               <MantraWidget />
             </motion.div>
           </div>
@@ -456,7 +498,7 @@ export function HomeScreen({
           transition={{ type: "spring", stiffness: 500, damping: 34 }}
           className={cn(
             SURFACE,
-            "pointer-events-auto flex h-8 items-center justify-center gap-1.5 rounded-full px-3.5 text-[13px] font-medium text-foreground/85 landscape:hidden",
+            "pointer-events-auto flex h-8 items-center justify-center gap-1.5 rounded-full px-3.5 text-[13px] font-medium text-foreground/85 landscape:hidden [@media(max-height:780px)]:hidden",
           )}
         >
           {swiping && pages > 1 ? (

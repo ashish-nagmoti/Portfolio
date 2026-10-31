@@ -2,10 +2,13 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type RefObject } from "react"
 import { motion, useMotionValue } from "framer-motion"
-import { MapPin, Trophy, GithubLogo as Github, FolderSimple as FolderGit2, Hammer, BookOpen, YoutubeLogo as Youtube, Quotes as Quote } from "@phosphor-icons/react"
+import { MapPin, Trophy, GithubLogo as Github, Quotes as Quote, PuzzlePiece } from "@phosphor-icons/react"
+import { PuzzleBoard } from "./puzzle"
 import type { AppId } from "./types"
 import { GitHubCard } from "./github-card"
 import { cn } from "@/lib/utils"
+import { siteContent, CURRENTLY_LABEL } from "@/lib/site-content"
+import { CURRENTLY_META, FEATURED_ICON } from "./content-meta"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -319,8 +322,8 @@ function ContributionsWidget() {
 }
 
 const STATS = [
-  { icon: Trophy, label: "LeetCode", value: "100+", sub: "solved", tint: "text-amber-500" },
-  { icon: Github, label: "GitHub", value: "45+", sub: "repos", tint: "text-foreground" },
+  { icon: Trophy, label: "LeetCode", value: siteContent.stats.leetcode, sub: "solved", tint: "text-amber-500" },
+  { icon: Github, label: "GitHub", value: siteContent.stats.repos, sub: "repos", tint: "text-foreground" },
 ]
 
 function StatsWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
@@ -342,87 +345,66 @@ function StatsWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
 }
 
 function ProjectWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
+  const f = siteContent.featured
+  const Icon = FEATURED_ICON[f.icon]
   return (
-    <Widget id="project" className="col-span-2" onClick={() => onOpenApp("projects")} label="Open Projects">
+    <Widget id="project" className="col-span-2" onClick={() => onOpenApp("projects")} label={`Open Projects: ${f.name}`}>
       <div className="flex items-center gap-2">
-        <FolderGit2 className="h-3.5 w-3.5 text-sky-500" />
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Featured</p>
+        <Icon weight="fill" className="h-3.5 w-3.5 text-sky-500" />
+        <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+          Featured{f.badge ? ` · ${f.badge}` : ""}
+        </p>
       </div>
-      <p className="mt-2 text-sm font-semibold leading-snug text-foreground">SovereignRAG</p>
-      <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
-        Decentralized enterprise RAG — sensitive data never leaves its owner.
-      </p>
-      <div className="mt-2.5 flex flex-wrap gap-1">
-        {["FastAPI", "vLLM", "Qdrant", "Ed25519"].map((t) => (
-          <span
-            key={t}
-            className="rounded-full bg-black/5 px-2 py-0.5 text-[10px] font-medium text-muted-foreground dark:bg-white/10"
-          >
-            {t}
-          </span>
-        ))}
-      </div>
+      <p className="mt-2 text-sm font-semibold leading-snug text-foreground">{f.name}</p>
+      <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{f.summary}</p>
+      {f.tags.length > 0 && (
+        <div className="mt-2.5 flex flex-wrap gap-1">
+          {f.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-full bg-black/5 px-2 py-0.5 text-[10px] font-medium text-muted-foreground dark:bg-white/10"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      )}
     </Widget>
   )
 }
-
-/**
- * What Ashish is on right now. Seeded from the featured project and the saved
- * items in the Interests app — update these as they change.
- */
-const CURRENTLY = [
-  {
-    label: "Building",
-    value: "Enterprise AI platform @ ESDS",
-    icon: Hammer,
-    tint: "text-blue-500",
-    app: "about" as AppId,
-  },
-  {
-    label: "Reading",
-    value: "Kubernetes Networking",
-    icon: BookOpen,
-    tint: "text-sky-500",
-    app: "interests" as AppId,
-  },
-  {
-    label: "Watching",
-    value: "Production-Ready APIs",
-    icon: Youtube,
-    tint: "text-red-500",
-    app: "interests" as AppId,
-  },
-]
 
 function CurrentlyWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
   return (
     <Widget id="currently" className="col-span-2">
       <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Currently</p>
       <div className="mt-2.5 space-y-1">
-        {CURRENTLY.map((row) => (
+        {siteContent.currently.map((row, i) => {
+          const meta = CURRENTLY_META[row.kind]
+          return (
           <button
-            key={row.label}
-            onClick={() => onOpenApp(row.app)}
-            aria-label={`${row.label}: ${row.value}`}
+            key={i}
+            onClick={() => (row.url ? window.open(row.url, "_blank", "noopener,noreferrer") : onOpenApp(meta.app))}
+            aria-label={`${CURRENTLY_LABEL[row.kind]}: ${row.value}`}
             className="flex w-full items-center gap-2.5 rounded-xl px-1.5 py-1.5 text-left transition-colors hover:bg-black/5 dark:hover:bg-white/10"
           >
-            <row.icon className={cn("h-4 w-4 shrink-0", row.tint)} />
+            <meta.icon className={cn("h-4 w-4 shrink-0", meta.tint)} />
             <span className="min-w-0">
               <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-                {row.label}
+                {CURRENTLY_LABEL[row.kind]}
               </span>
               <span className="block truncate text-[12px] font-semibold leading-tight text-foreground">
                 {row.value}
               </span>
             </span>
           </button>
-        ))}
+          )
+        })}
       </div>
     </Widget>
   )
 }
 
-const STACK = ["Python", "FastAPI", "vLLM", "Kubernetes", "CUDA", "RAG"]
+const STACK = siteContent.stack
 
 function StackWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
   return (
@@ -450,7 +432,20 @@ function MantraWidget() {
         <Quote className="h-3.5 w-3.5 text-amber-500" />
         <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Mantra</p>
       </div>
-      <p className="mt-2 text-[15px] font-medium italic leading-snug text-foreground">Life works in mysterious ways.</p>
+      <p className="mt-2 text-[15px] font-medium italic leading-snug text-foreground">{siteContent.mantra}</p>
+    </Widget>
+  )
+}
+
+/** Sliding picture puzzle. Hidden on short screens, where it would run under the Dock. */
+function PuzzleWidget() {
+  return (
+    <Widget id="puzzle" className="col-span-2 [@media(max-height:840px)]:hidden">
+      <div className="mb-2.5 flex items-center gap-2">
+        <PuzzlePiece weight="fill" className="h-3.5 w-3.5 text-violet-500" />
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Puzzle</p>
+      </div>
+      <PuzzleBoard size={236} />
     </Widget>
   )
 }
@@ -486,6 +481,7 @@ export function DesktopWidgets({
         <CurrentlyWidget onOpenApp={onOpenApp} />
         <MantraWidget />
         <StackWidget onOpenApp={onOpenApp} />
+        <PuzzleWidget />
       </motion.div>
 
       <motion.div
