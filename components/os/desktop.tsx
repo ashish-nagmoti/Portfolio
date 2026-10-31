@@ -262,9 +262,6 @@ export function Desktop({ initialApp }: DesktopProps) {
       {/* Wallpaper */}
       <div className={cn("pointer-events-none absolute inset-0 bg-cover bg-center", WALLPAPERS[wallpaperIdx].className)} />
 
-      {/* A wizard (and a golden ball) now and then; tappable on the desktop, scenery on a phone */}
-      <Flyby enabled={!focusMode} interactive={!isMobile} />
-
       {!isMobile && (
         <MenuBar
           focusedApp={focusedApp}
@@ -294,6 +291,10 @@ export function Desktop({ initialApp }: DesktopProps) {
       ) : (
         !focusMode && <DesktopWidgets key={widgetLayoutKey} onOpenApp={openApp} dragBoundsRef={desktopRef} />
       )}
+
+      {/* A wizard or Iron Man now and then (and a golden ball): over the widgets, under
+          the windows; tappable on the desktop, scenery on a phone */}
+      <Flyby enabled={!focusMode} interactive={!isMobile} />
 
       {/* Windows */}
       <AnimatePresence>

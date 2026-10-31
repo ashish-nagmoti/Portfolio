@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f6f5c"/>
+      <stop offset="1" stop-color="#0e3b3a"/>
+    </linearGradient>
+    <linearGradient id="beak" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3fae4a"/>
+      <stop offset="0.35" stop-color="#f4c21b"/>
+      <stop offset="0.75" stop-color="#f28a1e"/>
+      <stop offset="1" stop-color="#d9361f"/>
+    </linearGradient>
+    <radialGradient id="chest" cx="0.4" cy="0.35">
+      <stop offset="0" stop-color="#fff6c8"/>
+      <stop offset="1" stop-color="#f6d25a"/>
+    </radialGradient>
+  </defs>
+  <rect width="300" height="300" fill="url(#bg)"/>
+  <!-- jungle leaves -->
+  <g fill="#2b8a6b" opacity="0.8">
+    <path d="M0 40 Q60 10 110 50 Q50 60 0 90 Z"/>
+    <path d="M300 10 Q240 30 220 90 Q270 70 300 80 Z"/>
+    <path d="M0 210 Q50 190 80 230 Q40 240 0 260 Z"/>
+  </g>
+  <g fill="#3fae7d" opacity="0.6">
+    <path d="M250 300 Q240 230 300 200 L300 300 Z"/>
+    <path d="M30 0 Q60 40 40 80 Q20 40 30 0 Z"/>
+  </g>
+  <!-- branch -->
+  <path d="M0 252 Q120 236 300 258 L300 272 Q140 252 0 268 Z" fill="#5b3a1e"/>
+  <path d="M60 248 Q70 226 92 220" stroke="#5b3a1e" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <ellipse cx="96" cy="216" rx="16" ry="7" fill="#3fae7d" transform="rotate(-20 96 216)"/>
+  <!-- tail and body -->
+  <path d="M96 200 L60 286 L92 282 L122 210 Z" fill="#0b0b10"/>
+  <path d="M112 96 Q70 120 82 190 Q92 236 134 244 Q170 246 176 200 Q182 140 160 104 Z" fill="#121218"/>
+  <!-- white-yellow chest -->
+  <path d="M150 104 Q186 120 182 168 Q178 200 158 206 Q140 180 138 140 Z" fill="url(#chest)"/>
+  <path d="M158 206 Q170 214 176 200 Q170 196 158 206 Z" fill="#d9361f"/>
+  <!-- feet -->
+  <path d="M120 240 l-6 16 M132 242 l2 16" stroke="#6aa0d8" stroke-width="5" stroke-linecap="round"/>
+  <!-- head -->
+  <circle cx="150" cy="100" r="34" fill="#121218"/>
+  <!-- big beak -->
+  <path d="M168 84 Q240 70 282 104 Q250 122 172 116 Z" fill="url(#beak)"/>
+  <path d="M172 116 Q240 120 280 106 Q246 132 176 124 Z" fill="#e2611e"/>
+  <path d="M170 116 Q228 108 280 105" stroke="#7a2a12" stroke-width="1.6" fill="none"/>
+  <circle cx="276" cy="104" r="5" fill="#9e1d12"/>
+  <!-- eye -->
+  <circle cx="160" cy="92" r="13" fill="#5aa7e8"/>
+  <circle cx="160" cy="92" r="9" fill="#f6c84c"/>
+  <circle cx="161" cy="92" r="5" fill="#0b0b10"/>
+  <circle cx="163" cy="90" r="1.8" fill="#fff"/>
+</svg>
