@@ -212,10 +212,8 @@ function PromptTag() {
 }
 
 export function Terminal() {
-  const [lines, setLines] = useState<TerminalLine[]>([
-    { type: "output", content: "Welcome to Ashish's interactive terminal — v1.0.0" },
-    { type: "output", content: 'Type "help" or tap a command below to get started.' },
-  ])
+  // The welcome card above the scrollback greets the visitor; the log starts empty
+  const [lines, setLines] = useState<TerminalLine[]>([])
   const [currentCommand, setCurrentCommand] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const [history, setHistory] = useState<string[]>([])
@@ -323,7 +321,7 @@ export function Terminal() {
           <p className="font-semibold bg-gradient-to-r from-emerald-300 via-sky-300 to-blue-300 bg-clip-text text-transparent">
             Welcome to Ashish&apos;s Terminal
           </p>
-          <p className="mt-1 text-xs text-slate-400 sm:text-sm">Type a command, or tap one below to explore.</p>
+          <p className="mt-1 text-xs text-slate-400 sm:text-sm">Type &quot;help&quot;, or tap a command below to explore.</p>
         </div>
 
         {lines.map((line, index) => {

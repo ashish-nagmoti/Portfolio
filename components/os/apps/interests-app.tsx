@@ -78,18 +78,33 @@ export function InterestsApp() {
           </div>
         </div>
 
-        {/* Action bar */}
+        {/* Action bar: play opens the top item, shuffle a random one (none if the list is empty) */}
         <div className="flex items-center gap-6 bg-gradient-to-b from-black/20 to-[#121212] px-6 py-4">
-          <a
-            href={(filteredItems[0] ?? interestItems[0]).url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Open top saved item"
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-[#1DB954] shadow-lg transition-transform hover:scale-105"
-          >
-            <Play className="ml-0.5 h-6 w-6 fill-black text-black" />
-          </a>
-          <Shuffle className="h-5 w-5 text-[#1DB954]" />
+          {interestItems.length > 0 && (
+            <>
+              <a
+                href={(filteredItems[0] ?? interestItems[0]).url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open top saved item"
+                className="flex h-14 w-14 items-center justify-center rounded-full bg-[#1DB954] shadow-lg transition-transform hover:scale-105"
+              >
+                <Play className="ml-0.5 h-6 w-6 fill-black text-black" />
+              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  const pool = filteredItems.length ? filteredItems : interestItems
+                  window.open(pool[Math.floor(Math.random() * pool.length)].url, "_blank", "noopener,noreferrer")
+                }}
+                aria-label="Open a random saved item"
+                title="Open a random saved item"
+                className="rounded-full p-1.5 text-[#1DB954] transition-transform hover:scale-110"
+              >
+                <Shuffle className="h-5 w-5" />
+              </button>
+            </>
+          )}
         </div>
 
         {/* Filter pills */}

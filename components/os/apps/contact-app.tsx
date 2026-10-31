@@ -38,7 +38,7 @@ const contactMethods = [
   {
     icon: Globe,
     label: "Medium Blog",
-    value: "https://medium.com/@ashishnagmoti7",
+    value: "medium.com/@ashishnagmoti7",
     href: "https://medium.com/@ashishnagmoti7",
     description: "My technical blog on Medium",
     primary: false,

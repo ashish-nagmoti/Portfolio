@@ -351,11 +351,15 @@ function ProjectWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
     <Widget id="project" className="col-span-2" onClick={() => onOpenApp("projects")} label={`Open Projects: ${f.name}`}>
       <div className="flex items-center gap-2">
         <Icon weight="fill" className="h-3.5 w-3.5 text-sky-500" />
-        <p className="truncate text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-          Featured{f.badge ? ` · ${f.badge}` : ""}
-        </p>
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Featured</p>
       </div>
       <p className="mt-2 text-sm font-semibold leading-snug text-foreground">{f.name}</p>
+      {f.badge && (
+        <p className="mt-0.5 flex items-center gap-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
+          <Trophy weight="fill" className="h-3 w-3 shrink-0" />
+          {f.badge}
+        </p>
+      )}
       <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{f.summary}</p>
       {f.tags.length > 0 && (
         <div className="mt-2.5 flex flex-wrap gap-1">

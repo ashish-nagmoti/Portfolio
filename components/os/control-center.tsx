@@ -123,8 +123,8 @@ function BrightnessSlider({ value, onChange }: { value: number; onChange: (v: nu
   return (
     <div className={cn(MODULE, "px-3 pb-3 pt-2.5")}>
       <p className="mb-2 text-[12px] font-semibold">Display</p>
-      <div className="relative h-[22px] overflow-hidden rounded-full bg-black/10 dark:bg-white/15">
-        <div className="absolute inset-y-0 left-0 rounded-full bg-white shadow-sm" style={{ width: `${Math.max(value, 14)}%` }} />
+      <div className="relative h-[22px] overflow-hidden rounded-full bg-black/10 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)] dark:bg-white/15 dark:shadow-none">
+        <div className="absolute inset-y-0 left-0 rounded-full bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.1),0_1px_3px_rgba(0,0,0,0.2)]" style={{ width: `${Math.max(value, 14)}%` }} />
         <Sun weight="fill" className="pointer-events-none absolute left-[5px] top-1/2 h-3 w-3 -translate-y-1/2 text-black/45" />
         <input
           type="range"
