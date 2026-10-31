@@ -476,17 +476,21 @@ export function HomeScreen({
               <CurrentlyWidget onOpenApp={onOpenApp} />
               <FeaturedWidget onOpen={() => onOpenApp("projects")} />
               <LatestPostWidget onOpen={() => onOpenApp("blog")} />
-              <Tile className="col-span-4 flex-row items-center gap-3.5">
-                <PuzzleBoard size={176} />
-                <span className="flex min-w-0 flex-col gap-1.5">
-                  <span className={LABEL}>
-                    <PuzzlePiece weight="fill" className="h-3.5 w-3.5 text-violet-500" />
-                    Puzzle
-                  </span>
-                  <span className="text-[13px] leading-snug text-foreground/80">
-                    Slide the pieces into the gap until the picture is whole. Hold <b>?</b> to peek.
-                  </span>
-                </span>
+              <Tile className="col-span-4">
+                <PuzzleBoard
+                  size={184}
+                  title={
+                    <span className={LABEL}>
+                      <PuzzlePiece weight="fill" className="h-3.5 w-3.5 text-violet-500" />
+                      Puzzle
+                    </span>
+                  }
+                  aside={
+                    <span className="text-[13px] leading-snug text-muted-foreground">
+                      Slide the pieces into the gap until the picture is whole. Hold the eye to peek.
+                    </span>
+                  }
+                />
               </Tile>
               <MantraWidget />
             </motion.div>

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode, type RefObject } from "react"
 import { motion, useMotionValue } from "framer-motion"
-import { MapPin, Trophy, GithubLogo as Github, Quotes as Quote } from "@phosphor-icons/react"
+import { MapPin, Trophy, GithubLogo as Github, Quotes as Quote, PuzzlePiece } from "@phosphor-icons/react"
 import { PuzzleBoard } from "./puzzle"
 import type { AppId } from "./types"
 import { GitHubCard } from "./github-card"
@@ -70,15 +70,12 @@ function Widget({
   className,
   onClick,
   label,
-  bare,
   children,
 }: {
   id: string
   className?: string
   onClick?: () => void
   label?: string
-  /** No glass card or padding: the child brings its own frame. */
-  bare?: boolean
   children: ReactNode
 }) {
   const constraintsRef = useContext(DragBoundsContext)
@@ -126,14 +123,14 @@ function Widget({
       whileHover={onClick ? { scale: 1.03 } : undefined}
       transition={{ type: "spring", stiffness: 400, damping: 22 }}
       style={{ x, y }}
-      className={cn(!bare && SURFACE, "relative text-left", className)}
+      className={cn(SURFACE, "relative text-left", className)}
     >
       {onClick ? (
         <button onClick={onClick} aria-label={label} className="flex h-full w-full flex-col justify-center p-4 text-left">
           {children}
         </button>
       ) : (
-        <div className={cn("flex h-full flex-col justify-center", !bare && "p-4")}>{children}</div>
+        <div className="flex h-full flex-col justify-center p-4">{children}</div>
       )}
     </motion.div>
   )
@@ -411,7 +408,7 @@ const STACK = siteContent.stack
 
 function StackWidget({ onOpenApp }: { onOpenApp: (id: AppId) => void }) {
   return (
-    <Widget id="stack" className="col-span-2 [@media(max-height:760px)]:hidden" onClick={() => onOpenApp("about")} label="Open About for full skill list">
+    <Widget id="stack" className="col-span-2 [@media(max-height:800px)]:hidden" onClick={() => onOpenApp("about")} label="Open About for full skill list">
       <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Stack</p>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {STACK.map((t) => (
@@ -441,13 +438,21 @@ function MantraWidget() {
 }
 
 /**
- * The sliding picture puzzle, in its own wooden frame. It stays on screen down
- * to fairly short viewports: Mantra and Stack give up their slots first.
+ * The sliding picture puzzle. It stays on screen down to fairly short
+ * viewports: Mantra and Stack give up their slots first.
  */
 function PuzzleWidget() {
   return (
-    <Widget id="puzzle" bare className="col-span-2 justify-self-center [@media(max-height:620px)]:hidden">
-      <PuzzleBoard size={236} />
+    <Widget id="puzzle" className="col-span-2 [@media(max-height:660px)]:hidden">
+      <PuzzleBoard
+        size={236}
+        title={
+          <span className="flex items-center gap-2">
+            <PuzzlePiece weight="fill" className="h-3.5 w-3.5 text-violet-500" />
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Puzzle</span>
+          </span>
+        }
+      />
     </Widget>
   )
 }
