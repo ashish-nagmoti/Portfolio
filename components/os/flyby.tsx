@@ -23,7 +23,9 @@ function Wizard() {
       <motion.path
         d="M58 30 Q90 28 112 44 Q96 48 74 56 Z"
         fill="#1b1f3a"
-        animate={{ d: ["M58 30 Q90 28 112 44 Q96 48 74 56 Z", "M58 30 Q92 22 116 36 Q98 46 74 56 Z", "M58 30 Q90 28 112 44 Q96 48 74 56 Z"] }}
+        // Swung from the shoulder: rotating avoids morphing `d`, which can flash an invalid path
+        style={{ originX: 0, originY: 0 }}
+        animate={{ rotate: [0, -10, 0] }}
         transition={{ duration: 0.6, repeat: Infinity, ease: "easeInOut" }}
       />
       {/* body, leg and arm */}
@@ -37,7 +39,8 @@ function Wizard() {
         strokeWidth="5"
         strokeLinecap="round"
         fill="none"
-        animate={{ d: ["M56 26 Q74 22 86 18", "M56 26 Q74 28 88 24", "M56 26 Q74 22 86 18"] }}
+        style={{ originX: 0, originY: 1 }}
+        animate={{ rotate: [0, 10, 0] }}
         transition={{ duration: 0.5, repeat: Infinity, ease: "easeInOut" }}
       />
       {/* head, messy hair, round glasses */}

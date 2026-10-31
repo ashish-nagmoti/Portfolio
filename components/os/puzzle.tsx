@@ -6,14 +6,14 @@ import { showToast } from "./ios/island"
 import { cn } from "@/lib/utils"
 
 /*
- * A sliding-tile picture puzzle: a stopwatch and a 9×9 board of eighty
+ * A sliding-tile picture puzzle: a stopwatch and a 3×3 board of eight
  * pieces and one gap. Slide pieces into the gap until the picture is whole;
  * hold the eye to peek at it. Shuffled by making random legal moves from the
  * solved board, so every shuffle can be solved. It draws no card of its own:
  * it sits inside a widget's glass.
  */
 
-const N = 9
+const N = 3
 const BLANK = N * N - 1
 // Random moves per shuffle: enough to scatter every piece on a board this size
 const SHUFFLE_MOVES = N * N * 12
