@@ -6,15 +6,17 @@ import { showToast } from "./ios/island"
 import { cn } from "@/lib/utils"
 
 /*
- * A sliding-tile picture puzzle: a stopwatch and a 4×4 board of fifteen
+ * A sliding-tile picture puzzle: a stopwatch and a 9×9 board of eighty
  * pieces and one gap. Slide pieces into the gap until the picture is whole;
  * hold the eye to peek at it. Shuffled by making random legal moves from the
  * solved board, so every shuffle can be solved. It draws no card of its own:
  * it sits inside a widget's glass.
  */
 
-const N = 4
+const N = 9
 const BLANK = N * N - 1
+// Random moves per shuffle: enough to scatter every piece on a board this size
+const SHUFFLE_MOVES = N * N * 12
 const PICTURES = [
   { name: "Toucan", src: "/puzzle/toucan.svg" },
   { name: "Castle", src: "/puzzle/castle.svg" },
@@ -34,7 +36,7 @@ function shuffle(): number[] {
   const b = solved()
   let gap = BLANK
   let prev = -1
-  for (let k = 0; k < 160; k++) {
+  for (let k = 0; k < SHUFFLE_MOVES; k++) {
     const options = neighbours(gap).filter((n) => n !== prev)
     const pick = options[Math.floor(Math.random() * options.length)]
     ;[b[gap], b[pick]] = [b[pick], b[gap]]
@@ -172,8 +174,9 @@ export function PuzzleBoard({ size, title, aside }: { size: number; title: React
               >
                 {/* Inset so the pieces read as separate blocks, each with a lit glass edge */}
                 <span
-                  className="absolute inset-[1.5px] rounded-[7px] bg-no-repeat shadow-[inset_0_0_0_1px_rgba(255,255,255,0.22),0_1px_2px_rgba(0,0,0,0.25)]"
+                  className="absolute inset-[1.5px] bg-no-repeat shadow-[inset_0_0_0_1px_rgba(255,255,255,0.22),0_1px_2px_rgba(0,0,0,0.25)]"
                   style={{
+                    borderRadius: Math.max(3, Math.round(tile * 0.12)),
                     backgroundImage: picture,
                     backgroundSize: `${size}px ${size}px`,
                     backgroundPosition: `-${(piece % N) * tile + 1.5}px -${Math.floor(piece / N) * tile + 1.5}px`,
