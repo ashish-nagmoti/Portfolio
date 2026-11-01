@@ -6,16 +6,40 @@
     "repos": "45+"
   },
   "currently": [
-    { "kind": "building", "value": "Enterprise AI platform @ ESDS", "url": "" },
-    { "kind": "reading", "value": "Kubernetes Networking", "url": "" },
-    { "kind": "watching", "value": "Production-Ready APIs", "url": "" }
+    {
+      "kind": "building",
+      "value": "Enterprise AI platform @ ESDS",
+      "url": ""
+    },
+    {
+      "kind": "reading",
+      "value": "Kubernetes Networking",
+      "url": ""
+    },
+    {
+      "kind": "watching",
+      "value": "Production-Ready APIs",
+      "url": ""
+    }
   ],
-  "stack": ["Python", "FastAPI", "vLLM", "Kubernetes", "CUDA", "RAG"],
+  "stack": [
+    "Python",
+    "FastAPI",
+    "vLLM",
+    "Kubernetes",
+    "CUDA",
+    "RAG",
+    "Inference Engineering"
+  ],
   "featured": {
     "name": "KAVACH",
     "badge": "1st place, Sharp Tank",
     "summary": "LLM security & governance for the enterprise, led as CEO & CTO of Team Patronus.",
-    "tags": ["LLM Security", "AI Governance", "Access Control"],
+    "tags": [
+      "LLM Security",
+      "AI Governance",
+      "Access Control"
+    ],
     "icon": "shield"
   },
   "interests": [
