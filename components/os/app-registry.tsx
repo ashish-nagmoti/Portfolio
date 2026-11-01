@@ -65,5 +65,5 @@ export const APP_ORDER: AppId[] = ["about", "projects", "terminal", "contact", "
 // Drawn by <AppIcon app="resume" />.
 export const RESUME_ICON = {
   title: "Resume.pdf",
-  href: "/clg_resume_v3.pdf",
+  href: "/Ashish_Nagmoti_Resume.pdf",
 }
