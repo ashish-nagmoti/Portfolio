@@ -29,9 +29,10 @@ import { CURRENTLY_META, FEATURED_ICON } from "../content-meta"
 /*
  * The phone layout: an iOS-style home screen in place of the desktop.
  *
- * Two pages, swiped sideways (CSS scroll-snap, so it's the browser's own
+ * Three pages, swiped sideways (CSS scroll-snap, so it's the browser's own
  * native-feeling paging): page one is who Ashish is plus the apps, page two
- * is what he's made and written. Widgets and icons share one grid (4 columns
+ * is what he's doing, made and written, page three is the puzzle and mantra.
+ * Each page fits the screen, so nothing needs scrolling. Widgets and icons share one grid (4 columns
  * upright, 8 sideways) the way iOS lines widgets up with icons. Above the dock
  * sits the iOS 18 "Search" pill, which turns into page dots while swiping;
  * pulling down on the home screen also opens search.
@@ -330,12 +331,13 @@ function HomeIcon({ app, onOpen, showLabel = true }: { app: AppIconKey; onOpen: 
   )
 }
 
-// Each page scrolls on its own; the grid is padded clear of the notch and dock
+// Each page fits the screen; scrolling is only a fallback for very short ones.
+// The grid is padded clear of the notch and dock
 // Content fades out as it scrolls under the date bar and the dock, instead of colliding with them
 const PAGE =
-  "h-full w-full shrink-0 snap-start snap-always overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-150px),transparent_calc(100%-96px))] landscape:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px))] [@media(max-height:780px)]:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-120px),transparent_calc(100%-90px))]"
+  "h-full w-full shrink-0 snap-start snap-always overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-150px),transparent_calc(100%-96px))] landscape:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px))] [@media(max-height:780px)]:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-108px),transparent_calc(100%-92px))]"
 const GRID =
-  "mx-auto grid w-full max-w-[460px] auto-rows-min grid-cols-4 gap-x-[22px] gap-y-5 px-6 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+160px)] [@media(max-height:780px)]:pb-[calc(env(safe-area-inset-bottom)+124px)] landscape:max-w-[820px] landscape:grid-cols-8 landscape:gap-x-5 landscape:pb-[calc(env(safe-area-inset-bottom)+64px)]"
+  "mx-auto grid w-full max-w-[460px] auto-rows-min grid-cols-4 gap-x-[22px] gap-y-5 px-6 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+160px)] [@media(max-height:780px)]:gap-y-3.5 [@media(max-height:780px)]:pt-[calc(env(safe-area-inset-top)+54px)] [@media(max-height:780px)]:pb-[calc(env(safe-area-inset-bottom)+110px)] landscape:max-w-[820px] landscape:grid-cols-8 landscape:gap-x-5 landscape:pb-[calc(env(safe-area-inset-bottom)+64px)]"
 
 export function HomeScreen({
   onOpenApp,
@@ -353,7 +355,7 @@ export function HomeScreen({
   const [page, setPage] = useState(0)
   const [swiping, setSwiping] = useState(false)
   const swipeTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
-  const pages = focus ? 1 : 2
+  const pages = focus ? 1 : 3
   const [today, setToday] = useState("")
   useEffect(() => setToday(new Date().toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" })), [])
 
@@ -476,6 +478,18 @@ export function HomeScreen({
               <CurrentlyWidget onOpenApp={onOpenApp} />
               <FeaturedWidget onOpen={() => onOpenApp("projects")} />
               <LatestPostWidget onOpen={() => onOpenApp("blog")} />
+            </motion.div>
+          </div>
+        )}
+
+        {!focus && (
+          <div className={PAGE}>
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
+              className={GRID}
+            >
               <Tile className="col-span-4">
                 <PuzzleBoard
                   size={184}
