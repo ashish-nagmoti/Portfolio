@@ -158,7 +158,7 @@ type Chase = { id: number; points: { x: number; y: number }[] }
 
 const rand = (a: number, b: number) => a + Math.random() * (b - a)
 
-export function Flyby({ enabled, interactive = true }: { enabled: boolean; interactive?: boolean }) {
+export function Flyby({ enabled }: { enabled: boolean }) {
   const reduce = useReducedMotion()
   const [flight, setFlight] = useState<Flight | null>(null)
   const [chase, setChase] = useState<Chase | null>(null)
@@ -206,7 +206,7 @@ export function Flyby({ enabled, interactive = true }: { enabled: boolean; inter
   const vw = typeof window !== "undefined" ? window.innerWidth : 1440
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-[5] overflow-hidden" aria-hidden={!interactive}>
+    <div className="pointer-events-none absolute inset-0 z-[5] overflow-hidden">
       <AnimatePresence>
         {flight && (() => {
           const iron = flight.who === "ironman"
@@ -218,7 +218,7 @@ export function Flyby({ enabled, interactive = true }: { enabled: boolean; inter
               type="button"
               tabIndex={-1}
               aria-label={iron ? "Iron Man flying past" : "A wizard flying past"}
-              onClick={() => interactive && showToast(iron ? "Jarvis, log this visit 🦾" : "Mischief managed ✨")}
+              onClick={() => showToast(iron ? "Jarvis, log this visit 🦾" : "Mischief managed ✨")}
               initial={{ x: flight.leftToRight ? -width - 40 : vw + 40, y: flight.y[0] }}
               animate={{
                 x: flight.leftToRight ? vw + 40 : -width - 40,
@@ -233,7 +233,7 @@ export function Flyby({ enabled, interactive = true }: { enabled: boolean; inter
                 rotate: { duration },
               }}
               onAnimationComplete={() => setFlight((f) => (f?.id === flight.id ? null : f))}
-              className={`absolute left-0 top-0 ${interactive ? "pointer-events-auto cursor-pointer" : ""}`}
+              className="pointer-events-auto absolute left-0 top-0 cursor-pointer"
             >
               {/* Both drawings face their direction of travel: Iron Man right, the wizard left */}
               <span className="relative block" style={{ transform: `scaleX(${flight.leftToRight === iron ? 1 : -1})` }}>
@@ -273,7 +273,6 @@ export function Flyby({ enabled, interactive = true }: { enabled: boolean; inter
             tabIndex={-1}
             aria-label="A golden ball, catch it"
             onClick={() => {
-              if (!interactive) return
               showToast("Caught it! +150 🏆")
               setChase(null)
             }}
@@ -282,7 +281,7 @@ export function Flyby({ enabled, interactive = true }: { enabled: boolean; inter
             exit={{ scale: 0, opacity: 0, transition: { duration: 0.25 } }}
             transition={{ duration: 13, ease: "easeInOut" }}
             onAnimationComplete={() => setChase((c) => (c?.id === chase.id ? null : c))}
-            className={`absolute left-0 top-0 p-3 ${interactive ? "pointer-events-auto cursor-pointer" : ""}`}
+            className="pointer-events-auto absolute left-0 top-0 cursor-pointer p-3"
           >
             <GoldenBall />
           </motion.button>

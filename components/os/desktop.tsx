@@ -293,8 +293,8 @@ export function Desktop({ initialApp }: DesktopProps) {
       )}
 
       {/* A wizard or Iron Man now and then (and a golden ball): over the widgets, under
-          the windows; tappable on the desktop, scenery on a phone */}
-      <Flyby enabled={!focusMode} interactive={!isMobile} />
+          the windows, and tappable on desktop and phone alike */}
+      <Flyby enabled={!focusMode} />
 
       {/* Windows */}
       <AnimatePresence>
