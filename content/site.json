@@ -8,18 +8,18 @@
   "currently": [
     {
       "kind": "building",
-      "value": "Enterprise AI platform @ ESDS",
+      "value": "AI platforms @ ESDS",
       "url": ""
     },
     {
       "kind": "reading",
-      "value": "Kubernetes Networking",
-      "url": ""
+      "value": "That Night: Four Friends. Twenty Years. One Haunting Secret.",
+      "url": "https://www.amazon.in/That-Night-Friends-Haunting-Secret/dp/0143451871?s=bazaar"
     },
     {
-      "kind": "watching",
-      "value": "Production-Ready APIs",
-      "url": ""
+      "kind": "listening",
+      "value": "Darkhast",
+      "url": "https://open.spotify.com/track/1awtp7rf6ajhGY9BgzCHeZ"
     }
   ],
   "stack": [
@@ -32,80 +32,51 @@
     "Inference Engineering"
   ],
   "featured": {
-    "name": "KAVACH",
-    "badge": "1st place, Sharp Tank",
-    "summary": "LLM security & governance for the enterprise, led as CEO & CTO of Team Patronus.",
+    "name": "System Map",
+    "badge": "Codebase Visualizer",
+    "summary": "Transforms codebases into interactive isometric blueprints, visualizing routes, functions, models, database tables, and architectural relationships.",
     "tags": [
-      "LLM Security",
-      "AI Governance",
-      "Access Control"
+      "Claude Code",
+      "Developer Tools",
+      "Code Visualization",
+      "System Architecture",
+      "Isometric Design",
+      "Codebase Analysis"
     ],
-    "icon": "shield"
+    "icon": "sparkle"
   },
   "interests": [
     {
-      "id": "1",
+      "id": "0c54b384-d243-4347-897c-f47556870cfe",
       "type": "blog",
-      "title": "Building Microservices with Python and Docker",
-      "author": "Real Python",
-      "url": "https://realpython.com/python-microservices-grpc/",
-      "dateAdded": "2024-01-15"
+      "title": "Google Docs resource",
+      "author": "X",
+      "url": "https://docs.google.com/document/d/e/2PACX-1vQD8IlBotGdBxp3BnXkSjk8bNZlPV_0EH9ZA6wHd5dNf-BLSiwXUinvgv8ZoBEnNyTCF-chWO30NRw0/pub#h.mrp0yijltox7",
+      "dateAdded": "2026-11-01"
     },
     {
-      "id": "2",
-      "type": "video",
-      "title": "AWS re:Invent 2023 - Serverless at Scale",
-      "author": "AWS Events",
-      "url": "https://youtube.com/watch?v=example",
-      "dateAdded": "2024-01-12"
-    },
-    {
-      "id": "3",
-      "type": "blog",
-      "title": "The State of AI in 2024: LLMs and Beyond",
-      "author": "Towards Data Science",
-      "url": "https://towardsdatascience.com/ai-2024-trends",
-      "dateAdded": "2024-01-10"
-    },
-    {
-      "id": "4",
-      "type": "video",
-      "title": "System Design Interview: Design a Chat System",
-      "author": "Tech Dummies",
-      "url": "https://youtube.com/watch?v=example2",
-      "dateAdded": "2024-01-08"
-    },
-    {
-      "id": "5",
+      "id": "67356fd9-8c41-459c-ad2d-e5f35b15c50e",
       "type": "article",
-      "title": "FastAPI vs Django: Performance Comparison 2024",
-      "author": "Python Weekly",
-      "url": "https://pythonweekly.com/fastapi-django-comparison",
-      "dateAdded": "2024-01-05"
+      "title": "How LLMs Really Work",
+      "author": "Arpit Bhayani",
+      "url": "https://arpitbhayani.me/blogs/how-llms-work/",
+      "dateAdded": "2026-11-01"
     },
     {
-      "id": "6",
-      "type": "video",
-      "title": "Building Production-Ready APIs with Python",
-      "author": "ArjanCodes",
-      "url": "https://youtube.com/watch?v=example3",
-      "dateAdded": "2024-01-03"
-    },
-    {
-      "id": "7",
+      "id": "56481746-1011-4a11-b75e-62ddcf1a9592",
       "type": "blog",
-      "title": "Understanding Kubernetes Networking",
-      "author": "CNCF Blog",
-      "url": "https://cncf.io/blog/kubernetes-networking",
-      "dateAdded": "2024-01-01"
+      "title": "Paul Graham Essays",
+      "author": "Paul Graham",
+      "url": "https://paulgraham.com/",
+      "dateAdded": "2026-11-01"
     },
     {
-      "id": "8",
-      "type": "article",
-      "title": "The Psychology of Code Reviews",
-      "author": "Stack Overflow Blog",
-      "url": "https://stackoverflow.blog/code-review-psychology",
-      "dateAdded": "2023-12-28"
+      "id": "7291fd20-e586-4071-8a4c-616241915b14",
+      "type": "video",
+      "title": "HackerTube",
+      "author": "Andrej Karpathy",
+      "url": "https://hackertube.org/",
+      "dateAdded": "2026-10-31"
     }
   ]
 }
