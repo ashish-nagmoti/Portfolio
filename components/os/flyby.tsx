@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { showToast } from "./ios/island"
 
 /*
- * A little life on the wallpaper, for the fan in Ashish: every 15–25 s a
+ * A little life on the wallpaper, for the fan in Ashish: every 22–32 s a
  * wizard on a broomstick or an armoured hero ("I am Iron Man.") flies across
  * the desktop, taking turns, and now and then a winged golden ball darts
  * about, waiting to be caught. Original artwork, drawn here as SVG. Off in
@@ -165,7 +165,7 @@ export function Flyby({ enabled, interactive = true }: { enabled: boolean; inter
   const ids = useRef(0)
   const on = enabled && !reduce
 
-  // A flight every 15–25 s (the first one soon after the desktop appears),
+  // A flight every 22–32 s (the first one soon after the desktop appears),
   // the wizard and Iron Man taking turns from a random first pick
   useEffect(() => {
     if (!on) return
@@ -178,14 +178,14 @@ export function Flyby({ enabled, interactive = true }: { enabled: boolean; inter
         const y = next === "ironman" ? [base, base - 25, base - 60] : [base, base - 40, base + 10, base - 50]
         setFlight({ id: ++ids.current, who: next, leftToRight: Math.random() > 0.35, y })
         next = next === "ironman" ? "wizard" : "ironman"
-        schedule(rand(15_000, 25_000))
+        schedule(rand(22_000, 32_000))
       }, delay)
     }
     schedule(rand(3_000, 5_000))
     return () => clearTimeout(t)
   }, [on])
 
-  // The golden ball, rarer: every 35–55 s, darting between random points
+  // The golden ball, rarer: every 45–70 s, darting between random points
   useEffect(() => {
     if (!on) return
     let t: ReturnType<typeof setTimeout>
@@ -195,7 +195,7 @@ export function Flyby({ enabled, interactive = true }: { enabled: boolean; inter
         const h = window.innerHeight
         const points = Array.from({ length: 9 }, () => ({ x: rand(0.15, 0.85) * w, y: rand(0.15, 0.7) * h }))
         setChase({ id: ++ids.current, points: [{ x: -60, y: points[0].y }, ...points, { x: w + 60, y: points[8].y }] })
-        schedule(rand(35_000, 55_000))
+        schedule(rand(45_000, 70_000))
       }, delay)
     }
     schedule(rand(12_000, 18_000))
