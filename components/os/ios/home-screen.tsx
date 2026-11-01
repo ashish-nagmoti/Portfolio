@@ -35,8 +35,8 @@ import { CURRENTLY_META, FEATURED_ICON } from "../content-meta"
  * onto as many pages as the screen needs, so no page has to scroll. Widgets
  * and icons share one grid (4 columns upright, 8 sideways) the way iOS lines
  * widgets up with icons. Above the dock
- * sits the iOS 18 "Search" pill, which turns into page dots while swiping;
- * pulling down on the home screen also opens search.
+ * sit the page dots (tap one to jump there); search is the button up top, or
+ * pull down on the home screen.
  */
 
 const EMAIL = "ashishnagmoti2310@gmail.com"
@@ -347,9 +347,9 @@ function HomeIcon({ app, onOpen, showLabel = true }: { app: AppIconKey; onOpen: 
 // short ones and sideways. The grid is padded clear of the notch and dock
 // Content fades out as it scrolls under the date bar and the dock, instead of colliding with them
 const PAGE =
-  "h-full w-full shrink-0 snap-start snap-always overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-150px),transparent_calc(100%-96px))] landscape:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px))] [@media(max-height:780px)]:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-108px),transparent_calc(100%-92px))]"
+  "h-full w-full shrink-0 snap-start snap-always overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-150px),transparent_calc(100%-96px))] landscape:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px))] [@media(max-height:780px)]:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-130px),transparent_calc(100%-114px))]"
 const GRID =
-  "mx-auto grid w-full max-w-[460px] auto-rows-min grid-cols-4 gap-x-[22px] gap-y-5 px-6 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+160px)] [@media(max-height:780px)]:gap-y-3.5 [@media(max-height:780px)]:pt-[calc(env(safe-area-inset-top)+54px)] [@media(max-height:780px)]:pb-[calc(env(safe-area-inset-bottom)+110px)] landscape:max-w-[820px] landscape:grid-cols-8 landscape:gap-x-5 landscape:pb-[calc(env(safe-area-inset-bottom)+64px)]"
+  "mx-auto grid w-full max-w-[460px] auto-rows-min grid-cols-4 gap-x-[22px] gap-y-5 px-6 pt-[calc(env(safe-area-inset-top)+60px)] pb-[calc(env(safe-area-inset-bottom)+160px)] [@media(max-height:780px)]:gap-y-3.5 [@media(max-height:780px)]:pt-[calc(env(safe-area-inset-top)+54px)] [@media(max-height:780px)]:pb-[calc(env(safe-area-inset-bottom)+132px)] landscape:max-w-[820px] landscape:grid-cols-8 landscape:gap-x-5 landscape:pb-[calc(env(safe-area-inset-bottom)+64px)]"
 
 export function HomeScreen({
   onOpenApp,
@@ -365,8 +365,6 @@ export function HomeScreen({
 }) {
   const pagerRef = useRef<HTMLDivElement>(null)
   const [page, setPage] = useState(0)
-  const [swiping, setSwiping] = useState(false)
-  const swipeTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const [split, setSplit] = useState<Block[][]>(DEFAULT_PAGES)
   const layout = focus ? FOCUS_PAGES : split
   const pages = layout.length
@@ -489,14 +487,14 @@ export function HomeScreen({
     }
   }
 
-  // While paging, the Search pill shows page dots instead (as on iOS 18)
+  // Keeps the page dots on the page in view
   const onPagerScroll = () => {
     const el = pagerRef.current
-    if (!el) return
-    setPage(Math.round(el.scrollLeft / el.clientWidth))
-    setSwiping(true)
-    clearTimeout(swipeTimer.current)
-    swipeTimer.current = setTimeout(() => setSwiping(false), 900)
+    if (el) setPage(Math.round(el.scrollLeft / el.clientWidth))
+  }
+  const goToPage = (i: number) => {
+    const el = pagerRef.current
+    el?.scrollTo({ left: el.clientWidth * i, behavior: "smooth" })
   }
 
   // Pull down from the top of page one to search, like the iOS home screen
@@ -528,12 +526,11 @@ export function HomeScreen({
           {today}
         </span>
         <span className="flex gap-2">
-          {/* Sideways the Search pill would sit on the widgets, so search lives up here */}
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={onOpenSearch}
             aria-label="Search"
-            className={cn(SURFACE, "pointer-events-auto hidden h-9 w-9 items-center justify-center rounded-full text-foreground/85 landscape:flex [@media(max-height:780px)]:flex")}
+            className={cn(SURFACE, "pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full text-foreground/85")}
           >
             <MagnifyingGlass weight="bold" className="h-4 w-4" />
           </motion.button>
@@ -589,32 +586,29 @@ export function HomeScreen({
         ))}
       </div>
 
-      {/* The Search pill (page dots while swiping), then the dock */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-10 flex flex-col items-center gap-3 px-3 pb-[calc(env(safe-area-inset-bottom)+10px)]">
-        <motion.button
-          layout
-          onClick={onOpenSearch}
-          aria-label="Search"
-          transition={{ type: "spring", stiffness: 500, damping: 34 }}
-          className={cn(
-            SURFACE,
-            "pointer-events-auto flex h-8 items-center justify-center gap-1.5 rounded-full px-3.5 text-[13px] font-medium text-foreground/85 landscape:hidden [@media(max-height:780px)]:hidden",
-          )}
-        >
-          {swiping && pages > 1 ? (
-            Array.from({ length: pages }, (_, i) => (
-              <span
+      {/* The page dots, then the dock */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-10 flex flex-col items-center gap-2 px-3 pb-[calc(env(safe-area-inset-bottom)+10px)]">
+        {pages > 1 && (
+          <nav aria-label="Pages" className="pointer-events-auto flex landscape:hidden">
+            {Array.from({ length: pages }, (_, i) => (
+              <button
                 key={i}
-                className={cn("h-[7px] w-[7px] rounded-full transition-colors", i === page ? "bg-foreground/85" : "bg-foreground/30")}
-              />
-            ))
-          ) : (
-            <>
-              <MagnifyingGlass weight="bold" className="h-3.5 w-3.5" />
-              Search
-            </>
-          )}
-        </motion.button>
+                type="button"
+                onClick={() => goToPage(i)}
+                aria-label={`Page ${i + 1} of ${pages}`}
+                aria-current={i === page ? "page" : undefined}
+                className="p-[5px]"
+              >
+                <span
+                  className={cn(
+                    "block h-[7px] w-[7px] rounded-full shadow-[0_0_3px_rgba(0,0,0,0.35)] transition-colors duration-200",
+                    i === page ? "bg-white" : "bg-white/40",
+                  )}
+                />
+              </button>
+            ))}
+          </nav>
+        )}
 
         <motion.nav
           initial={{ y: 40, opacity: 0 }}
