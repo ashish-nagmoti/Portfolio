@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, type ReactNode } from "react"
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react"
 import { motion, type Variants } from "framer-motion"
 import {
   Trophy,
@@ -29,11 +29,12 @@ import { CURRENTLY_META, FEATURED_ICON } from "../content-meta"
 /*
  * The phone layout: an iOS-style home screen in place of the desktop.
  *
- * Three pages, swiped sideways (CSS scroll-snap, so it's the browser's own
- * native-feeling paging): page one is who Ashish is plus the apps, page two
- * is what he's doing, made and written, page three is the puzzle and mantra.
- * Each page fits the screen, so nothing needs scrolling. Widgets and icons share one grid (4 columns
- * upright, 8 sideways) the way iOS lines widgets up with icons. Above the dock
+ * Pages, swiped sideways (CSS scroll-snap, so it's the browser's own
+ * native-feeling paging): first who Ashish is plus the apps, then what he's
+ * doing, made and written, then the puzzle and mantra. The widgets are dealt
+ * onto as many pages as the screen needs, so no page has to scroll. Widgets
+ * and icons share one grid (4 columns upright, 8 sideways) the way iOS lines
+ * widgets up with icons. Above the dock
  * sits the iOS 18 "Search" pill, which turns into page dots while swiping;
  * pulling down on the home screen also opens search.
  */
@@ -58,6 +59,17 @@ const appear: Variants = {
   hidden: { opacity: 0, scale: 0.92 },
   visible: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 380, damping: 26 } },
 }
+
+// The home screen's widget groups in reading order, and how they split by default:
+// three pages on a tall phone. HomeScreen re-deals them to fit the actual screen.
+type Block = "profile" | "glance" | "contributions" | "apps" | "currently" | "featured" | "latest" | "puzzle" | "mantra"
+const DEFAULT_PAGES: Block[][] = [
+  ["profile", "glance", "contributions", "apps"],
+  ["currently", "featured", "latest"],
+  ["puzzle", "mantra"],
+]
+// Control Center's Focus: just the icons
+const FOCUS_PAGES: Block[][] = [["apps"]]
 
 const LABEL = "flex items-center gap-1.5 text-[12px] font-semibold uppercase tracking-wide text-muted-foreground"
 
@@ -331,8 +343,8 @@ function HomeIcon({ app, onOpen, showLabel = true }: { app: AppIconKey; onOpen: 
   )
 }
 
-// Each page fits the screen; scrolling is only a fallback for very short ones.
-// The grid is padded clear of the notch and dock
+// Pages are filled to fit the screen; scrolling is only a fallback for very
+// short ones and sideways. The grid is padded clear of the notch and dock
 // Content fades out as it scrolls under the date bar and the dock, instead of colliding with them
 const PAGE =
   "h-full w-full shrink-0 snap-start snap-always overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-150px),transparent_calc(100%-96px))] landscape:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px))] [@media(max-height:780px)]:[mask-image:linear-gradient(to_bottom,transparent_calc(env(safe-area-inset-top)+34px),black_calc(env(safe-area-inset-top)+58px),black_calc(100%-108px),transparent_calc(100%-92px))]"
@@ -355,13 +367,126 @@ export function HomeScreen({
   const [page, setPage] = useState(0)
   const [swiping, setSwiping] = useState(false)
   const swipeTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
-  const pages = focus ? 1 : 3
+  const [split, setSplit] = useState<Block[][]>(DEFAULT_PAGES)
+  const layout = focus ? FOCUS_PAGES : split
+  const pages = layout.length
   const [today, setToday] = useState("")
   useEffect(() => setToday(new Date().toLocaleDateString("en-US", { weekday: "long", day: "numeric", month: "long" })), [])
 
   const open = (app: AppIconKey) => (rect: DOMRect) => {
     if (app === "resume") window.open(RESUME_ICON.href, "_blank", "noopener")
     else onOpenApp(app, rect)
+  }
+
+  // Deal the widget groups onto pages so none has to scroll: measure each group,
+  // then fill pages in order until the next group won't fit. Group heights don't
+  // depend on which page they're on, so one pass settles. Sideways the screen is
+  // too short for this to help, so the default split stays.
+  useLayoutEffect(() => {
+    const pager = pagerRef.current
+    if (!pager || focus) return
+    const measure = () => {
+      let next = DEFAULT_PAGES
+      const grid = pager.querySelector<HTMLElement>("[data-grid]")
+      if (grid && !window.matchMedia("(orientation: landscape)").matches) {
+        const cs = getComputedStyle(grid)
+        const room = grid.parentElement!.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)
+        const gap = parseFloat(cs.rowGap) || 0
+        const height = (block: Block) => {
+          const items = [...pager.querySelectorAll<HTMLElement>(`[data-block="${block}"] > *`)].filter((el) => el.offsetHeight > 0)
+          if (!items.length) return 0
+          return Math.max(...items.map((el) => el.offsetTop + el.offsetHeight)) - Math.min(...items.map((el) => el.offsetTop))
+        }
+        const deal = (order: Block[]) => {
+          const dealt: Block[][] = [[]]
+          let used = 0
+          for (const block of order) {
+            const h = height(block)
+            if (used && used + gap + h > room) {
+              dealt.push([block])
+              used = h
+            } else {
+              dealt[dealt.length - 1].push(block)
+              used = used ? used + gap + h : h
+            }
+          }
+          return dealt
+        }
+        const order = DEFAULT_PAGES.flat()
+        next = deal(order)
+        // The apps belong on the first page: if they'd spill over, contributions moves on instead
+        if (!next[0].includes("apps")) {
+          const rest: Block[] = order.filter((b) => b !== "apps")
+          rest.splice(rest.indexOf("contributions"), 0, "apps")
+          next = deal(rest)
+        }
+      }
+      setSplit((cur) => (JSON.stringify(cur) === JSON.stringify(next) ? cur : next))
+    }
+    measure()
+    // Again when the screen turns or resizes, a widget's content changes, or the fonts land
+    const ro = new ResizeObserver(measure)
+    ro.observe(pager)
+    pager.querySelectorAll("[data-grid]").forEach((g) => ro.observe(g))
+    document.fonts?.ready.then(measure)
+    return () => ro.disconnect()
+  }, [focus, split])
+
+  const renderBlock = (block: Block): ReactNode => {
+    switch (block) {
+      case "profile":
+        return <ProfileCard onOpen={() => onOpenApp("about")} />
+      case "glance":
+        return (
+          <>
+            <LocalTimeWidget />
+            <StatsWidget onOpen={() => onOpenApp("about")} />
+          </>
+        )
+      case "contributions":
+        return <ContributionsWidget />
+      case "apps":
+        return (
+          <>
+            {/* Sideways the screen is too short for a dock: its apps join the grid */}
+            {DOCK_APPS.map((app) => (
+              <div key={app} className="hidden landscape:block">
+                <HomeIcon app={app} onOpen={open(app)} />
+              </div>
+            ))}
+            {GRID_APPS.map((app) => (
+              <HomeIcon key={app} app={app} onOpen={open(app)} />
+            ))}
+          </>
+        )
+      case "currently":
+        return <CurrentlyWidget onOpenApp={onOpenApp} />
+      case "featured":
+        return <FeaturedWidget onOpen={() => onOpenApp("projects")} />
+      case "latest":
+        return <LatestPostWidget onOpen={() => onOpenApp("blog")} />
+      case "puzzle":
+        return (
+          <Tile className="col-span-4">
+            <PuzzleBoard
+              size={184}
+              title={
+                <span className={LABEL}>
+                  <PuzzlePiece weight="fill" className="h-3.5 w-3.5 text-violet-500" />
+                  Puzzle
+                </span>
+              }
+              aside={
+                <span className="text-[13px] leading-snug text-muted-foreground">
+                  Slide the pieces into the gap until the picture is whole. Hold the eye to peek.
+                </span>
+              }
+            />
+          </Tile>
+        )
+      case "mantra":
+        return <MantraWidget />
+    }
   }
 
   // While paging, the Search pill shows page dots instead (as on iOS 18)
@@ -439,77 +564,29 @@ export function HomeScreen({
 
       {/* Pages */}
       <div ref={pagerRef} onScroll={onPagerScroll} className="no-scrollbar flex h-full snap-x snap-mandatory overflow-x-auto overflow-y-hidden">
-        <div className={PAGE} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={endPull} onTouchCancel={endPull}>
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{ visible: { transition: { staggerChildren: 0.035 } } }}
-            className={GRID}
-            style={pullY ? { transform: `translateY(${pullY / 2}px)` } : undefined}
+        {layout.map((blocks, i) => (
+          <div
+            key={i}
+            className={PAGE}
+            {...(i === 0 ? { onTouchStart, onTouchMove, onTouchEnd: endPull, onTouchCancel: endPull } : {})}
           >
-            {!focus && (
-              <>
-                <ProfileCard onOpen={() => onOpenApp("about")} />
-                <LocalTimeWidget />
-                <StatsWidget onOpen={() => onOpenApp("about")} />
-                <ContributionsWidget />
-              </>
-            )}
-            {/* Sideways the screen is too short for a dock: its apps join the grid */}
-            {DOCK_APPS.map((app) => (
-              <div key={app} className="hidden landscape:block">
-                <HomeIcon app={app} onOpen={open(app)} />
-              </div>
-            ))}
-            {GRID_APPS.map((app) => (
-              <HomeIcon key={app} app={app} onOpen={open(app)} />
-            ))}
-          </motion.div>
-        </div>
-
-        {!focus && (
-          <div className={PAGE}>
             <motion.div
+              data-grid
               initial="hidden"
               animate="visible"
-              variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
+              variants={{ visible: { transition: { staggerChildren: i === 0 ? 0.035 : 0.05 } } }}
               className={GRID}
+              style={i === 0 && pullY ? { transform: `translateY(${pullY / 2}px)` } : undefined}
             >
-              <CurrentlyWidget onOpenApp={onOpenApp} />
-              <FeaturedWidget onOpen={() => onOpenApp("projects")} />
-              <LatestPostWidget onOpen={() => onOpenApp("blog")} />
+              {/* Each group's widgets sit straight in the grid; the wrapper is only for measuring */}
+              {blocks.map((block) => (
+                <div key={block} data-block={block} className="contents">
+                  {renderBlock(block)}
+                </div>
+              ))}
             </motion.div>
           </div>
-        )}
-
-        {!focus && (
-          <div className={PAGE}>
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
-              className={GRID}
-            >
-              <Tile className="col-span-4">
-                <PuzzleBoard
-                  size={184}
-                  title={
-                    <span className={LABEL}>
-                      <PuzzlePiece weight="fill" className="h-3.5 w-3.5 text-violet-500" />
-                      Puzzle
-                    </span>
-                  }
-                  aside={
-                    <span className="text-[13px] leading-snug text-muted-foreground">
-                      Slide the pieces into the gap until the picture is whole. Hold the eye to peek.
-                    </span>
-                  }
-                />
-              </Tile>
-              <MantraWidget />
-            </motion.div>
-          </div>
-        )}
+        ))}
       </div>
 
       {/* The Search pill (page dots while swiping), then the dock */}
