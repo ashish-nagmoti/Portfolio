@@ -4,7 +4,7 @@ import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { siteContent } from "@/lib/site-content"
 import { useCompact } from "@/components/os/window-context"
-import { Headphones, Trophy, Coffee, Globe, BookOpen, Link as LinkIcon, YoutubeLogo as Youtube, Play, Shuffle, Heart } from "@phosphor-icons/react"
+import { FilmSlate, MusicNotes, Rocket, GameController, BookOpen, Link as LinkIcon, YoutubeLogo as Youtube, Play, Shuffle, Heart } from "@phosphor-icons/react"
 import type { Icon as IconType } from "@phosphor-icons/react"
 // Edited from /admin (content/site.json); newest first
 const interestItems = [...siteContent.interests].sort((a, b) => (a.dateAdded < b.dateAdded ? 1 : -1))
@@ -184,10 +184,10 @@ export function InterestsApp() {
           <h3 className="mb-6 text-center text-xl font-bold">Fun Facts About Me</h3>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {[
-              { icon: Coffee, title: "Coffee Enthusiast", description: "Can't start coding without a perfect cup of coffee" },
-              { icon: Headphones, title: "Music While Coding", description: "Electronic and lo-fi beats fuel my productivity" },
-              { icon: Globe, title: "Remote Work Advocate", description: "Believe in the power of distributed teams" },
-              { icon: Trophy, title: "Hackathon Winner", description: "Won multiple hackathons and coding competitions" },
+              { icon: FilmSlate, title: "Movies, Books & Pop Culture", description: "Always in the middle of a film, a book or a fandom deep-dive" },
+              { icon: MusicNotes, title: "Music Enthusiast", description: "There's a song for every mood, and for every bug" },
+              { icon: Rocket, title: "Tech Enthusiast", description: "Loves starting new projects (finishing them is another story)" },
+              { icon: GameController, title: "Gamer", description: "Loves to play games, any chance I get" },
             ].map((fact) => (
               <div key={fact.title} className="space-y-2 text-center">
                 <fact.icon className="mx-auto h-7 w-7 text-[#1DB954]" />
