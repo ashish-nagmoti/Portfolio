@@ -194,7 +194,7 @@ export function ControlCenter({
   }
   const share = () => {
     const url = window.location.origin
-    if (navigator.share) navigator.share({ title: "Ashish Nagmoti — AI Engineer & Researcher", url }).catch(() => {})
+    if (navigator.share) navigator.share({ title: "Ashish Nagmoti - AI Engineer & Researcher", url }).catch(() => {})
     else navigator.clipboard?.writeText(url).then(() => showToast("Link copied", <Check weight="bold" className="h-4 w-4 text-[#30d158]" />))
   }
   const then = (fn: () => void) => () => {

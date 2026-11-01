@@ -26,7 +26,7 @@ interface DesktopProps {
 
 // Default window sizes are calibrated for a real laptop screen. A landscape
 // phone (~375-430px tall) is far shorter, so clamp to what's actually
-// available — otherwise windows render taller than the viewport itself.
+// available - otherwise windows render taller than the viewport itself.
 function openSize(id: AppId) {
   const app = APPS[id]
   if (typeof window === "undefined") return { ...app.defaultSize }

@@ -49,7 +49,7 @@ const FALLBACK: Note[] = [
     id: "b2767d9dde5b",
     title: "Common Pitfalls While Setting Up an AWS Account",
     excerpt:
-      "While helping a freelancing client set up his AWS account, I realized something — there's a serious lack of practical, experience-based guidance out there for beginners.",
+      "While helping a freelancing client set up his AWS account, I realized something - there's a serious lack of practical, experience-based guidance out there for beginners.",
     date: "2025-07-22",
     readTime: "3 min read",
     url: "https://medium.com/@ashishnagmoti7/common-pitfalls-while-setting-up-an-aws-account-b2767d9dde5b",

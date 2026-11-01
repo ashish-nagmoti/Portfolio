@@ -44,9 +44,9 @@ const commands = {
  .\`                                 \`/`,
 
   about: `👨‍💻 Ashish Nagmoti
-AI Engineer & Researcher — ESDS Software Solution Ltd.
+AI Engineer & Researcher - ESDS Software Solution Ltd.
 
-🎓 Education: B.Tech, AI & Data Science — K.K. Wagh Institute of Engineering Education and Research (9.1 CGPA)
+🎓 Education: B.Tech, AI & Data Science - K.K. Wagh Institute of Engineering Education and Research (9.1 CGPA)
 🏢 Work: LLM inference, GPU infrastructure, Kubernetes AI workloads, RAG, AI agents, AI security
 🌟 Research: Sovereign AI, decentralized RAG, zero-trust AI architectures
 
@@ -56,8 +56,8 @@ AI Engineer & Researcher — ESDS Software Solution Ltd.
   • Young Indians Nashik Chapter - Innovation Coordinator
 
 🥇 Awards:
-  • 1st Place, Sharp Tank @ ESDS — KAVACH, LLM Security Platform
-  • Certificate of Excellence — Transformation & Change Drive, ESDS
+  • 1st Place, Sharp Tank @ ESDS - KAVACH, LLM Security Platform
+  • Certificate of Excellence - Transformation & Change Drive, ESDS
 
 💼 Earlier:
   • Backend Intern, PrimeAcademy
@@ -102,7 +102,7 @@ Cloud & Data:
 1. KAVACH – LLM Security Platform
    • 1st Place, Sharp Tank @ ESDS Software Solution Ltd.
    • CEO & CTO, Team Patronus
-   • Enterprise LLM security and governance — protecting AI systems
+   • Enterprise LLM security and governance - protecting AI systems
      and sensitive organizational data.
 
 2. SovereignRAG – Decentralized Enterprise AI
@@ -229,7 +229,7 @@ export function Terminal() {
 
   useEffect(() => {
     // Auto-focusing on mobile pops the on-screen keyboard the instant the app
-    // opens, covering half the screen before the user asked for it — so only
+    // opens, covering half the screen before the user asked for it - so only
     // steal focus on pointer-driven (desktop-width) sessions.
     if (typeof window !== "undefined" && window.innerWidth >= 768) {
       inputRef.current?.focus()

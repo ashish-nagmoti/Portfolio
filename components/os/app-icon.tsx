@@ -9,10 +9,10 @@ export type AppIconKey = AppId | "resume"
  * The app icons, in the style of current macOS (Liquid Glass): a vivid
  * gradient tile with a specular sheen and a lit glass rim, carrying a frosted
  * glyph that casts a soft shadow onto it. Each one follows its real macOS
- * counterpart — Notes for the blog, Mail for contact, Terminal, a folder for
+ * counterpart - Notes for the blog, Mail for contact, Terminal, a folder for
  * projects, a Contacts monogram for About, a PDF for the resume.
  *
- * Renders a square that fills its container, so callers size it — the Dock,
+ * Renders a square that fills its container, so callers size it - the Dock,
  * Spotlight and window title bars all reuse it.
  */
 export function AppIcon({ app, className }: { app: AppIconKey; className?: string }) {
@@ -105,7 +105,7 @@ const ART: Record<AppIconKey, React.ReactNode> = {
     </Glass>
   ),
 
-  // Liked items: green glass, frosted heart — matching the app inside.
+  // Liked items: green glass, frosted heart - matching the app inside.
   interests: (
     <Glass className="bg-gradient-to-b from-[#5cf095] via-[#23cc62] to-[#0c9e45]">
       <Glyph icon={Heart} size="54%" />

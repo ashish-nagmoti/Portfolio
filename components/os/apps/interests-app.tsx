@@ -203,7 +203,7 @@ export function InterestsApp() {
             &quot;The best way to predict the future is to create it. Whether it&apos;s through code, community, or
             personal growth, I believe in continuous learning and making a positive impact.&quot;
           </blockquote>
-          <cite className="text-xs font-semibold text-[#a7a7a7]">— My Personal Philosophy</cite>
+          <cite className="text-xs font-semibold text-[#a7a7a7]">- My Personal Philosophy</cite>
         </div>
       </div>
 

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 
 // macOS apps (System Settings, Contacts, Mail prefs) group related rows into
 // a bordered, rounded container with hairline dividers between rows instead
-// of a separate drop-shadowed card per item — this is that pattern.
+// of a separate drop-shadowed card per item - this is that pattern.
 export function NativeSection({
   label,
   children,

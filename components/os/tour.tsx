@@ -30,13 +30,13 @@ const STEPS: Step[] = [
     target: "dock",
     placement: "top",
     title: "The Dock",
-    body: "Every app lives here: About, Projects, Terminal, Contact, Blog, Interests — and my resume on the end. Hover to magnify, click to open.",
+    body: "Every app lives here: About, Projects, Terminal, Contact, Blog, Interests - and my resume on the end. Hover to magnify, click to open.",
   },
   {
     target: "widgets",
     placement: "left",
     title: "Widgets",
-    body: "What I'm working on, my stack, stats and a featured project. Drag any widget anywhere — the desktop remembers where you left it.",
+    body: "What I'm working on, my stack, stats and a featured project. Drag any widget anywhere - the desktop remembers where you left it.",
   },
   {
     target: "window",

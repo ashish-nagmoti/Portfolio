@@ -12,7 +12,7 @@ This site (https://ashish-nagmoti.tech) presents the same information in an inte
 
 ## Current Role
 
-### AI Engineer and Researcher — ESDS Software Solution Ltd.
+### AI Engineer and Researcher - ESDS Software Solution Ltd.
 
 Ashish works on AI infrastructure and enterprise AI platforms at ESDS.
 
@@ -117,7 +117,7 @@ Platform capabilities and areas of work include:
 * Infrastructure and data-center simulation
 * Enterprise RAG systems
 
-The work focuses on bringing the complete AI lifecycle — from experimentation and model development to inference, deployment, governance, and observability — into an enterprise environment.
+The work focuses on bringing the complete AI lifecycle - from experimentation and model development to inference, deployment, governance, and observability - into an enterprise environment.
 
 ## Sovereign AI Research
 
@@ -137,7 +137,7 @@ Key principles include:
 
 ## SovereignRAG
 
-### SovereignRAG — Decentralized Enterprise AI
+### SovereignRAG - Decentralized Enterprise AI
 
 SovereignRAG is an architecture for decentralized enterprise RAG in which sensitive data remains at its source.
 
@@ -167,7 +167,7 @@ The project was developed as part of the ESDS Swaraj CloudForge Hackathon 2026 b
 
 ## KAVACH
 
-### KAVACH — LLM Security Platform
+### KAVACH - LLM Security Platform
 
 KAVACH is an LLM Security Platform focused on enterprise LLM security, governance, and protecting AI systems and sensitive organizational data.
 
@@ -229,7 +229,7 @@ He is particularly interested in the engineering gap between running a model suc
 
 ## Selected Projects
 
-### KAVACH — LLM Security Platform
+### KAVACH - LLM Security Platform
 
 An LLM Security Platform for enterprise LLM security and governance. CEO & CTO, Team Patronus. 1st place at Sharp Tank, ESDS Software Solution Ltd.
 
@@ -240,7 +240,7 @@ Concepts:
 * Access control
 * Protection of sensitive organizational data
 
-### SovereignRAG — Decentralized Enterprise AI
+### SovereignRAG - Decentralized Enterprise AI
 
 A decentralized enterprise RAG architecture focused on data sovereignty and controlled cross-domain AI collaboration. Built for the ESDS Swaraj CloudForge Hackathon 2026 (Team Patronus).
 
@@ -257,7 +257,7 @@ Technology and concepts:
 * Policy enforcement
 * Cryptographic trust
 
-### System Map — Isometric Codebase Visualizer
+### System Map - Isometric Codebase Visualizer
 
 GitHub:
 https://github.com/ashish-nagmoti/codebase-isometric-visualizer
@@ -273,7 +273,7 @@ Technology:
 * SVG
 * JavaScript
 
-### StoryMail — AI-Powered Smart Email Platform
+### StoryMail - AI-Powered Smart Email Platform
 
 GitHub:
 https://github.com/ashish-nagmoti/storymail
@@ -290,7 +290,7 @@ Technology:
 Live:
 http://story-mail-olive.vercel.app/
 
-### KalaShala — Platform for Local Artists
+### KalaShala - Platform for Local Artists
 
 GitHub:
 https://github.com/ashish-nagmoti/kalashala-backend
@@ -305,7 +305,7 @@ Technology:
 * AWS
 * PostgreSQL
 
-### AceUp — Student Resource Platform
+### AceUp - Student Resource Platform
 
 GitHub:
 https://github.com/riaan-attar/AceUp
@@ -322,13 +322,13 @@ Technology:
 
 ## Earlier Professional Experience
 
-### Backend Intern — PrimeAcademy
+### Backend Intern - PrimeAcademy
 
 Remote, Mar–Aug 2025.
 
 Worked on backend development using Django and AWS deployment.
 
-### Technical Intern — Lead Cured
+### Technical Intern - Lead Cured
 
 Remote, Sep–Nov 2024.
 
@@ -345,39 +345,39 @@ Worked on AWS cloud solutions for multiple clients, including deployment and inf
 
 ## Leadership
 
-### CEO & CTO — KAVACH, Team Patronus
+### CEO & CTO - KAVACH, Team Patronus
 
 As part of Team Patronus, contributed as CEO & CTO to the development and technical/product direction of KAVACH, an LLM Security Platform. Presented at Sharp Tank at ESDS Software Solution Ltd., where Team Patronus won 1st place.
 
-### Vice President — Phoenix Club
+### Vice President - Phoenix Club
 
 Led technical initiatives and helped organize technology-focused activities and events for the student community.
 
-### Web and IT Head — Innovera Hackathon
+### Web and IT Head - Innovera Hackathon
 
 Managed the technical side of the hackathon and coordinated a team responsible for the event website and related technical infrastructure.
 
-### Student Coordinator — Young Indians, Nashik Chapter
+### Student Coordinator - Young Indians, Nashik Chapter
 
 Worked on innovation-focused initiatives and activities involving students and emerging entrepreneurs.
 
 ## Awards and Recognitions
 
-### 1st Place — Sharp Tank, ESDS Software Solution Ltd.
+### 1st Place - Sharp Tank, ESDS Software Solution Ltd.
 
 Won first place as part of Team Patronus for KAVACH, an LLM Security Platform, contributing as CEO & CTO.
 
-### Certificate of Excellence — Transformation & Change Drive
+### Certificate of Excellence - Transformation & Change Drive
 
 Received a Certificate of Excellence for the Transformation & Change Drive at ESDS Software Solution Ltd., in recognition of contributions toward organizational transformation and change initiatives.
 
 ## Achievements
 
-* 1st place — Sharp Tank, ESDS Software Solution Ltd. (KAVACH, Team Patronus)
-* Certificate of Excellence — Transformation & Change Drive, ESDS Software Solution Ltd.
-* 1st place — Codethon / Arambh coding competition
-* 3rd place — Code-O-Fiesta 2.0
-* Contributor — Social Winter of Code
+* 1st place - Sharp Tank, ESDS Software Solution Ltd. (KAVACH, Team Patronus)
+* Certificate of Excellence - Transformation & Change Drive, ESDS Software Solution Ltd.
+* 1st place - Codethon / Arambh coding competition
+* 3rd place - Code-O-Fiesta 2.0
+* Contributor - Social Winter of Code
 * Open-source contributor
 * Participated in technical hackathons and AI-focused engineering initiatives
 

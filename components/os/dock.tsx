@@ -110,7 +110,7 @@ export function Dock({ openWindows, onOpen, bounceId, bounceToken }: DockProps) 
         initial={{ y: 40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 300, damping: 26, delay: 0.15 }}
-        // No tray behind the icons — they sit straight on the wallpaper, so
+        // No tray behind the icons - they sit straight on the wallpaper, so
         // magnification never shows a container growing with them.
         className="pointer-events-auto flex items-end gap-2.5 px-3 pb-2 pt-2"
       >

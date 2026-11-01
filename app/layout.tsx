@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   creator: "Ashish Nagmoti",
   publisher: "Ashish Nagmoti",
   openGraph: {
-    title: "Ashish Nagmoti — AI Engineer & Researcher",
+    title: "Ashish Nagmoti - AI Engineer & Researcher",
     description: "AI Engineer and Researcher at ESDS: LLM inference, AI infrastructure, sovereign AI, RAG and GPU platforms",
     type: "website",
     locale: "en_US",
@@ -57,13 +57,13 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Ashish Nagmoti — AI Engineer & Researcher',
+        alt: 'Ashish Nagmoti - AI Engineer & Researcher',
       }
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ashish Nagmoti — AI Engineer & Researcher",
+    title: "Ashish Nagmoti - AI Engineer & Researcher",
     description: "AI Engineer and Researcher at ESDS: LLM inference, AI infrastructure, sovereign AI, RAG and GPU platforms",
     images: ['/og-image.png'],
   },
@@ -97,7 +97,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      {/* Icons and the manifest come from the `metadata` export above —
+      {/* Icons and the manifest come from the `metadata` export above -
           duplicating them here previously also pointed at a favicon.ico that
           was never generated. */}
       <body className={inter.variable}>

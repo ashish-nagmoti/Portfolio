@@ -13,7 +13,7 @@ interface IconBadgeProps {
   /** Tile background, e.g. one of the `SYSTEM` colours below. */
   gradient: string
   size?: keyof typeof SIZES
-  /** Color override only (e.g. "text-slate-700") — replaces the white default entirely, so never pass a size class here. Use `size` for that. */
+  /** Color override only (e.g. "text-slate-700") - replaces the white default entirely, so never pass a size class here. Use `size` for that. */
   iconClassName?: string
   className?: string
 }

@@ -79,7 +79,7 @@ const config: Config = {
   			'3xl': 'calc(var(--radius) + 1.25rem)'
   		},
   		boxShadow: {
-  			/* Crisp, single-direction shadows to match the macOS window chrome —
+  			/* Crisp, single-direction shadows to match the macOS window chrome -
   			   these used to be puffy dual-tone "clay" shadows, which read as a
   			   mismatched, dated design language next to the glass OS shell. */
   			clay: '0 1px 2px rgb(var(--clay-dark) / calc(var(--clay-dark-a) * 0.5)), 0 6px 16px rgb(var(--clay-dark) / calc(var(--clay-dark-a) * 0.4))',

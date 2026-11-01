@@ -1,7 +1,7 @@
 import * as React from "react"
 
 // Phones are identified by their short side, not raw width, so a phone
-// rotated to landscape (e.g. 852x393) still counts as a phone — unlike a
+// rotated to landscape (e.g. 852x393) still counts as a phone - unlike a
 // width-only check, which would misclassify it as a desktop viewport.
 const PHONE_MAX_DIMENSION = 500
 

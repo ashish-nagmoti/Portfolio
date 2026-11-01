@@ -1,4 +1,4 @@
-// macOS icons use a "squircle" — a continuous-curvature superellipse, not a
+// macOS icons use a "squircle" - a continuous-curvature superellipse, not a
 // circular-arc rounded rect. CSS border-radius can't produce that curve, so
 // this defines it once as an SVG clipPath (objectBoundingBox scales it to
 // whatever size each icon renders at) and every icon references it via the

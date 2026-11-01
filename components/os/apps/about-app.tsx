@@ -48,7 +48,7 @@ const codingProfiles = [
 
 const leadership = [
   {
-    org: "KAVACH — Team Patronus",
+    org: "KAVACH - Team Patronus",
     role: "CEO & CTO",
     description:
       "Led the technical and product direction of KAVACH, an LLM Security Platform for enterprise LLM security and governance. 1st place at Sharp Tank, ESDS Software Solution Ltd.",
@@ -75,7 +75,7 @@ const sideProjects = [
     name: "KAVACH – LLM Security Platform",
     date: "Sharp Tank, ESDS · 1st Place",
     detail:
-      "CEO & CTO, Team Patronus. Enterprise LLM security and governance — protecting AI systems and sensitive organizational data.",
+      "CEO & CTO, Team Patronus. Enterprise LLM security and governance - protecting AI systems and sensitive organizational data.",
   },
   {
     name: "SovereignRAG – Decentralized Enterprise AI",
@@ -112,7 +112,7 @@ const achievements = [
     description: "Won as part of Team Patronus for KAVACH, an LLM Security Platform, contributing as CEO & CTO.",
   },
   {
-    title: "Certificate of Excellence — Transformation & Change Drive",
+    title: "Certificate of Excellence - Transformation & Change Drive",
     place: "ESDS Software Solution Ltd.",
     description: "Recognition for contributions toward organizational transformation and change initiatives.",
   },
@@ -131,13 +131,13 @@ const experience = [
   },
   {
     role: "Backend Intern",
-    company: "PrimeAcademy — Remote",
+    company: "PrimeAcademy - Remote",
     dates: "Mar 2025 – Aug 2025",
     description: "Worked on backend using Django and AWS deployment.",
   },
   {
     role: "Technical Intern",
-    company: "Lead Cured — Remote",
+    company: "Lead Cured - Remote",
     dates: "Sep 2024 – Nov 2024",
     description: "Built and tested serverless APIs using AWS Lambda, EC2, S3, IAM.",
   },
@@ -158,8 +158,8 @@ const HISTORY = [
     changes: [
       "LLM inference and model serving on GPU infrastructure",
       "Kubernetes AI workloads, RAG, AI agents and AgentOps",
-      "1st place, Sharp Tank — KAVACH, an LLM Security Platform, as CEO & CTO of Team Patronus",
-      "Sovereign AI research — SovereignRAG, CloudForge Hackathon 2026",
+      "1st place, Sharp Tank - KAVACH, an LLM Security Platform, as CEO & CTO of Team Patronus",
+      "Sovereign AI research - SovereignRAG, CloudForge Hackathon 2026",
       "Certificate of Excellence, Transformation & Change Drive",
     ],
   },
@@ -199,7 +199,7 @@ const HISTORY = [
 
 // A single accent runs through everything that's just "more of the same"
 // content about one person (leadership, side projects, achievements,
-// experience) — real macOS apps reserve color variation for things with an
+// experience) - real macOS apps reserve color variation for things with an
 // actual distinct identity (a brand, a tech domain), not for repeated rows
 // of the same category.
 const PROFILE_ACCENT = SYSTEM.blue
@@ -297,7 +297,7 @@ export function AboutApp() {
               <div className="space-y-6">
                 <div>
                   <p className="text-base font-semibold leading-snug text-foreground">
-                    AI Engineer &amp; Researcher at ESDS — LLM inference, GPU infrastructure, RAG and sovereign AI.
+                    AI Engineer &amp; Researcher at ESDS - LLM inference, GPU infrastructure, RAG and sovereign AI.
                   </p>
                   <p className="mt-1.5 text-sm text-muted-foreground">
                     The interesting problems start after the model runs: operating it reliably, securely and at

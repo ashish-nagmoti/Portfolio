@@ -188,14 +188,14 @@
 
 /* Translate only, on its own layer. These blobs carry a 100px blur, and
    scaling a blurred element forces the browser to re-rasterize that blur on
-   every frame — it dropped the whole desktop to ~6fps while merely idling.
+   every frame - it dropped the whole desktop to ~6fps while merely idling.
    A promoted layer that only moves is composited instead. */
 .clay-blob {
   animation: float-blob 14s ease-in-out infinite;
   will-change: transform;
 }
 
-/* True macOS icon shape (continuous-curvature squircle) — see squircle-defs.tsx */
+/* True macOS icon shape (continuous-curvature squircle) - see squircle-defs.tsx */
 .squircle {
   clip-path: url(#squircle-clip);
 }

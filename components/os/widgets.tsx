@@ -62,7 +62,7 @@ const DragBoundsContext = createContext<RefObject<HTMLElement | null>>({ current
 
 /**
  * A desktop widget. Draggable anywhere within the desktop; the offset is
- * remembered per `id`. Clickable widgets stay clickable — a click that ends a
+ * remembered per `id`. Clickable widgets stay clickable - a click that ends a
  * drag is swallowed so moving a widget never opens its app.
  */
 function Widget({
@@ -182,7 +182,7 @@ function LocationWidget() {
  * GitHub contribution graph
  *
  * GitHub only exposes contribution counts through its GraphQL API, which needs
- * a token — and a token can't ship in client-side code. So this reads a public,
+ * a token - and a token can't ship in client-side code. So this reads a public,
  * CORS-enabled mirror of the same data. That's a third-party dependency: if it
  * is unreachable the widget falls back to a cached copy, and failing that to an
  * empty grid rather than an error.
@@ -477,7 +477,7 @@ function PuzzleWidget() {
 const COLUMN = "absolute top-11 z-0 grid w-[268px] auto-rows-min grid-cols-2 gap-3 [@media(max-height:560px)]:hidden"
 
 /**
- * The desktop's widgets, in place of app icons — every app is still reachable
+ * The desktop's widgets, in place of app icons - every app is still reachable
  * from the Dock and Spotlight. Split across both edges so the desktop isn't
  * lopsided; the left column drops out on narrower screens, where an open
  * window would sit on top of it anyway. Each widget can be dragged anywhere

@@ -23,20 +23,20 @@ const projects = [
     title: "KAVACH – LLM Security Platform",
     description: "Enterprise LLM security and governance. 1st place at Sharp Tank, ESDS.",
     longDescription:
-      "KAVACH is an LLM Security Platform focused on enterprise LLM security, governance, and protecting AI systems and sensitive organizational data. Built by Team Patronus — Ashish Nagmoti, Sakshi Yeole, Akshada Malode, Avani Jethiwal, Krushna Malwatkar and Kaustubh Chaudhari — with Ashish as CEO & CTO, responsible for the technical and product direction. Presented at Sharp Tank at ESDS Software Solution Ltd., where it won 1st place.",
+      "KAVACH is an LLM Security Platform focused on enterprise LLM security, governance, and protecting AI systems and sensitive organizational data. Built by Team Patronus - Ashish Nagmoti, Sakshi Yeole, Akshada Malode, Avani Jethiwal, Krushna Malwatkar and Kaustubh Chaudhari - with Ashish as CEO & CTO, responsible for the technical and product direction. Presented at Sharp Tank at ESDS Software Solution Ltd., where it won 1st place.",
     tech: ["LLM Security", "AI Governance", "Access Control", "Enterprise AI"],
     category: "AI",
     icon: ShieldCheck,
     github: null,
     demo: null,
-    date: "Sharp Tank, ESDS — 1st Place",
+    date: "Sharp Tank, ESDS - 1st Place",
   },
   {
     id: 5,
     title: "SovereignRAG – Decentralized Enterprise AI",
     description: "Enterprise RAG where sensitive data never leaves the team that owns it.",
     longDescription:
-      "An architecture for decentralized enterprise RAG in which sensitive data stays at its source. Each organizational node keeps its own documents, vector database, retrieval, access policies and cryptographic identity. Instead of moving documents or embeddings between departments, nodes release signed claims according to locally enforced policy — so the orchestration layer, and the LLM itself, are never trusted with raw sensitive data. Built for the ESDS Swaraj CloudForge Hackathon 2026 by Team Patronus.",
+      "An architecture for decentralized enterprise RAG in which sensitive data stays at its source. Each organizational node keeps its own documents, vector database, retrieval, access policies and cryptographic identity. Instead of moving documents or embeddings between departments, nodes release signed claims according to locally enforced policy - so the orchestration layer, and the LLM itself, are never trusted with raw sensitive data. Built for the ESDS Swaraj CloudForge Hackathon 2026 by Team Patronus.",
     tech: ["Python", "FastAPI", "PostgreSQL", "Qdrant", "Ed25519", "vLLM", "React"],
     category: "AI",
     icon: Brain,
@@ -49,7 +49,7 @@ const projects = [
     title: "System Map – Isometric Codebase Visualizer",
     description: "Turns any codebase into an interactive isometric blueprint diagram.",
     longDescription:
-      "A Claude Code skill that reads a codebase and renders its real routes, functions, models and tables as an interactive isometric blueprint — cross-hatched cubes on a technical-drawing canvas. Every number is pulled from source, never invented; click any block to drill into its actual internals. Outputs a single self-contained HTML file with no server or build step.",
+      "A Claude Code skill that reads a codebase and renders its real routes, functions, models and tables as an interactive isometric blueprint - cross-hatched cubes on a technical-drawing canvas. Every number is pulled from source, never invented; click any block to drill into its actual internals. Outputs a single self-contained HTML file with no server or build step.",
     tech: ["Claude Code", "HTML", "SVG", "JavaScript"],
     category: "Tools",
     icon: Boxes,
