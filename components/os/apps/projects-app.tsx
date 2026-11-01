@@ -23,7 +23,7 @@ const projects = [
     title: "KAVACH – LLM Security Platform",
     description: "Enterprise LLM security and governance. 1st place at Sharp Tank, ESDS.",
     longDescription:
-      "KAVACH is an LLM Security Platform focused on enterprise LLM security, governance, and protecting AI systems and sensitive organizational data. Built by Team Patronus — Ashish Nagmoti, Avani Jethiwal, Krushna Malwatkar, Sakshi Yeole and Kaustubh Chaudhari — with Ashish as CEO & CTO, responsible for the technical and product direction. Presented at Sharp Tank at ESDS Software Solution Ltd., where it won 1st place.",
+      "KAVACH is an LLM Security Platform focused on enterprise LLM security, governance, and protecting AI systems and sensitive organizational data. Built by Team Patronus — Ashish Nagmoti, Sakshi Yeole, Akshada Malode, Avani Jethiwal, Krushna Malwatkar and Kaustubh Chaudhari — with Ashish as CEO & CTO, responsible for the technical and product direction. Presented at Sharp Tank at ESDS Software Solution Ltd., where it won 1st place.",
     tech: ["LLM Security", "AI Governance", "Access Control", "Enterprise AI"],
     category: "AI",
     icon: ShieldCheck,

@@ -178,9 +178,10 @@ The project was presented at Sharp Tank at ESDS Software Solution Ltd., where Te
 Team Patronus:
 
 * Ashish Nagmoti
+* Sakshi Yeole
+* Akshada Malode
 * Avani Jethiwal
 * Krushna Malwatkar
-* Sakshi Yeole
 * Kaustubh Chaudhari
 
 ## AI Security
