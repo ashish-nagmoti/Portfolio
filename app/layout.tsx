@@ -21,7 +21,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   // Resolves the relative OG / Twitter image URLs below to the real domain
   metadataBase: new URL("https://ashish-nagmoti.tech"),
-  title: "Ashish Nagmoti | AI Engineer & Researcher",
+  // Each page sets its own title, description and canonical URL (lib/seo.ts)
+  title: { default: "Ashish Nagmoti | AI Engineer & Researcher", template: "%s | Ashish Nagmoti" },
   description:
     "Portfolio of Ashish Nagmoti, AI Engineer and Researcher at ESDS Software Solution Ltd., working on LLM inference, AI infrastructure, sovereign AI, RAG, GPU infrastructure, AI security and enterprise AI platforms.",
   keywords: [

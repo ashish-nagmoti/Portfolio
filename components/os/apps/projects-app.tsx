@@ -11,92 +11,17 @@ import { IconBadge, SYSTEM } from "@/components/os/icon-badge"
 import { cn } from "@/lib/utils"
 import { useCompact } from "@/components/os/window-context"
 import { ArrowSquareOut as ExternalLink, GithubLogo as Github, Brain, Globe, Code, SquaresFour as LayoutGrid, List, MagnifyingGlass as Search, Folder, Sparkle as Sparkles, Cube as Boxes, Wrench, ShieldCheck, CaretRight } from "@phosphor-icons/react"
+import type { Icon as IconType } from "@phosphor-icons/react"
+import { projects as projectData, type ProjectIcon } from "@/lib/profile"
+
+const PROJECT_ICONS: Record<ProjectIcon, IconType> = { shield: ShieldCheck, brain: Brain, boxes: Boxes, globe: Globe, code: Code }
+const projects = projectData.map((p) => ({ ...p, icon: PROJECT_ICONS[p.icon] }))
+
 const CATEGORY_GRADIENT: Record<string, string> = {
   AI: SYSTEM.blue,
   Web: SYSTEM.teal,
   Tools: SYSTEM.orange,
 }
-
-const projects = [
-  {
-    id: 6,
-    title: "KAVACH – LLM Security Platform",
-    description: "Enterprise LLM security and governance. 1st place at Sharp Tank, ESDS.",
-    longDescription:
-      "KAVACH is an LLM Security Platform focused on enterprise LLM security, governance, and protecting AI systems and sensitive organizational data. Built by Team Patronus - Ashish Nagmoti, Sakshi Yeole, Akshada Malode, Avani Jethiwal, Krushna Malwatkar and Kaustubh Chaudhari - with Ashish as CEO & CTO, responsible for the technical and product direction. Presented at Sharp Tank at ESDS Software Solution Ltd., where it won 1st place.",
-    tech: ["LLM Security", "AI Governance", "Access Control", "Enterprise AI"],
-    category: "AI",
-    icon: ShieldCheck,
-    github: null,
-    demo: null,
-    date: "Sharp Tank, ESDS - 1st Place",
-  },
-  {
-    id: 5,
-    title: "SovereignRAG – Decentralized Enterprise AI",
-    description: "Enterprise RAG where sensitive data never leaves the team that owns it.",
-    longDescription:
-      "An architecture for decentralized enterprise RAG in which sensitive data stays at its source. Each organizational node keeps its own documents, vector database, retrieval, access policies and cryptographic identity. Instead of moving documents or embeddings between departments, nodes release signed claims according to locally enforced policy - so the orchestration layer, and the LLM itself, are never trusted with raw sensitive data. Built for the ESDS Swaraj CloudForge Hackathon 2026 by Team Patronus.",
-    tech: ["Python", "FastAPI", "PostgreSQL", "Qdrant", "Ed25519", "vLLM", "React"],
-    category: "AI",
-    icon: Brain,
-    github: null,
-    demo: null,
-    date: "2026",
-  },
-  {
-    id: 4,
-    title: "System Map – Isometric Codebase Visualizer",
-    description: "Turns any codebase into an interactive isometric blueprint diagram.",
-    longDescription:
-      "A Claude Code skill that reads a codebase and renders its real routes, functions, models and tables as an interactive isometric blueprint - cross-hatched cubes on a technical-drawing canvas. Every number is pulled from source, never invented; click any block to drill into its actual internals. Outputs a single self-contained HTML file with no server or build step.",
-    tech: ["Claude Code", "HTML", "SVG", "JavaScript"],
-    category: "Tools",
-    icon: Boxes,
-    github: "https://github.com/ashish-nagmoti/codebase-isometric-visualizer",
-    demo: null,
-    date: "Aug 2026",
-  },
-  {
-    id: 1,
-    title: "StoryMail – AI-Powered Smart Email Platform",
-    description: "AI platform for email classification, weekly digests, and querying.",
-    longDescription:
-      "StoryMail is an AI-powered platform that classifies emails, generates weekly digests, and allows users to query their inbox using natural language. Built with Django, Auth0, Postgres SQL, and GeminiAPI for robust authentication and advanced AI features.",
-    tech: ["Django", "Auth0", "Postgres SQL", "GeminiAPI"],
-    category: "AI",
-    icon: Brain,
-    github: "https://github.com/ashish-nagmoti/storymail",
-    demo: "http://story-mail-olive.vercel.app/",
-    date: "Mar 2024 – Oct 2024",
-  },
-  {
-    id: 2,
-    title: "KalaShala – Platform Empowering Local Artists",
-    description: "Platform for local artists to showcase, publish content, and grow.",
-    longDescription:
-      "KalaShala is a platform designed for local artists to showcase their work, publish content, and grow their audience. Role: Backend Development and Deployment.",
-    tech: ["Django", "AWS", "Postgres SQL"],
-    category: "Web",
-    icon: Globe,
-    github: "https://github.com/ashish-nagmoti/kalashala-backend",
-    demo: "https://kalashala-frontend1-zxra.vercel.app/",
-    date: "Feb 2024 – Mar 2024",
-  },
-  {
-    id: 3,
-    title: "AceUp – Student Resource Hub with AI Chatbot",
-    description: "Student hub with notes, roadmaps, events, and chatbot.",
-    longDescription:
-      "AceUp is a student resource hub featuring notes, roadmaps, events, and an integrated AI chatbot. Built using Django, Tailwind CSS, Jinja, SQLite3, and Python.",
-    tech: ["Django", "Tailwind CSS", "Jinja", "SQLite3", "Python"],
-    category: "AI",
-    icon: Code,
-    github: "https://github.com/riaan-attar/AceUp",
-    demo: "https://inevitable-lucky-predeator-b19e8de5.koyeb.app/",
-    date: "2024",
-  },
-]
 
 const FAVORITES = [
   { id: "all", label: "All Projects", icon: Folder },

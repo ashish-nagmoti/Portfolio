@@ -7,24 +7,16 @@ import { IconBadge, SYSTEM } from "@/components/os/icon-badge"
 import { NativeSection, NativeRow } from "@/components/os/native-list"
 import { useCompact } from "@/components/os/window-context"
 import { siteContent } from "@/lib/site-content"
+import { achievements, experience, leadership, skillLabels, skills, type SkillGroup } from "@/lib/profile"
 import { cn } from "@/lib/utils"
 import { Code, CodeSimple as Code2, Cloud, Database, Users, Medal as Award, Briefcase, Buildings as Building2, ClockCounterClockwise as History, Layout as LayoutTemplate, Cpu, Brain } from "@phosphor-icons/react"
-const skills = {
-  llm: ["LLM Inference", "vLLM", "KServe", "Hugging Face", "RAG", "Vector Search", "AI Agents", "LLM Routing"],
-  infra: ["Kubernetes", "NVIDIA GPUs", "CUDA", "Kubeflow", "Model Registries", "ML Pipelines", "AI Observability"],
-  backend: ["Python", "FastAPI", "Django", "REST APIs"],
-  frontend: ["React", "Next.js", "TypeScript"],
-  cloud: ["AWS", "GCP", "Docker", "Linux"],
-  databases: ["PostgreSQL", "MongoDB", "Qdrant"],
-}
-
 const SKILL_META = {
-  llm: { icon: Brain, gradient: SYSTEM.blue, label: "Generative AI & LLMs" },
-  infra: { icon: Cpu, gradient: SYSTEM.orange, label: "AI Infrastructure" },
-  backend: { icon: Code, gradient: SYSTEM.green, label: "Backend" },
-  frontend: { icon: LayoutTemplate, gradient: SYSTEM.red, label: "Frontend" },
-  cloud: { icon: Cloud, gradient: SYSTEM.teal, label: "Cloud" },
-  databases: { icon: Database, gradient: SYSTEM.graphite, label: "Databases" },
+  llm: { icon: Brain, gradient: SYSTEM.blue },
+  infra: { icon: Cpu, gradient: SYSTEM.orange },
+  backend: { icon: Code, gradient: SYSTEM.green },
+  frontend: { icon: LayoutTemplate, gradient: SYSTEM.red },
+  cloud: { icon: Cloud, gradient: SYSTEM.teal },
+  databases: { icon: Database, gradient: SYSTEM.graphite },
 } as const
 
 const codingProfiles = [
@@ -43,30 +35,6 @@ const codingProfiles = [
     stats: `${siteContent.stats.repos} Repositories`,
     description: "Open source contributions and personal projects",
     gradient: SYSTEM.black,
-  },
-]
-
-const leadership = [
-  {
-    org: "KAVACH - Team Patronus",
-    role: "CEO & CTO",
-    description:
-      "Led the technical and product direction of KAVACH, an LLM Security Platform for enterprise LLM security and governance. 1st place at Sharp Tank, ESDS Software Solution Ltd.",
-  },
-  {
-    org: "Phoenix Club",
-    role: "Vice President",
-    description: "Leading technical initiatives and organizing tech events for 200+ members.",
-  },
-  {
-    org: "Innovera Hackathon",
-    role: "Web and IT Head",
-    description: "Managed a team of 10+ people for building the website and running technical aspects of the hackathon.",
-  },
-  {
-    org: "Young Indians Nashik Chapter",
-    role: "Student Coordinator (Innovation)",
-    description: "Driving innovation projects and mentoring emerging entrepreneurs.",
   },
 ]
 
@@ -102,44 +70,6 @@ const sideProjects = [
     name: "AceUp – Student Resource Hub with AI Chatbot",
     date: undefined,
     detail: "Tech: Django, Tailwind CSS, Jinja, SQLite3, Python. Student hub with notes, roadmaps, events, and chatbot.",
-  },
-]
-
-const achievements = [
-  {
-    title: "Sharp Tank, ESDS Software Solution Ltd.",
-    place: "1st Place",
-    description: "Won as part of Team Patronus for KAVACH, an LLM Security Platform, contributing as CEO & CTO.",
-  },
-  {
-    title: "Certificate of Excellence - Transformation & Change Drive",
-    place: "ESDS Software Solution Ltd.",
-    description: "Recognition for contributions toward organizational transformation and change initiatives.",
-  },
-  { title: "Codethon – Arambh", place: "Winner (1st place)", description: "Coding competition winner for innovative solutions." },
-  { title: "Code-O-Fiesta 2.0", place: "3rd Place", description: "Placed 3rd in a competitive coding event." },
-  { title: "Social Winter of Code", place: "Contributor", description: "Completed open-source contributions under SWOC." },
-]
-
-const experience = [
-  {
-    role: "AI Engineer & Researcher",
-    company: "ESDS Software Solution Ltd.",
-    dates: "Present",
-    description:
-      "AI infrastructure and enterprise AI platforms: LLM inference and model serving, GPU infrastructure, Kubernetes-based AI workloads, RAG, AI agents and AgentOps, AI security and governance, sovereign AI architectures.",
-  },
-  {
-    role: "Backend Intern",
-    company: "PrimeAcademy - Remote",
-    dates: "Mar 2025 – Aug 2025",
-    description: "Worked on backend using Django and AWS deployment.",
-  },
-  {
-    role: "Technical Intern",
-    company: "Lead Cured - Remote",
-    dates: "Sep 2024 – Nov 2024",
-    description: "Built and tested serverless APIs using AWS Lambda, EC2, S3, IAM.",
   },
 ]
 
@@ -383,7 +313,7 @@ export function AboutApp() {
                     <NativeRow
                       key={category}
                       icon={<IconBadge icon={meta.icon} gradient={meta.gradient} size="md" />}
-                      title={meta.label}
+                      title={skillLabels[category as SkillGroup]}
                       subtitle={
                         <div className="mt-1.5 flex flex-wrap gap-1.5">
                           {skillList.map((skill) => (
