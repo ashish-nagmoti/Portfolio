@@ -52,6 +52,12 @@ const STEPS: Step[] = [
     body: "Press ⌘K (or Ctrl+K) anywhere to search and jump straight to an app. It's the fastest way around.",
   },
   {
+    target: "control-center",
+    placement: "bottom",
+    title: "Control Center",
+    body: "The switches icon up here: reach me on GitHub, LinkedIn or email, flip dark mode, turn on Focus for a clean desktop, dim the display, change the wallpaper or grab my resume.",
+  },
+  {
     target: "menubar",
     placement: "bottom",
     title: "The menu bar",
@@ -84,25 +90,28 @@ function measure(target?: string): Rect | null {
   return { top: r.top - PAD, left: r.left - PAD, width: r.width + PAD * 2, height: r.height + PAD * 2 }
 }
 
-/** Where the bubble goes for a step, clamped to the viewport. */
-function bubblePosition(placement: Placement, rect: Rect | null): { top?: number; bottom?: number; left?: number } {
+/**
+ * Where the bubble goes for a step, clamped to the viewport. Sets both top and
+ * bottom: a side left over from an earlier step would stretch the bubble.
+ */
+function bubblePosition(placement: Placement, rect: Rect | null): { top: number | "auto"; bottom: number | "auto"; left: number } {
   const vw = window.innerWidth
   const vh = window.innerHeight
   const clampX = (x: number) => Math.min(Math.max(12, x), vw - BUBBLE_W - 12)
 
   if (!rect || placement === "center") {
-    return { top: Math.round(vh * 0.36), left: clampX((vw - BUBBLE_W) / 2) }
+    return { top: Math.round(vh * 0.36), bottom: "auto", left: clampX((vw - BUBBLE_W) / 2) }
   }
   const cx = rect.left + rect.width / 2
   switch (placement) {
     case "top":
-      return { bottom: vh - rect.top + GAP, left: clampX(cx - BUBBLE_W / 2) }
+      return { top: "auto", bottom: vh - rect.top + GAP, left: clampX(cx - BUBBLE_W / 2) }
     case "bottom":
-      return { top: rect.top + rect.height + GAP, left: clampX(cx - BUBBLE_W / 2) }
+      return { top: rect.top + rect.height + GAP, bottom: "auto", left: clampX(cx - BUBBLE_W / 2) }
     case "left":
-      return { top: Math.max(12, rect.top), left: clampX(rect.left - BUBBLE_W - GAP) }
+      return { top: Math.max(12, rect.top), bottom: "auto", left: clampX(rect.left - BUBBLE_W - GAP) }
     case "right":
-      return { top: Math.max(12, rect.top + rect.height / 2 - 90), left: clampX(rect.left + rect.width + GAP) }
+      return { top: Math.max(12, rect.top + rect.height / 2 - 90), bottom: "auto", left: clampX(rect.left + rect.width + GAP) }
   }
 }
 
