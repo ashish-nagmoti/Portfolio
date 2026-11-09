@@ -39,7 +39,7 @@ export const siteGraph = [
     givenName: person.givenName,
     familyName: person.familyName,
     url: SITE_URL,
-    image: `${SITE_URL}/og-image.png`,
+    image: `${SITE_URL}/ashish-nagmoti.jpg`,
     jobTitle: person.jobTitle,
     description: person.summary,
     email: `mailto:${person.email}`,

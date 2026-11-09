@@ -146,6 +146,26 @@ const SECTIONS = [
 
 type SectionId = (typeof SECTIONS)[number]["id"]
 
+/** Photo, name and title: atop the sidebar on a desktop, above the tabs on a phone */
+function ProfileHeader() {
+  return (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/ashish-nagmoti.jpg"
+        alt="Ashish Nagmoti"
+        width={40}
+        height={40}
+        className="h-10 w-10 shrink-0 rounded-full object-cover shadow-md ring-1 ring-black/[0.08] dark:ring-white/[0.12]"
+      />
+      <div className="min-w-0">
+        <p className="truncate text-sm font-semibold">Ashish Nagmoti</p>
+        <p className="truncate text-xs text-muted-foreground">AI Engineer &amp; Researcher</p>
+      </div>
+    </>
+  )
+}
+
 export function AboutApp() {
   const [active, setActive] = useState<SectionId>("stats")
   const compact = useCompact()
@@ -153,7 +173,11 @@ export function AboutApp() {
   return (
     <div className={cn("flex h-full", compact && "flex-col")}>
       {compact ? (
-        // Narrow (a phone): the sections become a swipeable row of tabs
+        // Narrow (a phone): who this is, then the sections as a swipeable row of tabs
+        <>
+        <div className="flex shrink-0 items-center gap-3 px-4 pb-1 pt-3">
+          <ProfileHeader />
+        </div>
         <div className="no-scrollbar flex shrink-0 gap-2 overflow-x-auto border-b border-black/[0.06] px-4 py-2.5 dark:border-white/[0.08]">
           {SECTIONS.map((section) => (
             <button
@@ -171,23 +195,12 @@ export function AboutApp() {
             </button>
           ))}
         </div>
+        </>
       ) : (
       /* Sidebar, Contacts.app / System Settings style */
       <div className="flex w-[210px] shrink-0 flex-col border-r border-black/[0.06] dark:border-white/[0.08]">
         <div className="flex items-center gap-3 border-b border-black/[0.06] p-4 dark:border-white/[0.08]">
-          <span
-            className={cn(
-              "flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white shadow-md",
-              // Contacts-style graphite monogram, matching the Dock icon.
-              "bg-gradient-to-b from-[#aeaeb2] to-[#636366]",
-            )}
-          >
-            AN
-          </span>
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold">Ashish Nagmoti</p>
-            <p className="truncate text-xs text-muted-foreground">AI Engineer &amp; Researcher</p>
-          </div>
+          <ProfileHeader />
         </div>
         <nav className="flex-1 space-y-0.5 overflow-y-auto p-2">
           {SECTIONS.map((section) => {
